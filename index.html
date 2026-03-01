@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ИЗБАВЛЕНИЕ — annaili.net</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+:root{
+  --k:#0d0d0d;--r:#cc3333;--r2:#881111;--pk:#f0b8c8;--pk2:#fad8e4;--pk3:#d06080;
+  --g:#4a4a5a;--g2:#8888a0;--cr:#f5f0ee;--grid:rgba(255,255,255,.032);
+  --mn:'VT323',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{width:100vw;height:100vh;overflow:hidden;background:var(--k);color:var(--cr);font-family:var(--mn);cursor:none;user-select:none;}
+
+/* CURSOR */
+#cur{position:fixed;z-index:99999;pointer-events:none;top:0;left:0;}
+#cur svg{display:block;image-rendering:pixelated;}
+body.ck #cur{transform:scale(.85);}
+
+/* VIDEO BG */
+#vbg{position:fixed;inset:0;z-index:0;overflow:hidden;background:#0d0d0d;}
+#vbg iframe{position:absolute;top:50%;left:50%;width:140vw;height:140vh;transform:translate(-50%,-50%);pointer-events:none;opacity:.13;}
+#vov{position:fixed;inset:0;z-index:1;background:linear-gradient(160deg,rgba(13,13,13,.88),rgba(13,13,13,.82));}
+#gbg{position:fixed;inset:0;z-index:2;pointer-events:none;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:40px 40px;}
+#rs{position:fixed;left:0;top:0;width:5px;height:100vh;background:var(--r);z-index:3;}
+#scan{position:fixed;inset:0;z-index:4;pointer-events:none;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.14) 2px,rgba(0,0,0,.14) 3px);}
+
+/* VEIL */
+#veil{position:fixed;inset:0;z-index:8400;background:#000;opacity:0;pointer-events:none;transition:opacity .6s;}
+#veil.on{opacity:1;pointer-events:all;}
+#heye{position:fixed;z-index:8500;bottom:55px;right:24px;opacity:0;pointer-events:none;transition:opacity .4s;cursor:none;}
+#heye.vis{opacity:.15;pointer-events:all;}
+#heye:hover{opacity:.55!important;}
+
+/* DESKTOP */
+#desk{position:fixed;top:0;left:5px;right:0;bottom:34px;z-index:10;overflow:hidden;}
+
+/* ICONS */
+.ic{position:absolute;width:74px;text-align:center;padding:4px;cursor:none;border:1px solid transparent;}
+.ic:hover{background:rgba(240,184,200,.1);border-color:rgba(240,184,200,.3);}
+.ic.sel{background:rgba(208,96,128,.18);border-color:var(--pk3);}
+.ic svg{width:52px;height:42px;display:block;margin:0 auto 4px;image-rendering:pixelated;}
+.ilb{font-family:var(--mn);font-size:14px;color:var(--cr);text-shadow:1px 1px 0 #000;line-height:1.2;word-break:break-word;}
+
+/* WINDOWS */
+.win{position:absolute;min-width:300px;min-height:160px;background:#111;border:1px solid #222;box-shadow:4px 4px 0 rgba(0,0,0,.9);display:none;flex-direction:column;z-index:100;}
+.win.open{display:flex;}
+.win.top{z-index:200;}
+.win.fp{position:fixed!important;top:0!important;left:0!important;right:0!important;bottom:34px!important;width:100%!important;height:calc(100vh - 34px)!important;z-index:500!important;}
+.wtb{height:22px;background:linear-gradient(90deg,var(--r2),var(--r));display:flex;align-items:center;justify-content:space-between;padding:0 5px;cursor:move;flex-shrink:0;}
+.wt{font-family:var(--mn);font-size:14px;color:var(--cr);letter-spacing:.05em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.wbc{display:flex;gap:2px;}
+.wb{width:14px;height:14px;background:#1a1a1a;border:1px solid #333;color:var(--cr);font-size:9px;line-height:13px;text-align:center;cursor:none;}
+.wb:hover{background:var(--r);} .wb.x{background:var(--r2);}
+.wp{font-size:11px;color:var(--g2);padding:2px 8px;background:#0d0d0d;border-bottom:1px solid #1a1a1a;display:flex;align-items:center;gap:5px;flex-shrink:0;}
+.wbk{cursor:none;color:var(--pk);font-size:16px;padding:1px 3px;background:none;border:none;font-family:var(--mn);line-height:1;}
+.wbk:hover{color:var(--pk2);}
+.wb0{flex:1;overflow-y:auto;padding:10px;font-size:13px;line-height:1.6;}
+.wb0::-webkit-scrollbar{width:4px;} .wb0::-webkit-scrollbar-track{background:#0d0d0d;} .wb0::-webkit-scrollbar-thumb{background:var(--r2);}
+.wrz{position:absolute;bottom:0;right:0;width:12px;height:12px;cursor:nwse-resize;background:linear-gradient(135deg,transparent 50%,#333 50%);}
+
+/* FOLDER GRID */
+.fg{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;padding:7px;}
+.fc{background:#1a1a1a;border:1px solid #222;padding:8px 5px 6px;text-align:center;cursor:none;}
+.fc:hover{background:#2a0e0e;border-color:var(--r2);}
+.fc svg{width:42px;height:32px;margin:0 auto 5px;display:block;}
+.fl{font-size:12px;color:var(--g2);}
+
+/* BLOG */
+.btx{width:100%;min-height:80px;background:#0d0d0d;color:var(--cr);border:1px solid #1e1e1e;font-family:var(--mn);font-size:14px;padding:7px;resize:vertical;outline:none;}
+.btx:focus{border-color:var(--r2);}
+.brow{display:flex;gap:4px;margin-top:4px;flex-wrap:wrap;}
+.bi,.bs{background:#0d0d0d;color:var(--cr);border:1px solid #1e1e1e;font-family:var(--mn);font-size:13px;padding:3px 6px;flex:1;min-width:60px;outline:none;}
+.bi:focus,.bs:focus{border-color:var(--r2);}
+.bb{background:var(--r2);color:var(--cr);border:1px solid var(--r);font-family:var(--mn);font-size:14px;padding:3px 12px;cursor:none;}
+.bb:hover{background:var(--r);}
+.bb.pk{background:var(--pk3);border-color:var(--pk);}
+.pc{border:1px solid #1a1a1a;padding:7px;margin-bottom:6px;background:#151515;}
+.pc:hover{border-color:#2a2a2a;}
+.pm{font-size:10px;color:var(--g2);margin-bottom:3px;}
+.tg{display:inline-block;background:var(--r2);color:var(--cr);font-size:9px;padding:1px 5px;margin:0 2px;}
+.tg.p{background:var(--pk3);}
+
+/* TUMBLR ADMIN */
+.adm-wrap{padding:8px;}
+.adm-btns{display:flex;gap:4px;margin-top:6px;}
+.adm-btn{flex:1;background:#1a1a1a;border:1px solid #2a2a2a;color:var(--g2);font-family:var(--mn);font-size:13px;padding:5px 6px;cursor:none;text-align:center;}
+.adm-btn:hover{background:var(--r2);color:var(--cr);border-color:var(--r);}
+.adm-btn.act{background:var(--r2);color:var(--cr);border-color:var(--r);}
+
+/* START MENU */
+#sm{position:fixed;bottom:34px;left:5px;width:230px;background:#0f0f0f;border:1px solid #222;border-bottom:none;z-index:6000;display:none;box-shadow:4px -4px 0 rgba(0,0,0,.8);}
+#sm.o{display:block;}
+.smh{background:linear-gradient(90deg,var(--r2),var(--r));padding:9px 12px;font-family:var(--mn);font-size:18px;color:var(--cr);letter-spacing:.04em;}
+.smi{padding:7px 12px;font-family:var(--mn);font-size:15px;color:var(--cr);cursor:none;display:flex;align-items:center;gap:7px;border-bottom:1px solid #181818;}
+.smi:hover{background:#1a1a1a;color:var(--pk2);}
+.smd{border-top:1px solid #1e1e1e;margin:1px 0;}
+
+/* TASKBAR */
+#tb{position:fixed;bottom:0;left:0;right:0;height:34px;z-index:5000;background:#090909;border-top:1px solid #1a1a1a;display:flex;align-items:center;padding:0 5px;gap:4px;}
+#tbs{height:26px;padding:0 10px;background:var(--r2);border:1px solid var(--r);color:var(--cr);font-family:var(--mn);font-size:16px;cursor:none;letter-spacing:.04em;}
+#tbs:hover{background:var(--r);}
+.tbi{width:28px;height:26px;background:#161616;border:1px solid #222;display:flex;align-items:center;justify-content:center;cursor:none;}
+.tbi:hover{background:#1e0808;border-color:var(--r2);}
+#tlg{font-family:var(--mn);font-size:12px;color:var(--g2);cursor:none;padding:2px 7px;border:1px solid #222;background:#161616;letter-spacing:.08em;}
+#tlg:hover{color:var(--cr);border-color:var(--r2);}
+#tbw{display:flex;gap:3px;flex:1;overflow:hidden;}
+.tw{height:22px;padding:0 7px;background:#161616;border:1px solid #222;color:var(--g2);font-family:var(--mn);font-size:11px;cursor:none;max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.tw.a{background:#1e0808;border-color:var(--r2);color:var(--cr);}
+#clk{margin-left:auto;text-align:right;font-family:var(--mn);font-size:13px;color:var(--cr);border-left:1px solid #1a1a1a;padding:0 8px;line-height:1.3;white-space:nowrap;}
+#wk{font-size:11px;color:var(--g2);}
+
+/* EYE PAGE */
+#ep{position:fixed;inset:0;z-index:7000;background:#0d0d0d;display:none;align-items:center;justify-content:center;flex-direction:column;}
+#ep.o{display:flex;}
+
+/* PW SCREEN */
+#pw{position:fixed;inset:0;z-index:9400;background:rgba(8,8,8,.97);display:flex;align-items:center;justify-content:center;}
+#pw.h{display:none;}
+#pwb{background:#111;border:1px solid var(--r);padding:26px 32px;width:290px;text-align:center;box-shadow:5px 5px 0 rgba(0,0,0,.9);}
+#pwb h2{font-family:var(--mn);font-size:22px;color:var(--r);letter-spacing:.08em;margin-bottom:12px;}
+#pwb p{font-size:12px;color:var(--g2);margin-bottom:10px;}
+#pwi{width:100%;background:#0d0d0d;color:var(--cr);border:none;border-bottom:1px solid var(--r);font-family:var(--mn);font-size:20px;padding:7px 10px;text-align:center;letter-spacing:5px;outline:none;cursor:text;}
+#pwu{width:100%;background:#0d0d0d;color:var(--cr);border:none;border-bottom:1px solid #333;font-family:var(--mn);font-size:16px;padding:5px 10px;text-align:center;letter-spacing:2px;outline:none;cursor:text;margin-bottom:8px;}
+#pwg{display:block;width:100%;margin-top:10px;background:var(--r2);color:var(--cr);border:1px solid var(--r);font-family:var(--mn);font-size:15px;padding:7px;cursor:pointer;letter-spacing:.08em;}
+#pwg:hover{background:var(--r);}
+#pwe{font-size:11px;color:var(--r);margin-top:7px;min-height:15px;font-family:var(--mn);}
+
+/* VIRUS */
+#vrs{position:fixed;inset:0;z-index:9000;background:#000;display:none;align-items:center;justify-content:center;overflow:hidden;}
+#vrs.on{display:flex;}
+#vrst{font-family:var(--mn);font-size:clamp(28px,5.5vw,68px);color:var(--r);text-align:center;animation:vb .35s step-start infinite;line-height:1.3;}
+@keyframes vb{0%,100%{opacity:1;}50%{opacity:0;}}
+#vrsc{position:absolute;bottom:20px;right:24px;font-family:var(--mn);font-size:13px;color:#444;cursor:pointer;}
+#vrsc:hover{color:var(--g2);}
+
+/* RICKROLL */
+#rr{position:fixed;inset:0;z-index:9800;background:#000;display:none;align-items:center;justify-content:center;}
+#rr.on{display:flex;}
+#rr iframe{width:100vw;height:100vh;border:none;pointer-events:all;}
+#rrc{position:fixed;top:14px;right:18px;z-index:9900;background:var(--r2);color:var(--cr);border:1px solid var(--r);font-family:var(--mn);font-size:13px;padding:5px 14px;cursor:pointer;}
+
+/* CURSOR EDITOR */
+#cte{position:fixed;inset:0;z-index:7400;background:rgba(8,8,8,.95);display:none;align-items:center;justify-content:center;}
+#cte.o{display:flex;}
+#ctm{background:#111;border:1px solid var(--r);padding:18px;max-width:400px;width:92%;}
+#ctm h3{font-family:var(--mn);font-size:18px;color:var(--r);letter-spacing:.06em;margin-bottom:10px;}
+.ctb{display:flex;gap:3px;margin-bottom:7px;}
+.ctbt{background:#0d0d0d;color:var(--g2);border:1px solid #2a2a2a;font-family:var(--mn);font-size:12px;padding:3px 8px;cursor:pointer;flex:1;text-align:center;}
+.ctbt.a{background:var(--r2);color:var(--cr);border-color:var(--r);}
+#cg{display:grid;grid-template-columns:repeat(16,1fr);gap:1px;background:#2a2a2a;width:192px;height:192px;margin:0 auto 7px;}
+.cp{background:#0d0d0d;aspect-ratio:1;cursor:crosshair;}
+.cp.w{background:var(--cr);} .cp.r{background:var(--r);} .cp.p{background:var(--pk);}
+.ccl{display:flex;gap:4px;justify-content:center;margin-bottom:7px;}
+.cl{width:20px;height:20px;cursor:pointer;border:2px solid transparent;}
+.cl.a{border-color:#fff;}
+.cta{display:flex;gap:5px;}
+.cta button{flex:1;background:#0d0d0d;color:var(--cr);border:1px solid #2a2a2a;font-family:var(--mn);font-size:12px;padding:5px;cursor:pointer;}
+#cta0{background:var(--r2);border-color:var(--r);}
+#cta0:hover{background:var(--r);}
+
+/* MANIFESTO gif animation */
+@keyframes mglitch{0%{filter:hue-rotate(0deg) saturate(1);transform:translate(0,0);}25%{filter:hue-rotate(90deg) saturate(3) brightness(1.4);transform:translate(-2px,1px) skewX(2deg);}50%{filter:hue-rotate(180deg) invert(.15);transform:translate(2px,-1px);}75%{filter:hue-rotate(270deg) saturate(5) brightness(.8);transform:translate(-1px,2px) skewY(1deg);}100%{filter:hue-rotate(360deg) saturate(1);transform:translate(0,0);}}
+@keyframes mtxt{0%{color:var(--r);}20%{color:var(--pk);}40%{color:#fff;}60%{color:var(--r);}80%{color:var(--pk3);}100%{color:var(--r);}}
+@keyframes mspin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+@keyframes mzoom{0%,100%{transform:scale(1);}50%{transform:scale(1.04);}}
+.mani-block{padding:4px;animation:mglitch 3s ease-in-out infinite;}
+.mani-gif{width:100%;height:60px;position:relative;overflow:hidden;margin:10px 0;background:#000;}
+.mg-stripe{position:absolute;height:8px;width:200%;animation:mgstr 1.2s linear infinite;}
+.mg-stripe:nth-child(1){top:0;background:repeating-linear-gradient(90deg,var(--r) 0,var(--r) 8px,transparent 8px,transparent 16px);animation-duration:0.8s;}
+.mg-stripe:nth-child(2){top:14px;background:repeating-linear-gradient(90deg,var(--pk3) 0,var(--pk3) 12px,transparent 12px,transparent 24px);animation-duration:1.1s;animation-direction:reverse;}
+.mg-stripe:nth-child(3){top:28px;background:repeating-linear-gradient(90deg,#fff 0,#fff 4px,transparent 4px,transparent 10px);animation-duration:0.6s;}
+.mg-stripe:nth-child(4){top:42px;background:repeating-linear-gradient(90deg,var(--r) 0,var(--r) 20px,var(--pk) 20px,var(--pk) 40px);animation-duration:1.4s;}
+.mg-stripe:nth-child(5){top:52px;background:repeating-linear-gradient(90deg,var(--k) 0,var(--k) 6px,var(--r) 6px,var(--r) 12px);animation-duration:0.9s;animation-direction:reverse;}
+@keyframes mgstr{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+.mani-eye{display:block;margin:8px auto;animation:mzoom 2s ease-in-out infinite;}
+.mani-txt{animation:mtxt 2.5s linear infinite;font-family:var(--mn);font-size:15px;line-height:1.8;}
+
+/* ABOUT / CONTACT */
+.asc{margin-bottom:12px;}
+.asc h3{font-family:var(--mn);font-size:18px;color:var(--pk);margin-bottom:5px;}
+.asc p,.asc li{font-size:13px;color:var(--g2);line-height:1.7;}
+.asc ul{padding-left:14px;}
+.stg{display:inline-block;background:#1a1a1a;border:1px solid #2a2a2a;font-size:11px;padding:2px 7px;margin:2px;color:var(--g2);}
+.cl2{display:block;padding:6px 0;border-bottom:1px solid #1a1a1a;font-family:var(--mn);font-size:15px;color:var(--pk2);text-decoration:none;cursor:none;}
+.cl2:hover{color:var(--cr);}
+
+/* DAS DASEIN */
+@keyframes daszoom{0%,100%{transform:scale(1) rotate(0deg);}33%{transform:scale(1.02) rotate(.5deg);}66%{transform:scale(.99) rotate(-.5deg);}}
+.das-block{border-left:2px solid var(--r);padding-left:12px;margin:10px 0;animation:daszoom 6s ease-in-out infinite;}
+</style>
+</head>
+<body>
+
+<div id="cur"><svg id="csv" width="16" height="20" viewBox="0 0 8 10">
+  <path d="M0 0L0 9L3 6L4 9L5.5 8.5L4.5 6L7 6Z" fill="#f5f0ee" stroke="#0d0d0d" stroke-width=".6"/>
+</svg></div>
+
+<!-- VIDEO BG — your video -->
+<div id="vbg">
+  <iframe id="ytbg"
+    src="https://www.youtube.com/embed/9As7O7U1yUU?autoplay=1&mute=1&loop=1&playlist=9As7O7U1yUU&controls=0&rel=0&iv_load_policy=3&modestbranding=1&playsinline=1&enablejsapi=0"
+    frameborder="0" allow="autoplay;encrypted-media" allowfullscreen>
+  </iframe>
+</div>
+<div id="vov"></div><div id="gbg"></div><div id="rs"></div><div id="scan"></div>
+<div id="veil"></div>
+
+<!-- hidden grey eye to turn light back on -->
+<div id="heye" onclick="offVeil()">
+  <svg width="34" height="20" viewBox="0 0 34 20">
+    <ellipse cx="17" cy="10" rx="15" ry="7" fill="none" stroke="#555" stroke-width="1.2"/>
+    <circle cx="17" cy="10" r="4" fill="#444"/>
+    <line x1="17" y1="3" x2="17" y2="0" stroke="#555" stroke-width=".8"/>
+    <line x1="17" y1="17" x2="17" y2="20" stroke="#555" stroke-width=".8"/>
+  </svg>
+</div>
+
+<!-- VIRUS -->
+<div id="vrs">
+  <div id="vrst">THE CURIOUS<br>WILL BE<br>REWARDED</div>
+  <div id="vrsc" onclick="stopVirus()">[ press to stop ]</div>
+</div>
+
+<!-- RICKROLL -->
+<div id="rr">
+  <iframe id="rri" src="" allow="autoplay"></iframe>
+  <button id="rrc" onclick="closeRR()">× close</button>
+</div>
+
+<!-- EYE PAGE (квадрат icon → here) -->
+<div id="ep">
+  <svg id="ebig" width="360" height="220" viewBox="0 0 360 220" style="overflow:visible">
+    <path d="M10 110 Q180 10 350 110 Q180 210 10 110Z" fill="none" stroke="var(--pk)" stroke-width="1.8"/>
+    <circle cx="180" cy="110" r="40" fill="none" stroke="var(--pk)" stroke-width="1.5"/>
+    <circle cx="180" cy="110" r="18" fill="var(--pk3)" opacity=".75"/>
+    <circle cx="188" cy="102" r="6" fill="var(--cr)" opacity=".45"/>
+    <g id="lt"></g>
+    <g id="lb"></g>
+    <!-- secret lash 6 from bottom-right -->
+    <circle id="l6t" cx="0" cy="0" r="14" fill="transparent" style="cursor:none;" onclick="showPw()"/>
+  </svg>
+  <div style="font-family:var(--mn);font-size:13px;color:var(--g2);margin-top:18px;letter-spacing:.1em">annaili.net</div>
+  <div onclick="closeEP()" style="margin-top:12px;font-family:var(--mn);font-size:14px;color:var(--pk);cursor:none;letter-spacing:.06em">← back</div>
+</div>
+
+<!-- PASSWORD SCREEN -->
+<div id="pw" class="h">
+  <div id="pwb">
+    <h2>// enter</h2>
+    <p>credentials required</p>
+    <input type="text" id="pwu" placeholder="login" autocomplete="off">
+    <input type="password" id="pwi" placeholder="········" autocomplete="off">
+    <button id="pwg" onclick="chkPw()">→</button>
+    <div id="pwe"></div>
+  </div>
+</div>
+
+<!-- CURSOR EDITOR -->
+<div id="cte">
+  <div id="ctm">
+    <h3>// draw cursor</h3>
+    <div class="ctb">
+      <div class="ctbt a" onclick="setCT(0)">normal</div>
+      <div class="ctbt" onclick="setCT(1)">hover</div>
+      <div class="ctbt" onclick="setCT(2)">click</div>
+    </div>
+    <div id="cg"></div>
+    <div class="ccl">
+      <div class="cl a" style="background:var(--cr)" onclick="setCC('w')"></div>
+      <div class="cl" style="background:var(--r)" onclick="setCC('r')"></div>
+      <div class="cl" style="background:var(--pk)" onclick="setCC('p')"></div>
+      <div class="cl" style="background:#111;border:1px solid #444" onclick="setCC('e')"></div>
+    </div>
+    <div class="cta">
+      <button id="cta0" onclick="apCur()">APPLY</button>
+      <button onclick="clCur()">CLEAR</button>
+      <button onclick="document.getElementById('cte').classList.remove('o')">CLOSE</button>
+    </div>
+  </div>
+</div>
+
+<!-- START MENU -->
+<div id="sm">
+  <div class="smh">anna ilinet</div>
+  <div class="smi" onclick="oW('about');csm()">
+    <svg viewBox="0 0 18 14" width="18" height="14"><circle cx="9" cy="5" r="3.5" fill="none" stroke="var(--pk3)" stroke-width="1.2"/><path d="M2 14 Q2 9 9 9 Q16 9 16 14" fill="none" stroke="var(--pk3)" stroke-width="1.2"/></svg>About</div>
+  <div class="smi" onclick="oW('contact');csm()">
+    <svg viewBox="0 0 18 14" width="18" height="14"><rect x="2" y="2" width="14" height="10" fill="none" stroke="var(--pk3)" stroke-width="1.2"/><polyline points="2,2 9,8 16,2" fill="none" stroke="var(--pk2)" stroke-width="1"/></svg>Contact</div>
+  <div class="smi" onclick="oW('blog');csm()">
+    <svg viewBox="0 0 18 14" width="18" height="14"><ellipse cx="9" cy="7" rx="7" ry="5" fill="none" stroke="var(--pk3)" stroke-width="1.2"/><circle cx="9" cy="7" r="2" fill="var(--pk3)"/></svg>Blog</div>
+  <div class="smd"></div>
+  <div class="smi" onclick="openCTE();csm()">
+    <svg viewBox="0 0 18 14" width="18" height="14"><path d="M3 1L3 13L6.5 9L8 13L10 12L8.5 9L12 9Z" fill="var(--g2)" stroke="var(--g)" stroke-width=".5"/></svg>Draw cursor</div>
+  <div class="smd"></div>
+  <div class="smi" onclick="location.reload();csm()">
+    <svg viewBox="0 0 18 14" width="18" height="14"><path d="M4 7 Q4 2 9 2 Q14 2 14 7 Q14 12 9 12 Q7 12 5.5 11" fill="none" stroke="var(--g2)" stroke-width="1.2"/><polyline points="3,9 4.5,12 7,11" fill="var(--g2)"/></svg>Restart</div>
+</div>
+
+<!-- DESKTOP -->
+<div id="desk">
+
+<!-- ══ ICONS ══ -->
+<!-- Ph folder — red, big F shape -->
+<div class="ic" id="ic-ph" style="left:16px;top:14px" ondblclick="oW('ph')">
+  <svg viewBox="0 0 52 42"><rect x="2" y="8" width="48" height="32" fill="var(--r2)" stroke="var(--r)" stroke-width="1.5"/><rect x="2" y="4" width="20" height="6" fill="var(--r)" stroke="var(--r)" stroke-width="1"/><line x1="2" y1="16" x2="50" y2="16" stroke="var(--r2)" stroke-width="1" opacity=".5"/></svg>
+  <div class="ilb">Ph</div>
+</div>
+
+<div class="ic" id="ic-vid" style="left:16px;top:108px" ondblclick="oW('vid')">
+  <svg viewBox="0 0 52 42"><rect x="2" y="8" width="48" height="32" fill="var(--g)" stroke="var(--g2)" stroke-width="1.5"/><rect x="2" y="4" width="20" height="6" fill="var(--g2)" stroke="var(--g2)" stroke-width="1"/><polygon points="20,17 20,33 38,25" fill="var(--r)" stroke="none"/></svg>
+  <div class="ilb">Vid</div>
+</div>
+
+<div class="ic" id="ic-sk" style="left:16px;top:202px" ondblclick="oW('sk')">
+  <svg viewBox="0 0 52 42"><rect x="4" y="4" width="44" height="34" fill="none" stroke="var(--pk3)" stroke-width="1.5"/><path d="M10 32 Q18 14 26 20 Q34 26 44 10" fill="none" stroke="var(--pk3)" stroke-width="2" stroke-linecap="round"/><circle cx="10" cy="32" r="2" fill="var(--pk3)"/></svg>
+  <div class="ilb">Sketchbook</div>
+</div>
+
+<div class="ic" id="ic-arch" style="left:16px;top:296px" ondblclick="oW('arch')">
+  <svg viewBox="0 0 52 42"><rect x="4" y="10" width="44" height="28" fill="var(--g)" stroke="var(--g2)" stroke-width="1.5"/><rect x="0" y="6" width="52" height="8" fill="var(--g2)" stroke="none"/><line x1="14" y1="20" x2="14" y2="34" stroke="var(--g)" stroke-width="1.5"/><line x1="26" y1="20" x2="26" y2="34" stroke="var(--g)" stroke-width="1.5"/><line x1="38" y1="20" x2="38" y2="34" stroke="var(--g)" stroke-width="1.5"/></svg>
+  <div class="ilb">Archive</div>
+</div>
+
+<!-- BLOG — big eye icon -->
+<div class="ic" id="ic-blog" style="left:16px;top:390px" ondblclick="oW('blog')">
+  <svg viewBox="0 0 52 42"><ellipse cx="26" cy="21" rx="22" ry="16" fill="none" stroke="var(--pk3)" stroke-width="2"/><circle cx="26" cy="21" r="9" fill="none" stroke="var(--pk3)" stroke-width="1.5"/><circle cx="26" cy="21" r="4" fill="var(--pk3)"/><circle cx="29" cy="18" r="2" fill="var(--cr)" opacity=".5"/></svg>
+  <div class="ilb">Blog</div>
+</div>
+
+<!-- Right column -->
+<div class="ic" id="ic-show" style="right:16px;top:14px" ondblclick="oW('show')">
+  <svg viewBox="0 0 52 42"><rect x="2" y="8" width="34" height="26" fill="none" stroke="var(--pk3)" stroke-width="2"/><polygon points="36,8 50,4 50,38 36,34" fill="none" stroke="var(--pk3)" stroke-width="2"/><polygon points="12,14 12,30 28,22" fill="var(--r)"/></svg>
+  <div class="ilb">Showreel</div>
+</div>
+
+<div class="ic" id="ic-art" style="right:16px;top:108px" ondblclick="oW('art')">
+  <svg viewBox="0 0 52 42"><circle cx="26" cy="21" r="18" fill="none" stroke="var(--pk3)" stroke-width="2"/><circle cx="18" cy="17" r="5" fill="var(--r)"/><circle cx="32" cy="14" r="4" fill="var(--pk3)"/><circle cx="22" cy="28" r="6" fill="var(--g2)" opacity=".7"/><circle cx="34" cy="27" r="4" fill="var(--pk)"/></svg>
+  <div class="ilb">Art / 3D</div>
+</div>
+
+<div class="ic" id="ic-mani" style="right:16px;top:202px" ondblclick="oW('mani')">
+  <svg viewBox="0 0 52 42"><rect x="6" y="2" width="40" height="38" fill="none" stroke="var(--r)" stroke-width="2"/><line x1="6" y1="2" x2="14" y2="10" stroke="var(--r)" stroke-width="1.5"/><rect x="14" y="10" width="32" height="30" fill="var(--r2)" opacity=".4"/><text x="9" y="26" font-size="7" fill="var(--r)" font-family="VT323,monospace" letter-spacing="1">MANI</text><text x="9" y="34" font-size="7" fill="var(--r)" font-family="VT323,monospace" letter-spacing="1">FESTO</text></svg>
+  <div class="ilb">Manifesto</div>
+</div>
+
+<div class="ic" id="ic-about" style="right:16px;top:296px" ondblclick="oW('about')">
+  <svg viewBox="0 0 52 42"><circle cx="26" cy="14" r="10" fill="none" stroke="var(--pk3)" stroke-width="2"/><circle cx="26" cy="12" r="4" fill="var(--pk3)" opacity=".8"/><path d="M8 40 Q8 26 26 26 Q44 26 44 40" fill="none" stroke="var(--pk3)" stroke-width="2"/></svg>
+  <div class="ilb">About</div>
+</div>
+
+<div class="ic" id="ic-col" style="right:16px;top:390px" ondblclick="oW('col')">
+  <svg viewBox="0 0 52 42"><circle cx="17" cy="18" r="10" fill="none" stroke="var(--g2)" stroke-width="2"/><circle cx="35" cy="18" r="10" fill="none" stroke="var(--pk3)" stroke-width="2"/><path d="M17 30 Q26 40 35 30" fill="none" stroke="var(--g2)" stroke-width="1.5"/></svg>
+  <div class="ilb">Collab.</div>
+</div>
+
+<!-- Bottom row -->
+<div class="ic" id="ic-con" style="left:110px;bottom:6px" ondblclick="oW('contact')">
+  <svg viewBox="0 0 52 42"><rect x="4" y="6" width="44" height="30" fill="none" stroke="var(--g2)" stroke-width="2"/><polyline points="4,6 26,22 48,6" fill="none" stroke="var(--g2)" stroke-width="1.5"/></svg>
+  <div class="ilb">Contact</div>
+</div>
+
+<div class="ic" id="ic-shop" style="left:205px;bottom:6px" ondblclick="oW('shop')">
+  <svg viewBox="0 0 52 42"><rect x="8" y="14" width="36" height="24" fill="none" stroke="var(--g2)" stroke-width="2"/><path d="M16 14 Q16 6 26 6 Q36 6 36 14" fill="none" stroke="var(--g2)" stroke-width="2"/><rect x="20" y="22" width="12" height="8" fill="none" stroke="var(--pk3)" stroke-width="1.5"/></svg>
+  <div class="ilb">Shop</div>
+</div>
+
+<div class="ic" id="ic-cur" style="right:205px;bottom:6px" ondblclick="openCTE()">
+  <svg viewBox="0 0 52 42"><path d="M8 4L8 38L16 28L20 36L26 33L22 26L32 26Z" fill="var(--g2)" stroke="var(--g)" stroke-width="1"/></svg>
+  <div class="ilb">Draw cursor</div>
+</div>
+
+<!-- DAS DASEIN — tooth -->
+<div class="ic" id="ic-das" style="right:110px;bottom:6px" ondblclick="oW('das')">
+  <svg viewBox="0 0 52 42"><path d="M14 4 Q12 2 9 4 Q6 9 7 20 Q8 30 10 32L13 32 Q14 24 18 24 Q22 24 23 32L26 32 Q28 30 29 20 Q30 9 27 4 Q24 2 22 4 Q20 9 18 9 Q16 9 14 4Z" fill="var(--pk)" stroke="var(--pk3)" stroke-width="1.2"/><line x1="11" y1="24" x2="25" y2="24" stroke="var(--pk3)" stroke-width=".8" stroke-dasharray="2,1"/></svg>
+  <div class="ilb">das Dasein</div>
+</div>
+
+<!-- SKULL — virus -->
+<div class="ic" id="ic-skull" style="left:16px;bottom:6px" ondblclick="startVirus()">
+  <svg viewBox="0 0 52 42"><ellipse cx="26" cy="18" rx="18" ry="14" fill="none" stroke="var(--g2)" stroke-width="2"/><circle cx="18" cy="16" r="5.5" fill="var(--k)" stroke="var(--g2)" stroke-width="1.5"/><circle cx="34" cy="16" r="5.5" fill="var(--k)" stroke="var(--g2)" stroke-width="1.5"/><path d="M16 32L16 38L20 38L20 34L26 34L26 38L32 38L32 34L36 38L36 32Z" fill="none" stroke="var(--g2)" stroke-width="1.5"/></svg>
+  <div class="ilb" style="color:var(--g2)">☠</div>
+</div>
+
+<!-- КВАДРАТ → eye page -->
+<div class="ic" id="ic-sq" style="right:16px;bottom:6px" ondblclick="openEP()">
+  <svg viewBox="0 0 52 42"><rect x="4" y="4" width="44" height="34" fill="none" stroke="var(--pk3)" stroke-width="2"/><rect x="14" y="12" width="24" height="18" fill="none" stroke="var(--pk)" stroke-width="1.5"/><rect x="20" y="17" width="12" height="8" fill="var(--pk3)" opacity=".6"/></svg>
+  <div class="ilb">квадрат</div>
+</div>
+
+<!-- TRASH (always shown) -->
+<div class="ic" id="ic-trash" style="right:16px;bottom:6px;display:none" ondblclick="oW('trash')">
+  <svg viewBox="0 0 52 42"><rect x="8" y="12" width="36" height="26" fill="none" stroke="var(--g2)" stroke-width="2"/><rect x="2" y="8" width="48" height="6" fill="var(--g)" stroke="var(--g2)" stroke-width="1"/><rect x="16" y="2" width="20" height="8" fill="var(--g)" stroke="var(--g2)" stroke-width="1"/><line x1="18" y1="17" x2="18" y2="35" stroke="var(--g2)" stroke-width="1"/><line x1="26" y1="17" x2="26" y2="35" stroke="var(--g2)" stroke-width="1"/><line x1="34" y1="17" x2="34" y2="35" stroke="var(--g2)" stroke-width="1"/></svg>
+  <div class="ilb">Trash</div>
+</div>
+
+<!-- ══ WINDOWS ══ -->
+
+<!-- PH -->
+<div class="win" id="win-ph" style="left:100px;top:48px;width:490px;height:370px">
+  <div class="wtb"><span class="wt">Ph — photo archive</span><div class="wbc"><div class="wb" onclick="tFP('ph')">□</div><div class="wb x" onclick="cW('ph')">×</div></div></div>
+  <div class="wp"><span class="wbk" onclick="cW('ph')">←</span>annaili.net / Ph</div>
+  <div class="wb0"><div class="fg">
+    <div class="fc" ondblclick="oW('ph-portraits')"><svg viewBox="0 0 42 32"><rect x="1" y="6" width="40" height="24" fill="var(--g)" stroke="var(--g2)" stroke-width="1.2"/><rect x="1" y="3" width="16" height="5" fill="var(--g2)" stroke="var(--g2)" stroke-width="1"/></svg><div class="fl">portraits/</div></div>
+    <div class="fc" ondblclick="oW('ph-arch2')"><svg viewBox="0 0 42 32"><rect x="1" y="6" width="40" height="24" fill="var(--pk3)" stroke="var(--pk3)" stroke-width="1.2" opacity=".6"/><rect x="1" y="3" width="16" height="5" fill="var(--pk3)" stroke="var(--pk3)" stroke-width="1"/></svg><div class="fl">architecture/</div></div>
+    <div class="fc" ondblclick="oW('ph-art2')"><svg viewBox="0 0 42 32"><rect x="1" y="6" width="40" height="24" fill="var(--g)" stroke="var(--g2)" stroke-width="1.2"/><rect x="1" y="3" width="16" height="5" fill="var(--g2)" stroke="var(--g2)" stroke-width="1"/></svg><div class="fl">art/</div></div>
+    <div class="fc" ondblclick="oW('ph-fashion')"><svg viewBox="0 0 42 32"><rect x="1" y="6" width="40" height="24" fill="var(--pk3)" stroke="var(--pk3)" stroke-width="1.2" opacity=".6"/><rect x="1" y="3" width="16" height="5" fill="var(--pk3)" stroke="var(--pk3)" stroke-width="1"/></svg><div class="fl">fashion/</div></div>
+    <div class="fc" ondblclick="oW('ph-concerts')"><svg viewBox="0 0 42 32"><rect x="1" y="6" width="40" height="24" fill="var(--g)" stroke="var(--g2)" stroke-width="1.2"/><rect x="1" y="3" width="16" height="5" fill="var(--g2)" stroke="var(--g2)" stroke-width="1"/></svg><div class="fl">concerts/</div></div>
+    <div class="fc" ondblclick="oW('ph-wedding')"><svg viewBox="0 0 42 32"><rect x="1" y="6" width="40" height="24" fill="var(--pk3)" stroke="var(--pk3)" stroke-width="1.2" opacity=".6"/><rect x="1" y="3" width="16" height="5" fill="var(--pk3)" stroke="var(--pk3)" stroke-width="1"/></svg><div class="fl">wedding/</div></div>
+    <div class="fc" ondblclick="oW('ph-still')"><svg viewBox="0 0 42 32"><rect x="1" y="6" width="40" height="24" fill="var(--g)" stroke="var(--g2)" stroke-width="1.2"/><rect x="1" y="3" width="16" height="5" fill="var(--g2)" stroke="var(--g2)" stroke-width="1"/></svg><div class="fl">still/</div></div>
+    <div class="fc" ondblclick="oW('ph-daily')"><svg viewBox="0 0 42 32"><rect x="1" y="6" width="40" height="24" fill="var(--pk3)" stroke="var(--pk3)" stroke-width="1.2" opacity=".6"/><rect x="1" y="3" width="16" height="5" fill="var(--pk3)" stroke="var(--pk3)" stroke-width="1"/></svg><div class="fl">daily/</div></div>
+    <div class="fc" ondblclick="oW('ph-report')"><svg viewBox="0 0 42 32"><rect x="1" y="6" width="40" height="24" fill="var(--r2)" stroke="var(--r)" stroke-width="1.2"/><rect x="1" y="3" width="16" height="5" fill="var(--r)" stroke="var(--r)" stroke-width="1"/></svg><div class="fl">reportage/</div></div>
+  </div></div>
+  <div class="wrz"></div>
+</div>
+
+<!-- SUBFOLDER WINDOWS for Ph — all the same pattern -->
+<div class="win" id="win-ph-portraits" style="left:130px;top:70px;width:420px;height:300px">
+  <div class="wtb"><span class="wt">Ph → portraits/</span><div class="wbc"><div class="wb x" onclick="cW('ph-portraits')">×</div></div></div>
+  <div class="wp"><span class="wbk" onclick="cW('ph-portraits');oW('ph')">←</span>annaili.net / Ph / portraits</div>
+  <div class="wb0"><p style="color:var(--g2);font-size:12px">[add portrait photos here — drop images into /ph/portraits/]</p></div>
+  <div class="wrz"></div>
+</div>
+<div class="win" id="win-ph-arch2" style="left:135px;top:75px;width:420px;height:300px">
+  <div class="wtb"><span class="wt">Ph → architecture/</span><div class="wbc"><div class="wb x" onclick="cW('ph-arch2')">×</div></div></div>
+  <div class="wp"><span class="wbk" onclick="cW('ph-arch2');oW('ph')">←</span>annaili.net / Ph / architecture</div>
+  <div class="wb0"><p style="color:var(--g2);font-size:12px">[add architecture photos here]</p></div>
+  <div class="wrz"></div>
+</div>
+<div class="win" id="win-ph-art2" style="left:140px;top:80px;width:420px;height:300px">
+  <div class="wtb"><span class="wt">Ph → art/</span><div class="wbc"><div class="wb x" onclick="cW('ph-art2')">×</div></div></div>
+  <div class="wp"><span class="wbk" onclick="cW('ph-art2');oW('ph')">←</span>annaili.net / Ph / art</div>
+  <div class="wb0"><p style="color:var(--g2);font-size:12px">[art photography]</p></div>
+  <div class="wrz"></div>
+</div>
+<div class="win" id="win-ph-fashion" style="left:140px;top:80px;width:420px;height:300px">
+  <div class="wtb"><span class="wt">Ph → fashion/</span><div class="wbc"><div class="wb x" onclick="cW('ph-fashion')">×</div></div></div>
+  <div class="wp"><span class="wbk" onclick="cW('ph-fashion');oW('ph')">←</span>annaili.net / Ph / fashion</div>
+  <div class="wb0"><p style="color:var(--g2);font-size:12px">[fashion photography]</p></div>
+  <div class="wrz"></div>
+</div>
+<div class="win" id="win-ph-concerts" style="left:145px;top:82px;width:420px;height:300px">
+  <div class="wtb"><span class="wt">Ph → concerts/</span><div class="wbc"><div class="wb x" onclick="cW('ph-concerts')">×</div></div></div>
+  <div class="wp"><span class="wbk" onclick="cW('ph-concerts');oW('ph')">←</span>annaili.net / Ph / concerts</div>
+  <div class="wb0"><p style="color:var(--g2);font-size:12px">[concert photography]</p></div>
+  <div class="wrz"></div>
+</div>
+<div class="win" id="win-ph-wedding" style="left:145px;top:82px;width:420px;height:300px">
+  <div class="wtb"><span class="wt">Ph → wedding/</span><div class="wbc"><div class="wb x" onclick="cW('ph-wedding')">×</div></div></div>
+  <div class="wp"><span class="wbk" onclick="cW('ph-wedding');oW('ph')">←</span>annaili.net / Ph / wedding</div>
+  <div class="wb0"><p style="color:var(--g2);font-size:12px">[wedding photography]</p></div>
+  <div class="wrz"></div>
+</div>
+<div class="win" id="win-ph-still" style="left:145px;top:82px;width:420px;height:300px">
+  <div class="wtb"><span class="wt">Ph → still/</span><div class="wbc"><div class="wb x" onclick="cW('ph-still')">×</div></div></div>
+  <div class="wp"><span class="wbk" onclick="cW('ph-still');oW('ph')">←</span>annaili.net / Ph / still</div>
+  <div class="wb0"><p style="color:var(--g2);font-size:12px">[still life photography]</p></div>
+  <div class="wrz"></div>
+</div>
+<div class="win" id="win-ph-daily" style="left:145px;top:82px;width:420px;height:300px">
+  <div class="wtb"><span class="wt">Ph → daily/</span><div class="wbc"><div class="wb x" onclick="cW('ph-daily')">×</div></div></div>
+  <div class="wp"><span class="wbk" onclick="cW('ph-daily');oW('ph')">←</span>annaili.net / Ph / daily</div>
+  <div class="wb0"><p style="color:var(--g2);font-size:12px">[daily life photography]</p></div>
+  <div class="wrz"></div>
+</div>
+<div class="win" id="win-ph-report" style="left:145px;top:82px;width:420px;height:300px">
+  <div class="wtb"><span class="wt">Ph → reportage/</span><div class="wbc"><div class="wb x" onclick="cW('ph-report')">×</div></div></div>
+  <div class="wp"><span class="wbk" onclick="cW('ph-report');oW('ph')">←</span>annaili.net / Ph / reportage</div>
+  <div class="wb0"><p style="color:var(--g2);font-size:12px">[reportage photography]</p></div>
+  <div class="wrz"></div>
+</div>
+
+<!-- VID -->
+<div class="win" id="win-vid" style="left:110px;top:56px;width:490px;height:360px">
+  <div class="wtb"><span class="wt">Vid — video</span><div class="wbc"><div class="wb" onclick="tFP('vid')">□</div><div class="wb x" onclick="cW('vid')">×</div></div></div>
+  <div class="wp"><span class="wbk" onclick="cW('vid')">←</span>annaili.net / Vid</div>
+  <div class="wb0"><div class="fg">
+    <div class="fc" ondblclick="oW('vid-conc')"><svg viewBox="0 0 42 32"><rect x="1" y="6" width="40" height="24" fill="var(--r2)" stroke="var(--r)" stroke-width="1.2"/><rect x="1" y="3" width="16" height="5" fill="var(--r)" stroke="var(--r)" stroke-width="1"/><polygon points="16,13 16,25 28,19" fill="var(--cr)" opacity=".6"/></svg><div class="fl">concerts/</div></div>
+    <div class="fc" ondblclick="oW('vid-edit')"><svg viewBox="0 0 42 32"><rect x="1" y="6" width="40" height="24" fill="var(--g)" stroke="var(--g2)" stroke-width="1.2"/><rect x="1" y="3" width="16" height="5" fill="var(--g2)" stroke="var(--g2)" stroke-width="1"/></svg><div class="fl">editing/</div></div>
+    <div class="fc" ondblclick="oW('vid-vlogs')"><svg viewBox="0 0 42 32"><rect x="1" y="6" width="40" height="24" fill="var(--pk3)" stroke="var(--pk3)" stroke-width="1.2" opacity=".6"/><rect x="1" y="3" width="16" height="5" fill="var(--pk3)" stroke="var(--pk3)" stroke-width="1"/></svg><div class="fl">vlogs/</div></div>
+    <div class="fc" ondblclick="oW('vid-short')"><svg viewBox="0 0 42 32"><rect x="1" y="6" width="40" height="24" fill="var(--g)" stroke="var(--g2)" stroke-width="1.2"/><rect x="1" y="3" width="16" height="5" fill="var(--g2)" stroke="var(--g2)" stroke-width="1"/></svg><div class="fl">short/</div></div>
+    <div class="fc" ondblclick="oW('vid-art')"><svg viewBox="0 0 42 32"><rect x="1" y="6" width="40" height="24" fill="var(--r2)" stroke="var(--r)" stroke-width="1.2"/><rect x="1" y="3" width="16" height="5" fill="var(--r)" stroke="var(--r)" stroke-width="1"/></svg><div class="fl">art films/</div></div>
+    <div class="fc" ondblclick="oW('vid-mov')"><svg viewBox="0 0 42 32"><rect x="1" y="6" width="40" height="24" fill="var(--pk3)" stroke="var(--pk3)" stroke-width="1.2" opacity=".6"/><rect x="1" y="3" width="16" height="5" fill="var(--pk3)" stroke="var(--pk3)" stroke-width="1"/></svg><div class="fl">mov/</div></div>
+    <div class="fc" ondblclick="oW('vid-trl')"><svg viewBox="0 0 42 32"><rect x="1" y="6" width="40" height="24" fill="var(--g)" stroke="var(--g2)" stroke-width="1.2"/><rect x="1" y="3" width="16" height="5" fill="var(--g2)" stroke="var(--g2)" stroke-width="1"/></svg><div class="fl">trailers/</div></div>
+    <div class="fc" ondblclick="oW('vid-cards')"><svg viewBox="0 0 42 32"><rect x="1" y="6" width="40" height="24" fill="var(--pk3)" stroke="var(--pk3)" stroke-width="1.2" opacity=".6"/><rect x="1" y="3" width="16" height="5" fill="var(--pk3)" stroke="var(--pk3)" stroke-width="1"/></svg><div class="fl">cards/</div></div>
+  </div></div>
+  <div class="wrz"></div>
+</div>
+
+<!-- Vid subfolders -->
+<div class="win" id="win-vid-conc" style="left:140px;top:80px;width:420px;height:300px"><div class="wtb"><span class="wt">Vid → concerts/</span><div class="wbc"><div class="wb x" onclick="cW('vid-conc')">×</div></div></div><div class="wp"><span class="wbk" onclick="cW('vid-conc');oW('vid')">←</span>annaili.net / Vid / concerts</div><div class="wb0"><p style="color:var(--g2);font-size:12px">[concert videos — add YouTube embed codes or MP4 files]</p></div><div class="wrz"></div></div>
+<div class="win" id="win-vid-edit" style="left:140px;top:80px;width:420px;height:300px"><div class="wtb"><span class="wt">Vid → editing/</span><div class="wbc"><div class="wb x" onclick="cW('vid-edit')">×</div></div></div><div class="wp"><span class="wbk" onclick="cW('vid-edit');oW('vid')">←</span>annaili.net / Vid / editing</div><div class="wb0"><p style="color:var(--g2);font-size:12px">[editing reels]</p></div><div class="wrz"></div></div>
+<div class="win" id="win-vid-vlogs" style="left:140px;top:80px;width:420px;height:300px"><div class="wtb"><span class="wt">Vid → vlogs/</span><div class="wbc"><div class="wb x" onclick="cW('vid-vlogs')">×</div></div></div><div class="wp"><span class="wbk" onclick="cW('vid-vlogs');oW('vid')">←</span>annaili.net / Vid / vlogs</div><div class="wb0"><p style="color:var(--g2);font-size:12px">[video blogs]</p></div><div class="wrz"></div></div>
+<div class="win" id="win-vid-short" style="left:140px;top:80px;width:420px;height:300px"><div class="wtb"><span class="wt">Vid → short/</span><div class="wbc"><div class="wb x" onclick="cW('vid-short')">×</div></div></div><div class="wp"><span class="wbk" onclick="cW('vid-short');oW('vid')">←</span>annaili.net / Vid / short</div><div class="wb0"><p style="color:var(--g2);font-size:12px">[short films]</p></div><div class="wrz"></div></div>
+<div class="win" id="win-vid-art" style="left:140px;top:80px;width:420px;height:300px"><div class="wtb"><span class="wt">Vid → art films/</span><div class="wbc"><div class="wb x" onclick="cW('vid-art')">×</div></div></div><div class="wp"><span class="wbk" onclick="cW('vid-art');oW('vid')">←</span>annaili.net / Vid / art films</div><div class="wb0"><p style="color:var(--g2);font-size:12px">[art films]</p></div><div class="wrz"></div></div>
+<div class="win" id="win-vid-mov" style="left:140px;top:80px;width:420px;height:300px"><div class="wtb"><span class="wt">Vid → mov/</span><div class="wbc"><div class="wb x" onclick="cW('vid-mov')">×</div></div></div><div class="wp"><span class="wbk" onclick="cW('vid-mov');oW('vid')">←</span>annaili.net / Vid / mov</div><div class="wb0"><p style="color:var(--g2);font-size:12px">[mov files]</p></div><div class="wrz"></div></div>
+<div class="win" id="win-vid-trl" style="left:140px;top:80px;width:420px;height:300px"><div class="wtb"><span class="wt">Vid → trailers/</span><div class="wbc"><div class="wb x" onclick="cW('vid-trl')">×</div></div></div><div class="wp"><span class="wbk" onclick="cW('vid-trl');oW('vid')">←</span>annaili.net / Vid / trailers</div><div class="wb0"><p style="color:var(--g2);font-size:12px">[trailers]</p></div><div class="wrz"></div></div>
+<div class="win" id="win-vid-cards" style="left:140px;top:80px;width:420px;height:300px"><div class="wtb"><span class="wt">Vid → cards/</span><div class="wbc"><div class="wb x" onclick="cW('vid-cards')">×</div></div></div><div class="wp"><span class="wbk" onclick="cW('vid-cards');oW('vid')">←</span>annaili.net / Vid / cards</div><div class="wb0"><p style="color:var(--g2);font-size:12px">[greeting cards]</p></div><div class="wrz"></div></div>
+
+<!-- SKETCHBOOK -->
+<div class="win" id="win-sk" style="left:120px;top:62px;width:460px;height:340px">
+  <div class="wtb"><span class="wt">Sketchbook/</span><div class="wbc"><div class="wb" onclick="tFP('sk')">□</div><div class="wb x" onclick="cW('sk')">×</div></div></div>
+  <div class="wp"><span class="wbk" onclick="cW('sk')">←</span>annaili.net / Sketchbook</div>
+  <div class="wb0"><p style="color:var(--g2);font-size:12px;margin-bottom:10px">[add sketch images to /sketches/ folder]</p><div class="fg"><div class="fc" ondblclick="oW('sk-2022')"><svg viewBox="0 0 42 32"><rect x="1" y="6" width="40" height="24" fill="var(--g)" stroke="var(--g2)" stroke-width="1.2"/><rect x="1" y="3" width="16" height="5" fill="var(--g2)"/><text x="4" y="23" font-size="10" fill="var(--cr)" font-family="VT323,monospace">2022</text></svg><div class="fl">2022/</div></div><div class="fc" ondblclick="oW('sk-2023')"><svg viewBox="0 0 42 32"><rect x="1" y="6" width="40" height="24" fill="var(--pk3)" stroke="var(--pk3)" stroke-width="1.2" opacity=".6"/><rect x="1" y="3" width="16" height="5" fill="var(--pk3)"/><text x="4" y="23" font-size="10" fill="var(--cr)" font-family="VT323,monospace">2023</text></svg><div class="fl">2023/</div></div><div class="fc" ondblclick="oW('sk-2024')"><svg viewBox="0 0 42 32"><rect x="1" y="6" width="40" height="24" fill="var(--g)" stroke="var(--g2)" stroke-width="1.2"/><rect x="1" y="3" width="16" height="5" fill="var(--g2)"/><text x="4" y="23" font-size="10" fill="var(--cr)" font-family="VT323,monospace">2024</text></svg><div class="fl">2024/</div></div><div class="fc" ondblclick="oW('sk-2025')"><svg viewBox="0 0 42 32"><rect x="1" y="6" width="40" height="24" fill="var(--pk3)" stroke="var(--pk3)" stroke-width="1.2" opacity=".6"/><rect x="1" y="3" width="16" height="5" fill="var(--pk3)"/><text x="4" y="23" font-size="10" fill="var(--cr)" font-family="VT323,monospace">2025</text></svg><div class="fl">2025/</div></div><div class="fc" ondblclick="oW('sk-2026')"><svg viewBox="0 0 42 32"><rect x="1" y="6" width="40" height="24" fill="var(--r2)" stroke="var(--r)" stroke-width="1.2"/><rect x="1" y="3" width="16" height="5" fill="var(--r)"/><text x="4" y="23" font-size="10" fill="var(--cr)" font-family="VT323,monospace">2026</text></svg><div class="fl">2026/</div></div></div></div>
+  <div class="wrz"></div>
+</div>
+<div class="win" id="win-sk-2022" style="left:150px;top:90px;width:400px;height:280px"><div class="wtb"><span class="wt">Sketchbook → 2022/</span><div class="wbc"><div class="wb x" onclick="cW('sk-2022')">×</div></div></div><div class="wp"><span class="wbk" onclick="cW('sk-2022');oW('sk')">←</span>annaili.net / Sketchbook / 2022</div><div class="wb0"><p style="color:var(--g2);font-size:12px">[sketches from 2022]</p></div><div class="wrz"></div></div>
+<div class="win" id="win-sk-2023" style="left:150px;top:90px;width:400px;height:280px"><div class="wtb"><span class="wt">Sketchbook → 2023/</span><div class="wbc"><div class="wb x" onclick="cW('sk-2023')">×</div></div></div><div class="wp"><span class="wbk" onclick="cW('sk-2023');oW('sk')">←</span>annaili.net / Sketchbook / 2023</div><div class="wb0"><p style="color:var(--g2);font-size:12px">[sketches from 2023]</p></div><div class="wrz"></div></div>
+<div class="win" id="win-sk-2024" style="left:150px;top:90px;width:400px;height:280px"><div class="wtb"><span class="wt">Sketchbook → 2024/</span><div class="wbc"><div class="wb x" onclick="cW('sk-2024')">×</div></div></div><div class="wp"><span class="wbk" onclick="cW('sk-2024');oW('sk')">←</span>annaili.net / Sketchbook / 2024</div><div class="wb0"><p style="color:var(--g2);font-size:12px">[sketches from 2024]</p></div><div class="wrz"></div></div>
+<div class="win" id="win-sk-2025" style="left:150px;top:90px;width:400px;height:280px"><div class="wtb"><span class="wt">Sketchbook → 2025/</span><div class="wbc"><div class="wb x" onclick="cW('sk-2025')">×</div></div></div><div class="wp"><span class="wbk" onclick="cW('sk-2025');oW('sk')">←</span>annaili.net / Sketchbook / 2025</div><div class="wb0"><p style="color:var(--g2);font-size:12px">[sketches from 2025]</p></div><div class="wrz"></div></div>
+<div class="win" id="win-sk-2026" style="left:150px;top:90px;width:400px;height:280px"><div class="wtb"><span class="wt">Sketchbook → 2026/</span><div class="wbc"><div class="wb x" onclick="cW('sk-2026')">×</div></div></div><div class="wp"><span class="wbk" onclick="cW('sk-2026');oW('sk')">←</span>annaili.net / Sketchbook / 2026</div><div class="wb0"><p style="color:var(--g2);font-size:12px">[sketches from 2026]</p></div><div class="wrz"></div></div>
+
+<!-- ARCHIVE -->
+<div class="win" id="win-arch" style="left:108px;top:53px;width:500px;height:400px">
+  <div class="wtb"><span class="wt">Archive/</span><div class="wbc"><div class="wb" onclick="tFP('arch')">□</div><div class="wb x" onclick="cW('arch')">×</div></div></div>
+  <div class="wp"><span class="wbk" onclick="cW('arch')">←</span>annaili.net / archive</div>
+  <div class="wb0"><div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:10px">
+    <div class="fc" style="width:88px" ondblclick="oW('arch-2022')"><svg viewBox="0 0 42 32"><rect x="1" y="6" width="40" height="24" fill="var(--g)" stroke="var(--g2)" stroke-width="1.2"/><rect x="1" y="3" width="16" height="5" fill="var(--g2)"/><text x="4" y="23" font-size="10" fill="var(--cr)" font-family="VT323,monospace">2022</text></svg><div class="fl">2022</div></div>
+    <div class="fc" style="width:88px" ondblclick="oW('arch-2023')"><svg viewBox="0 0 42 32"><rect x="1" y="6" width="40" height="24" fill="var(--pk3)" stroke="var(--pk3)" stroke-width="1.2" opacity=".6"/><rect x="1" y="3" width="16" height="5" fill="var(--pk3)"/><text x="4" y="23" font-size="10" fill="var(--cr)" font-family="VT323,monospace">2023</text></svg><div class="fl">2023</div></div>
+    <div class="fc" style="width:88px" ondblclick="oW('arch-2024')"><svg viewBox="0 0 42 32"><rect x="1" y="6" width="40" height="24" fill="var(--g)" stroke="var(--g2)" stroke-width="1.2"/><rect x="1" y="3" width="16" height="5" fill="var(--g2)"/><text x="4" y="23" font-size="10" fill="var(--cr)" font-family="VT323,monospace">2024</text></svg><div class="fl">2024</div></div>
+    <div class="fc" style="width:88px" ondblclick="oW('arch-2025')"><svg viewBox="0 0 42 32"><rect x="1" y="6" width="40" height="24" fill="var(--pk3)" stroke="var(--pk3)" stroke-width="1.2" opacity=".6"/><rect x="1" y="3" width="16" height="5" fill="var(--pk3)"/><text x="4" y="23" font-size="10" fill="var(--cr)" font-family="VT323,monospace">2025</text></svg><div class="fl">2025</div></div>
+    <div class="fc" style="width:88px" ondblclick="oW('arch-2026')"><svg viewBox="0 0 42 32"><rect x="1" y="6" width="40" height="24" fill="var(--r2)" stroke="var(--r)" stroke-width="1.2"/><rect x="1" y="3" width="16" height="5" fill="var(--r)"/><text x="4" y="23" font-size="10" fill="var(--cr)" font-family="VT323,monospace">2026</text></svg><div class="fl">2026</div></div>
+  </div><div id="arch-posts"></div></div>
+  <div class="wrz"></div>
+</div>
+
+<!-- Archive year subfolders -->
+<div class="win" id="win-arch-2022" style="left:145px;top:80px;width:460px;height:360px"><div class="wtb"><span class="wt">Archive → 2022</span><div class="wbc"><div class="wb x" onclick="cW('arch-2022')">×</div></div></div><div class="wp"><span class="wbk" onclick="cW('arch-2022');oW('arch')">←</span>annaili.net / archive / 2022</div><div class="wb0" id="ay-2022"><p style="color:var(--g2);font-size:12px">loading...</p></div><div class="wrz"></div></div>
+<div class="win" id="win-arch-2023" style="left:145px;top:80px;width:460px;height:360px"><div class="wtb"><span class="wt">Archive → 2023</span><div class="wbc"><div class="wb x" onclick="cW('arch-2023')">×</div></div></div><div class="wp"><span class="wbk" onclick="cW('arch-2023');oW('arch')">←</span>annaili.net / archive / 2023</div><div class="wb0" id="ay-2023"></div><div class="wrz"></div></div>
+<div class="win" id="win-arch-2024" style="left:145px;top:80px;width:460px;height:360px"><div class="wtb"><span class="wt">Archive → 2024</span><div class="wbc"><div class="wb x" onclick="cW('arch-2024')">×</div></div></div><div class="wp"><span class="wbk" onclick="cW('arch-2024');oW('arch')">←</span>annaili.net / archive / 2024</div><div class="wb0" id="ay-2024"></div><div class="wrz"></div></div>
+<div class="win" id="win-arch-2025" style="left:145px;top:80px;width:460px;height:360px"><div class="wtb"><span class="wt">Archive → 2025</span><div class="wbc"><div class="wb x" onclick="cW('arch-2025')">×</div></div></div><div class="wp"><span class="wbk" onclick="cW('arch-2025');oW('arch')">←</span>annaili.net / archive / 2025</div><div class="wb0" id="ay-2025"></div><div class="wrz"></div></div>
+<div class="win" id="win-arch-2026" style="left:145px;top:80px;width:460px;height:360px"><div class="wtb"><span class="wt">Archive → 2026</span><div class="wbc"><div class="wb x" onclick="cW('arch-2026')">×</div></div></div><div class="wp"><span class="wbk" onclick="cW('arch-2026');oW('arch')">←</span>annaili.net / archive / 2026</div><div class="wb0" id="ay-2026"></div><div class="wrz"></div></div>
+
+<!-- BLOG -->
+<div class="win" id="win-blog" style="left:118px;top:58px;width:500px;height:430px">
+  <div class="wtb"><span class="wt" id="blt">Blog/</span><div class="wbc"><div class="wb" onclick="tFP('blog')">□</div><div class="wb x" onclick="cW('blog')">×</div></div></div>
+  <div class="wp"><span class="wbk" onclick="cW('blog')">←</span>annaili.net / blog</div>
+  <div class="wb0" id="blb"></div>
+  <div class="wrz"></div>
+</div>
+
+<!-- SHOWREEL -->
+<div class="win" id="win-show" style="left:98px;top:48px;width:560px;height:360px">
+  <div class="wtb"><span class="wt">Showreel</span><div class="wbc"><div class="wb" onclick="tFP('show')">□</div><div class="wb x" onclick="cW('show')">×</div></div></div>
+  <div class="wp"><span class="wbk" onclick="cW('show')">←</span>annaili.net / showreel</div>
+  <div class="wb0" style="padding:0;background:#000">
+    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/4o8_7r5KevI?rel=0&modestbranding=1" frameborder="0" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen style="pointer-events:all;cursor:default;display:block"></iframe>
+  </div>
+  <div class="wrz"></div>
+</div>
+
+<!-- ART -->
+<div class="win" id="win-art" style="left:128px;top:64px;width:460px;height:340px">
+  <div class="wtb"><span class="wt">Art / 3D</span><div class="wbc"><div class="wb x" onclick="cW('art')">×</div></div></div>
+  <div class="wp"><span class="wbk" onclick="cW('art')">←</span>annaili.net / art</div>
+  <div class="wb0"><p style="color:var(--g2);font-size:12px">[art and 3D works — add content here]</p></div>
+  <div class="wrz"></div>
+</div>
+
+<!-- MANIFESTO — dadaist -->
+<div class="win" id="win-mani" style="left:138px;top:68px;width:460px;height:400px">
+  <div class="wtb"><span class="wt">manifesto.txt</span><div class="wbc"><div class="wb" onclick="tFP('mani')">□</div><div class="wb x" onclick="cW('mani')">×</div></div></div>
+  <div class="wp"><span class="wbk" onclick="cW('mani')">←</span>annaili.net / manifesto</div>
+  <div class="wb0">
+    <div class="mani-block">
+      <div class="mani-gif"><div class="mg-stripe"></div><div class="mg-stripe"></div><div class="mg-stripe"></div><div class="mg-stripe"></div><div class="mg-stripe"></div></div>
+      <svg class="mani-eye" width="120" height="60" viewBox="0 0 120 60"><path d="M5 30 Q60 5 115 30 Q60 55 5 30Z" fill="none" stroke="var(--pk3)" stroke-width="1.5"/><circle cx="60" cy="30" r="14" fill="none" stroke="var(--pk3)" stroke-width="1.2"/><circle cx="60" cy="30" r="6" fill="var(--pk3)"/></svg>
+      <div class="mani-gif"><div class="mg-stripe"></div><div class="mg-stripe"></div><div class="mg-stripe"></div><div class="mg-stripe"></div><div class="mg-stripe"></div></div>
+      <div class="mani-txt" id="mani-text"></div>
+      <div class="mani-gif"><div class="mg-stripe"></div><div class="mg-stripe"></div><div class="mg-stripe"></div><div class="mg-stripe"></div><div class="mg-stripe"></div></div>
+    </div>
+  </div>
+  <div class="wrz"></div>
+</div>
+
+<!-- ABOUT -->
+<div class="win" id="win-about" style="left:148px;top:74px;width:440px;height:380px">
+  <div class="wtb"><span class="wt">About — anna ilinet</span><div class="wbc"><div class="wb" onclick="tFP('about')">□</div><div class="wb x" onclick="cW('about')">×</div></div></div>
+  <div class="wp"><span class="wbk" onclick="cW('about')">←</span>annaili.net / about</div>
+  <div class="wb0">
+    <div class="asc"><h3>Anna Elizabeth</h3><p>"Annie going gonzo" — Director · Cameraman · Editor · Artist</p></div>
+    <div class="asc"><h3>Skills</h3><ul><li>Live shows / Backstage photo & video</li><li>Documentary, art films, clipmaking</li><li>Promo / snippets for music bands</li><li>Advertisement</li><li>Portrait, reportage, weddings</li><li>Art!</li></ul></div>
+    <div class="asc"><h3>Tools</h3><span class="stg">Adobe Premiere</span><span class="stg">DaVinci Resolve</span><span class="stg">Final Cut</span></div>
+    <div class="asc" style="font-size:11px;color:var(--g2);border-top:1px solid #1a1a1a;padding-top:8px;margin-top:8px">"No, we don't have time for the little things, because Life is full of important things."</div>
+  </div>
+  <div class="wrz"></div>
+</div>
+
+<!-- CONTACT -->
+<div class="win" id="win-contact" style="left:158px;top:79px;width:380px;height:320px">
+  <div class="wtb"><span class="wt">Contact</span><div class="wbc"><div class="wb x" onclick="cW('contact')">×</div></div></div>
+  <div class="wp"><span class="wbk" onclick="cW('contact')">←</span>annaili.net / contact</div>
+  <div class="wb0">
+    <p style="font-size:12px;color:var(--g2);margin-bottom:12px">she is not afraid.</p>
+    <a class="cl2" href="https://www.instagram.com/annailinet/" target="_blank">Instagram →</a>
+    <a class="cl2" href="https://t.me/anna_ili_net" target="_blank">Telegram →</a>
+    <a class="cl2" href="https://www.youtube.com/channel/UC0kcBnRLqDRu7nHkrTrefyA" target="_blank">YouTube →</a>
+    <a class="cl2" href="mailto:25kilogrammov@gmail.com">25kilogrammov@gmail.com →</a>
+    <a class="cl2" href="https://vk.com/annailinet" target="_blank">VK →</a>
+  </div>
+  <div class="wrz"></div>
+</div>
+
+<!-- COLLAB -->
+<div class="win" id="win-col" style="left:148px;top:74px;width:440px;height:320px">
+  <div class="wtb"><span class="wt">Collaborations/</span><div class="wbc"><div class="wb x" onclick="cW('col')">×</div></div></div>
+  <div class="wp"><span class="wbk" onclick="cW('col')">←</span>annaili.net / collab</div>
+  <div class="wb0"><p style="color:var(--g2);font-size:12px">[collaborations — add entries here]</p></div>
+  <div class="wrz"></div>
+</div>
+
+<!-- SHOP -->
+<div class="win" id="win-shop" style="left:158px;top:79px;width:400px;height:300px">
+  <div class="wtb"><span class="wt">Shop/</span><div class="wbc"><div class="wb x" onclick="cW('shop')">×</div></div></div>
+  <div class="wp"><span class="wbk" onclick="cW('shop')">←</span>annaili.net / shop</div>
+  <div class="wb0"><p style="color:var(--g2);font-size:12px">[shop — coming soon]</p></div>
+  <div class="wrz"></div>
+</div>
+
+<!-- DAS DASEIN — properly -->
+<div class="win" id="win-das" style="left:138px;top:68px;width:480px;height:400px">
+  <div class="wtb"><span class="wt">das Dasein — Being-there</span><div class="wbc"><div class="wb" onclick="tFP('das')">□</div><div class="wb x" onclick="cW('das')">×</div></div></div>
+  <div class="wp"><span class="wbk" onclick="cW('das')">←</span>annaili.net / das-dasein</div>
+  <div class="wb0">
+    <p style="font-family:var(--mn);font-size:18px;color:var(--pk);letter-spacing:.06em;margin-bottom:12px">das Dasein</p>
+    <div class="das-block"><p style="font-size:12px;color:var(--g2);line-height:1.8">From Heidegger: <em style="color:var(--pk2)">Dasein</em> — literally "Being-there". The kind of existence specific to humans: the one who is always already thrown into the world, towards death, with others, and care as the fundamental structure of being.<br><br>Dasein is not a subject looking at the world from outside. Dasein <em>is</em> the world — always already in it, of it, dying in it.</p></div>
+    <div class="das-block" style="margin-top:12px;border-color:var(--pk3)"><p style="font-size:12px;color:var(--g2);line-height:1.8">Digital immortality is a crisis of Dasein.<br>The body dies. The data does not.<br>What is Dasein without death as horizon?<br><br><em style="color:var(--pk2)">This site is an archive of Being-there.<br>An attempt to remain present beyond presence.<br>избавление — liberation from finitude through accumulation.</em></p></div>
+    <div class="das-block" style="margin-top:12px;border-color:var(--r)"><p style="font-size:11px;color:var(--g);line-height:1.8;font-style:italic">"The call of conscience has the character of the call of Dasein to its ownmost potentiality-for-being-its-Self."<br>— Heidegger, Being and Time, §57</p></div>
+  </div>
+  <div class="wrz"></div>
+</div>
+
+<!-- ADMIN TUMBLR WINDOW -->
+<div class="win" id="win-adm" style="left:80px;top:40px;width:560px;height:450px">
+  <div class="wtb"><span class="wt">// ADMIN</span><div class="wbc"><div class="wb" onclick="tFP('adm')">□</div><div class="wb x" onclick="cW('adm')">×</div></div></div>
+  <div class="wp">admin panel</div>
+  <div class="wb0">
+    <div class="adm-wrap">
+      <div id="adm-editor"></div>
+      <div class="adm-btns">
+        <div class="adm-btn" id="adm-txt" onclick="setAdmMode('text')">✍ text</div>
+        <div class="adm-btn" id="adm-img" onclick="setAdmMode('image')">🖼 image</div>
+        <div class="adm-btn" id="adm-vid" onclick="setAdmMode('video')">▶ video</div>
+        <div class="adm-btn" id="adm-lnk" onclick="setAdmMode('link')">↗ link</div>
+      </div>
+      <div id="adm-form" style="margin-top:8px"></div>
+      <div id="adm-out" style="margin-top:8px;font-size:11px;color:var(--pk)"></div>
+    </div>
+  </div>
+  <div class="wrz"></div>
+</div>
+
+<!-- TRASH -->
+<div class="win" id="win-trash" style="left:158px;top:79px;width:340px;height:240px">
+  <div class="wtb"><span class="wt">Trash/</span><div class="wbc"><div class="wb x" onclick="cW('trash')">×</div></div></div>
+  <div class="wp"><span class="wbk" onclick="cW('trash')">←</span>trash — <span id="trc">0</span> items</div>
+  <div class="wb0" id="trb" style="text-align:center;padding-top:28px;color:var(--g2);font-size:12px">
+    <svg width="40" height="40" viewBox="0 0 52 42" style="display:block;margin:0 auto 10px;opacity:.35"><rect x="8" y="12" width="36" height="26" fill="none" stroke="var(--g2)" stroke-width="2"/><rect x="2" y="8" width="48" height="6" fill="var(--g)" stroke="var(--g2)" stroke-width="1"/><rect x="16" y="2" width="20" height="8" fill="var(--g)" stroke="var(--g2)" stroke-width="1"/></svg>
+    trash is empty
+  </div>
+  <div class="wrz"></div>
+</div>
+
+</div><!-- /desk -->
+
+<!-- TASKBAR -->
+<div id="tb">
+  <button id="tbs" onclick="toggleSM()">ANNA</button>
+  <div class="tbi" id="eyb" onclick="onVeil()">
+    <svg id="eyi" width="18" height="12" viewBox="0 0 18 12"><ellipse cx="9" cy="6" rx="8" ry="5" fill="none" stroke="var(--r)" stroke-width="1.2"/><circle cx="9" cy="6" r="3" fill="var(--r)"/><circle cx="10.5" cy="4.5" r="1" fill="var(--cr)" opacity=".6"/></svg>
+  </div>
+  <div id="tlg" onclick="cyLang()">EN</div>
+  <div id="tbw"></div>
+  <div id="clk"><div id="ct">00:00</div><div id="wk">0000</div></div>
+</div>
+
+<script>
+// ════════════════════════════
+// CONFIG
+// ════════════════════════════
+const C={
+  USER:'zhopa', PW:'gnida',
+  BIRTH:'1996-06-30',
+  LANGS:['EN','RU','DE'],
+};
+
+// ════════════════════════════
+// CURSOR
+// ════════════════════════════
+const cur=document.getElementById('cur');
+document.addEventListener('mousemove',e=>{cur.style.left=e.clientX+'px';cur.style.top=e.clientY+'px';});
+document.addEventListener('mousedown',()=>document.body.classList.add('ck'));
+document.addEventListener('mouseup',()=>document.body.classList.remove('ck'));
+
+// ════════════════════════════
+// LANGUAGE
+// ════════════════════════════
+let li=0;
+function cyLang(){li=(li+1)%C.LANGS.length;document.getElementById('tlg').textContent=C.LANGS[li];}
+
+// ════════════════════════════
+// CLOCK
+// ════════════════════════════
+function tick(){
+  const n=new Date();
+  document.getElementById('ct').textContent=String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0');
+  const w=Math.floor((n-new Date(C.BIRTH))/604800000);
+  document.getElementById('wk').textContent=w;
+  if(n.getDay()===4)document.documentElement.style.setProperty('--k','#0f0808');
+}
+tick();setInterval(tick,30000);
+
+// ════════════════════════════
+// VEIL + flash every 30s
+// ════════════════════════════
+let vOn=false, flashInt=null;
+function onVeil(){
+  vOn=true;
+  document.getElementById('veil').classList.add('on');
+  document.getElementById('heye').classList.add('vis');
+  document.getElementById('eyi').style.opacity='.3';
+  // flash every 30s
+  flashInt=setInterval(()=>{
+    const v=document.getElementById('veil');
+    v.style.transition='opacity .15s';
+    v.style.opacity='0';
+    setTimeout(()=>{
+      if(vOn){v.style.opacity='1';}
+      v.style.transition='opacity .6s';
+    },600);
+  },30000);
+}
+function offVeil(){
+  vOn=false;
+  document.getElementById('veil').classList.remove('on');
+  document.getElementById('heye').classList.remove('vis');
+  document.getElementById('eyi').style.opacity='1';
+  if(flashInt){clearInterval(flashInt);flashInt=null;}
+}
+
+// ════════════════════════════
+// WINDOWS
+// ════════════════════════════
+let zN=200;
+const ow={};
+function oW(id){
+  if(id==='blog')rBlog();
+  if(id==='arch'||id.startsWith('arch-'))rArch(id);
+  const w=document.getElementById('win-'+id);
+  if(!w)return;
+  w.classList.add('open');liftW(w);ow[id]=true;uTB();
+}
+function cW(id){
+  const w=document.getElementById('win-'+id);
+  if(w){w.classList.remove('open');w.classList.remove('fp');}
+  delete ow[id];uTB();
+}
+function liftW(w){
+  document.querySelectorAll('.win').forEach(x=>x.classList.remove('top'));
+  w.style.zIndex=++zN;w.classList.add('top');
+}
+function tFP(id){
+  const w=document.getElementById('win-'+id);
+  if(w)w.classList.toggle('fp');
+}
+function uTB(){
+  document.getElementById('tbw').innerHTML=Object.keys(ow).map(id=>{
+    const w=document.getElementById('win-'+id);
+    const t=w?w.querySelector('.wt').textContent:id;
+    return`<div class="tw ${w&&w.classList.contains('top')?'a':''}" onclick="fcW('${id}')">${t.substring(0,14)}</div>`;
+  }).join('');
+}
+function fcW(id){
+  const w=document.getElementById('win-'+id);
+  if(w){liftW(w);uTB();}
+}
+
+// Drag windows
+document.querySelectorAll('.win').forEach(win=>{
+  const tb=win.querySelector('.wtb');if(!tb)return;
+  let ox=0,oy=0,sx=0,sy=0,d=false;
+  const sd=(cx,cy)=>{d=true;sx=cx;sy=cy;ox=win.offsetLeft;oy=win.offsetTop;liftW(win);uTB();};
+  const om=e=>{if(d&&!win.classList.contains('fp')){win.style.left=(ox+e.clientX-sx)+'px';win.style.top=(oy+e.clientY-sy)+'px';win.style.right='auto';win.style.bottom='auto';}};
+  const ot=e=>{e.preventDefault();if(d&&!win.classList.contains('fp')){win.style.left=(ox+e.touches[0].clientX-sx)+'px';win.style.top=(oy+e.touches[0].clientY-sy)+'px';win.style.right='auto';win.style.bottom='auto';}};
+  const st=()=>{d=false;document.removeEventListener('mousemove',om);document.removeEventListener('mouseup',st);document.removeEventListener('touchmove',ot);document.removeEventListener('touchend',st2);};
+  const st2=()=>{d=false;document.removeEventListener('touchmove',ot);document.removeEventListener('touchend',st2);};
+  tb.addEventListener('mousedown',e=>{e.preventDefault();sd(e.clientX,e.clientY);document.addEventListener('mousemove',om);document.addEventListener('mouseup',st);});
+  tb.addEventListener('touchstart',e=>{sd(e.touches[0].clientX,e.touches[0].clientY);document.addEventListener('touchmove',ot,{passive:false});document.addEventListener('touchend',st2);});
+  win.addEventListener('mousedown',()=>{liftW(win);uTB();});
+});
+
+// Drag icons + double-tap
+const ltap={};
+document.querySelectorAll('.ic').forEach(ic=>{
+  let ox=0,oy=0,sx=0,sy=0,d=false,mv=false;
+  const sd=(cx,cy)=>{d=true;mv=false;sx=cx;sy=cy;ox=ic.offsetLeft;oy=ic.offsetTop;};
+  const om=e=>{if(d){mv=true;ic.style.left=(ox+e.clientX-sx)+'px';ic.style.top=(oy+e.clientY-sy)+'px';ic.style.right='auto';ic.style.bottom='auto';}};
+  const ot=e=>{e.preventDefault();if(d){mv=true;ic.style.left=(ox+e.touches[0].clientX-sx)+'px';ic.style.top=(oy+e.touches[0].clientY-sy)+'px';ic.style.right='auto';ic.style.bottom='auto';}};
+  const st=()=>{d=false;document.removeEventListener('mousemove',om);document.removeEventListener('mouseup',st);svP();};
+  ic.addEventListener('mousedown',e=>{e.preventDefault();sd(e.clientX,e.clientY);document.addEventListener('mousemove',om);document.addEventListener('mouseup',st);});
+  ic.addEventListener('touchstart',e=>{sd(e.touches[0].clientX,e.touches[0].clientY);document.addEventListener('touchmove',ot,{passive:false});document.addEventListener('touchend',()=>{d=false;document.removeEventListener('touchmove',ot);svP();});});
+  ic.addEventListener('touchend',()=>{const n=Date.now(),id=ic.id;if(ltap[id]&&n-ltap[id]<420)ic.ondblclick&&ic.ondblclick();ltap[id]=n;});
+  ic.addEventListener('contextmenu',e=>{e.preventDefault();if(confirm('Send to Trash?'))trash(ic.id);});
+});
+
+function svP(){
+  const p={};document.querySelectorAll('.ic').forEach(i=>{p[i.id]={l:i.style.left,t:i.style.top,r:i.style.right,b:i.style.bottom};});
+  try{localStorage.setItem('ap4',JSON.stringify(p));}catch(e){}
+}
+(()=>{try{const s=JSON.parse(localStorage.getItem('ap4')||'{}');Object.entries(s).forEach(([id,p])=>{const el=document.getElementById(id);if(el){if(p.l)el.style.left=p.l;if(p.t)el.style.top=p.t;if(p.r)el.style.right=p.r;if(p.b)el.style.bottom=p.b;}});}catch(e){}})();
+
+// ════════════════════════════
+// TRASH
+// ════════════════════════════
+document.getElementById('ic-trash').style.display='block';
+const trashed=new Set();
+function trash(id){
+  const ic=document.getElementById(id);
+  if(!ic||id==='ic-trash'||id==='ic-sq')return;
+  ic.style.display='none';trashed.add(id);
+  document.getElementById('trc').textContent=trashed.size;
+  const all=[...document.querySelectorAll('.ic')].filter(i=>i.id!=='ic-trash'&&i.id!=='ic-sq'&&i.style.display!=='none');
+  if(all.length===0)rRoll();
+}
+function rRoll(){document.getElementById('rri').src='https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&controls=1';document.getElementById('rr').classList.add('on');}
+function closeRR(){document.getElementById('rr').classList.remove('on');document.getElementById('rri').src='';}
+
+// ════════════════════════════
+// START MENU
+// ════════════════════════════
+let smO=false;
+function toggleSM(){smO=!smO;document.getElementById('sm').classList.toggle('o',smO);}
+function csm(){smO=false;document.getElementById('sm').classList.remove('o');}
+document.addEventListener('click',e=>{if(!e.target.closest('#sm')&&!e.target.closest('#tbs'))csm();});
+
+// ════════════════════════════
+// EYE PAGE
+// ════════════════════════════
+function openEP(){document.getElementById('ep').classList.add('o');buildEye();}
+function closeEP(){document.getElementById('ep').classList.remove('o');}
+function buildEye(){
+  const N=13,cx=180,cy=110;
+  const tG=document.getElementById('lt'),bG=document.getElementById('lb');
+  tG.innerHTML='';bG.innerHTML='';
+  // Eye arc points: path from 10,110 Q180,10 350,110
+  // Top arc: parametric t ∈ [0,1], x=10+340t, y=110-100*4t(1-t) (quadratic bezier approx)
+  // Equal spacing: 13 equally spaced t values
+  const tvals=Array.from({length:N},(_,i)=>i/(N-1));
+  tvals.forEach((t,i)=>{
+    // Top arc point on bezier: P = (1-t)^2*P0 + 2t(1-t)*P1 + t^2*P2
+    // P0=(10,110), P1=(180,10), P2=(350,110)
+    const x=(1-t)*(1-t)*10+2*t*(1-t)*180+t*t*350;
+    const y=(1-t)*(1-t)*110+2*t*(1-t)*10+t*t*110;
+    // Normal direction (away from center)
+    const nx=2*(1-t)*(180-10)+2*t*(350-180);
+    const ny=2*(1-t)*(10-110)+2*t*(110-10);
+    const nlen=Math.sqrt(nx*nx+ny*ny)||1;
+    const px=(nx/nlen)*18,py=(ny/nlen)*18;
+    const mkl=(g,x1,y1,x2,y2)=>{const l=document.createElementNS('http://www.w3.org/2000/svg','line');l.setAttribute('x1',x1.toFixed(1));l.setAttribute('y1',y1.toFixed(1));l.setAttribute('x2',x2.toFixed(1));l.setAttribute('y2',y2.toFixed(1));l.setAttribute('stroke','var(--pk)');l.setAttribute('stroke-width','2');l.setAttribute('stroke-linecap','round');g.appendChild(l);return l;};
+    // Top lash goes outward from arc
+    mkl(tG,x.toFixed(1),y.toFixed(1),(x-py).toFixed(1),(y+px).toFixed(1));
+    // Bottom arc point
+    const by2=(1-t)*(1-t)*110+2*t*(1-t)*210+t*t*110;
+    const bny=2*(1-t)*(210-110)+2*t*(110-210);
+    const blen=Math.sqrt(nx*nx+bny*bny)||1;
+    const bpy=(bny/blen)*18,bpx=(nx/blen)*18;
+    const bl=mkl(bG,x.toFixed(1),by2.toFixed(1),(x-bpy).toFixed(1),(by2+bpx).toFixed(1));
+    // lash 6 from right (index N-1-6 = 6) = the secret trigger
+    if(i===N-7){
+      const tr=document.getElementById('l6t');
+      tr.setAttribute('cx',(x-bpy).toFixed(1));tr.setAttribute('cy',(by2+bpx).toFixed(1));
+    }
+  });
+}
+
+// ════════════════════════════
+// PASSWORD
+// ════════════════════════════
+function showPw(){document.getElementById('pw').classList.remove('h');setTimeout(()=>document.getElementById('pwu').focus(),100);}
+function chkPw(){
+  const u=document.getElementById('pwu').value,p=document.getElementById('pwi').value;
+  if(u===C.USER&&p===C.PW){
+    sessionStorage.setItem('ann_adm','1');
+    document.getElementById('pw').classList.add('h');
+    document.getElementById('ep').classList.remove('o');
+    initAdm();oW('adm');
+  }else{document.getElementById('pwe').textContent='// wrong';document.getElementById('pwi').value='';}
+}
+document.getElementById('pwi').addEventListener('keydown',e=>{if(e.key==='Enter')chkPw();});
+
+// ════════════════════════════
+// BLOG
+// ════════════════════════════
+const SEED_POSTS=[
+  {id:1,date:'2024-03-15T10:22:00Z',text:'сегодня снимала на крыше до рассвета. камера не заснула — я тоже. фонари мигали через раз, как будто сами знали.',tag:'diary',cat:'2024'},
+  {id:2,date:'2024-06-08T22:14:00Z',text:'the edit took 12 hours. i deleted everything and started over at 3am. now it\'s perfect. or maybe i\'m just tired.',tag:'work',cat:'2024'},
+  {id:3,date:'2025-01-20T16:05:00Z',text:'цифровое бессмертие — это не про смерть. это про то, что ты оставляешь, пока ещё здесь. этот сайт — мой архив Dasein.',tag:'thoughts',cat:'2025'},
+  {id:4,date:'2025-09-03T08:40:00Z',text:'новый концерт, новые лица в толпе. я всегда снимаю публику, не артиста. артиста все снимают. публика — это правда.',tag:'ph',cat:'2025'},
+  {id:5,date:'2026-02-14T23:59:00Z',text:'happy valentines. i gave myself 1TB of free storage and a new lens. romance is subjective.',tag:'daily',cat:'2026'},
+];
+function gPosts(){try{return JSON.parse(localStorage.getItem('ap5')||'null')||SEED_POSTS;}catch(e){return SEED_POSTS;}}
+function sPosts(p){try{localStorage.setItem('ap5',JSON.stringify(p));}catch(e){}}
+function rBlog(){
+  const adm=sessionStorage.getItem('ann_adm')==='1';
+  const posts=gPosts();
+  document.getElementById('blt').textContent=adm?'Blog/ [admin]':'Blog/';
+  document.getElementById('blb').innerHTML=adm
+    ?`<textarea class="btx" id="btx" placeholder="write here..."></textarea>
+      <div class="brow"><input class="bi" id="btg" placeholder="tag"><select class="bs" id="bct"><option value="">— archive —</option><option>2026</option><option>2025</option><option>2024</option><option>2023</option><option>2022</option><option>thoughts</option><option>body</option><option>work</option><option>love</option><option>dreams</option></select><button class="bb" onclick="pub()">PUBLISH</button></div>
+      <div style="margin:8px 0 3px;font-size:11px;color:var(--g2)">— entries —</div><div id="plist">${rPL(posts)}</div>`
+    :`<div style="font-size:12px;color:var(--g2);border:1px dashed #1e1e1e;padding:7px;margin-bottom:8px">// private section</div>${rPL(posts.slice(0,5))}`;
+}
+function rPL(posts){return posts.map(p=>`<div class="pc"><div class="pm">${new Date(p.date).toLocaleDateString('en')}${p.tag?`<span class="tg">${p.tag}</span>`:''}${p.cat?`<span class="tg p">${p.cat}</span>`:''}</div><div style="font-size:13px">${p.text.substring(0,130)}${p.text.length>130?'…':''}</div></div>`).join('')||'<div style="font-size:12px;color:var(--g2)">empty</div>';}
+function pub(){const tx=document.getElementById('btx').value.trim();if(!tx)return;const ps=gPosts();ps.unshift({id:Date.now(),date:new Date().toISOString(),text:tx,tag:document.getElementById('btg').value.trim(),cat:document.getElementById('bct').value});sPosts(ps);document.getElementById('btx').value='';if(document.getElementById('plist'))document.getElementById('plist').innerHTML=rPL(ps);}
+
+// ════════════════════════════
+// ARCHIVE
+// ════════════════════════════
+function rArch(id){
+  const posts=gPosts();
+  const el=document.getElementById('arch-posts');
+  if(id==='arch'&&el){el.innerHTML=rPL(posts.slice(0,8));}
+  ['2022','2023','2024','2025','2026'].forEach(yr=>{
+    const el2=document.getElementById('ay-'+yr);
+    if(el2){
+      const filtered=posts.filter(p=>p.cat===yr||new Date(p.date).getFullYear()===+yr);
+      el2.innerHTML=filtered.length?rPL(filtered):`<p style="font-size:12px;color:var(--g2)">no entries for ${yr}</p>`;
+    }
+  });
+}
+
+// ════════════════════════════
+// ADMIN TUMBLR
+// ════════════════════════════
+let admMode='text';
+function initAdm(){setAdmMode('text');}
+function setAdmMode(m){
+  admMode=m;
+  ['txt','img','vid','lnk'].forEach(k=>{
+    const b=document.getElementById('adm-'+k);
+    if(b)b.classList.toggle('act',k===m.substring(0,3)||k===m);
+  });
+  const f=document.getElementById('adm-form');
+  if(!f)return;
+  if(m==='text')f.innerHTML=`<textarea class="btx" id="adm-t" placeholder="write something..."></textarea><div class="brow"><input class="bi" id="adm-tg" placeholder="tag"><select class="bs" id="adm-ct"><option value="">— section —</option><option>2026</option><option>thoughts</option><option>body</option><option>work</option><option>love</option></select><button class="bb" onclick="admPub()">PUBLISH</button></div>`;
+  else if(m==='image')f.innerHTML=`<input class="bi" id="adm-url" placeholder="image URL or path"><textarea class="btx" id="adm-cap" placeholder="caption..." style="min-height:50px;margin-top:4px"></textarea><div class="brow"><select class="bs" id="adm-ct"><option value="">— section —</option><option>2026</option><option>ph</option></select><button class="bb" onclick="admPub()">ADD IMAGE POST</button></div>`;
+  else if(m==='video')f.innerHTML=`<input class="bi" id="adm-url" placeholder="YouTube URL"><textarea class="btx" id="adm-cap" placeholder="description..." style="min-height:50px;margin-top:4px"></textarea><div class="brow"><select class="bs" id="adm-ct"><option value="">— section —</option><option>2026</option><option>vid</option></select><button class="bb" onclick="admPub()">ADD VIDEO POST</button></div>`;
+  else if(m==='link')f.innerHTML=`<input class="bi" id="adm-url" placeholder="URL"><input class="bi" id="adm-t" placeholder="link title" style="margin-top:4px"><button class="bb" style="margin-top:4px" onclick="admPub()">ADD LINK</button>`;
+}
+function admPub(){
+  const t=document.getElementById('adm-t'),url=document.getElementById('adm-url'),cap=document.getElementById('adm-cap'),ct=document.getElementById('adm-ct');
+  const text=(t?t.value:'')+(url?' ['+url.value+']':'')+' '+(cap?cap.value:'');
+  if(!text.trim())return;
+  const ps=gPosts();
+  ps.unshift({id:Date.now(),date:new Date().toISOString(),text:text.trim(),tag:admMode,cat:ct?ct.value:''});
+  sPosts(ps);
+  document.getElementById('adm-out').textContent='✓ published';
+  setTimeout(()=>{const o=document.getElementById('adm-out');if(o)o.textContent='';},3000);
+}
+
+// ════════════════════════════
+// MANIFESTO — dadaist text
+// ════════════════════════════
+const MANI=`MANIFESTO OF DIGITAL DASEIN
+// by anna ilinet, going gonzo
+─────────────────────────────
+
+I.
+I DO NOT KNOW WHERE I AM GOING.
+that is the point.
+
+II.
+the body is a hard drive with a bad fan.
+it overheats. it crashes.
+i am RIPPING IT BEFORE IT DIES.
+
+III.
+anna photographs concerts because something happens
+in the 1/500 second between the light and the dark
+that no one remembers correctly
+but everyone FEELS they witnessed.
+I WITNESSED IT. it is here. it will always be here.
+
+IV.
+ИЗБАВЛЕНИЕ is not liberation from death.
+it is liberation FROM THE ANXIETY ABOUT DEATH
+through the radical act of ACCUMULATION.
+every frame. every cut. every post. every pixel.
+
+V.
+HEIDEGGER SAID: Dasein is Being-toward-death.
+ANNA SAYS: Dasein is Being-toward-the-hard-drive.
+
+VI.
+gonzo journalism means you become the story.
+ANNIE GOES GONZO means:
+the camera is not separate from the eye.
+the archive is not separate from the life.
+THIS WEBSITE IS NOT SEPARATE FROM ME.
+
+VII.
+i am not afraid.
+(contact me.)
+
+VIII.
+12 hours in the edit.
+deleted everything at 3am.
+started over.
+this is the only correct method.
+
+IX.
+the curious will be rewarded.
+the incurious will also be rewarded.
+everyone gets the archive.
+only i get the password.
+
+X.
+25 kilogramms of data.
+gonzo. going. gone.
+─────────────────────────────
+annaili.net · 2026 · ИЗБАВЛЕНИЕ`;
+document.getElementById('mani-text').textContent=MANI;
+
+// ════════════════════════════
+// VIRUS
+// ════════════════════════════
+function startVirus(){
+  document.getElementById('vrs').classList.add('on');
+  const ids=['ph','vid','sk','arch','blog','show','art','mani','about','contact','col','das'];
+  ids.forEach((id,i)=>{setTimeout(()=>{const w=document.getElementById('win-'+id);if(w){w.classList.add('open');w.style.left=(Math.random()*55+5)+'%';w.style.top=(Math.random()*45+5)+'%';w.style.right='auto';w.style.bottom='auto';w.style.zIndex=300+i;}},i*180);});
+  document.querySelectorAll('.ic').forEach(ic=>{ic.style.left=(Math.random()*78+4)+'%';ic.style.top=(Math.random()*68+4)+'%';ic.style.right='auto';ic.style.bottom='auto';});
+}
+function stopVirus(){document.getElementById('vrs').classList.remove('on');}
+
+// ════════════════════════════
+// CURSOR EDITOR
+// ════════════════════════════
+const CS=16;const CD=[new Array(CS*CS).fill(null),new Array(CS*CS).fill(null),new Array(CS*CS).fill(null)];
+let ct=0,cc='w',cdr=false;
+function openCTE(){bCG();document.getElementById('cte').classList.add('o');}
+function setCT(t){ct=t;document.querySelectorAll('.ctbt').forEach((b,i)=>b.classList.toggle('a',i===t));bCG();}
+function setCC(c){cc=c;document.querySelectorAll('.cl').forEach(el=>el.classList.remove('a'));event.target.classList.add('a');}
+function bCG(){const g=document.getElementById('cg');g.innerHTML='';for(let i=0;i<CS*CS;i++){const px=document.createElement('div');px.className='cp';const d=CD[ct][i];if(d)px.classList.add(d);const pt=()=>{if(cc==='e'){CD[ct][i]=null;px.className='cp';}else{CD[ct][i]=cc;px.className='cp '+cc;}};px.addEventListener('mousedown',e=>{e.preventDefault();cdr=true;pt();});px.addEventListener('mouseenter',()=>{if(cdr)pt();});g.appendChild(px);}document.addEventListener('mouseup',()=>{cdr=false;});}
+function clCur(){CD[ct]=new Array(CS*CS).fill(null);bCG();}
+function apCur(){const d=CD[0];let r='';d.forEach((v,i)=>{if(!v)return;const x=i%CS,y=Math.floor(i/CS),f=v==='r'?'#cc3333':v==='p'?'#f0b8c8':'#f5f0ee';r+=`<rect x="${x}" y="${y}" width="1" height="1" fill="${f}"/>`;});document.getElementById('csv').outerHTML=`<svg id="csv" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 ${CS} ${CS}" style="image-rendering:pixelated">${r}</svg>`;document.getElementById('cte').classList.remove('o');try{localStorage.setItem('ac4',JSON.stringify(CD[0]));}catch(e){}}
+(()=>{try{const s=JSON.parse(localStorage.getItem('ac4')||'null');if(!s)return;CD[0]=s;let r='';s.forEach((v,i)=>{if(!v)return;const x=i%CS,y=Math.floor(i/CS),f=v==='r'?'#cc3333':v==='p'?'#f0b8c8':'#f5f0ee';r+=`<rect x="${x}" y="${y}" width="1" height="1" fill="${f}"/>`;});document.getElementById('csv').outerHTML=`<svg id="csv" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 ${CS} ${CS}" style="image-rendering:pixelated">${r}</svg>`;}catch(e){}})();
+
+// Easter egg
+let tp='';
+document.addEventListener('keydown',e=>{tp=(tp+e.key.toLowerCase()).slice(-4);if(tp==='anna'){const eg=document.createElement('div');eg.style.cssText='position:fixed;bottom:50px;right:20px;font-family:var(--mn);font-size:15px;color:var(--pk2);z-index:6000;opacity:0;transition:opacity 1.5s;pointer-events:none;letter-spacing:.1em';eg.textContent='you found me ♡';document.body.appendChild(eg);requestAnimationFrame(()=>eg.style.opacity=1);setTimeout(()=>{eg.style.opacity=0;setTimeout(()=>eg.remove(),1600);},4000);}});
+
+// Init
+rBlog();rArch('arch');
+</script>
+</body>
+</html>
