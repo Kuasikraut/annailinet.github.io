@@ -1,0 +1,1813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>annaili.net — ИЗБАВЛЕНИЕ</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+:root{
+  --k:#0d0d0d;--r:#cc3333;--r2:#881111;--pk:#f5c8d8;--pk2:#fde8ef;--pk3:#c06878;
+  --g:#4a4a5a;--g2:#8888a0;--cr:#f5f0ee;--grid:rgba(255,255,255,.03);
+  --mn:'VT323',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{width:100vw;height:100vh;overflow:hidden;background:var(--k);color:var(--cr);font-family:var(--mn);cursor:none;}
+#cur{position:fixed;z-index:99999;pointer-events:none;top:-100px;left:-100px;width:32px;height:40px;}
+#cur svg{display:block;image-rendering:pixelated;}
+#vbg{position:fixed;inset:0;z-index:0;overflow:hidden;}
+#vbg iframe{position:absolute;top:50%;left:50%;width:140vw;height:140vh;transform:translate(-50%,-50%);pointer-events:none;opacity:.12;}
+#vov{position:fixed;inset:0;z-index:1;background:linear-gradient(160deg,rgba(13,13,13,.88),rgba(13,13,13,.82));}
+#gbg{position:fixed;inset:0;z-index:2;pointer-events:none;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:40px 40px;}
+#rs{position:fixed;left:0;top:0;width:4px;height:100vh;background:var(--r);z-index:3;}
+#scan{position:fixed;inset:0;z-index:4;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.12) 2px,rgba(0,0,0,.12) 3px);}
+#veil{position:fixed;inset:0;z-index:8400;background:#000;opacity:0;pointer-events:none;transition:opacity .6s;}
+#veil.on{opacity:1;pointer-events:all;}
+#heye{position:fixed;z-index:8500;bottom:55px;right:24px;opacity:0;pointer-events:none;transition:opacity .4s;cursor:none;}
+#heye.vis{opacity:.18;pointer-events:all;}#heye:hover{opacity:.6!important;}
+#desk{position:fixed;top:0;left:5px;right:0;bottom:34px;z-index:10;overflow:hidden;}
+/* ICONS */
+.ic{position:absolute;width:80px;text-align:center;padding:4px;cursor:none;border:1px solid transparent;transition:background .1s;user-select:none;}
+.ic:hover{background:rgba(240,200,216,.09);border-color:rgba(240,200,216,.22);}
+.ic svg{width:54px;height:44px;display:block;margin:0 auto 4px;image-rendering:pixelated;}
+.ilb{font-family:var(--mn);font-size:13px;color:var(--cr);text-shadow:1px 1px 0 #000;line-height:1.2;word-break:break-word;}
+/* WINDOWS */
+.win{position:absolute;min-width:260px;min-height:130px;background:#111;border:1px solid #222;box-shadow:5px 5px 0 rgba(0,0,0,.9);display:none;flex-direction:column;z-index:100;}
+.win.open{display:flex;}.win.top{z-index:200;}
+.win.fp{position:fixed!important;top:0!important;left:0!important;right:0!important;bottom:34px!important;width:100%!important;height:calc(100vh - 34px)!important;}
+.wtb{height:28px;background:linear-gradient(90deg,var(--r2),var(--r));display:flex;align-items:center;justify-content:space-between;padding:0 6px;cursor:move;flex-shrink:0;}
+.wt{font-family:var(--mn);font-size:15px;color:var(--cr);letter-spacing:.05em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.wbc{display:flex;gap:3px;}
+.wb{width:22px;height:22px;background:#1a1a1a;border:1px solid #333;color:var(--cr);font-size:13px;line-height:21px;text-align:center;cursor:none;border-radius:1px;}
+.wb:hover{background:var(--r);}
+.wb.x{background:var(--r2);font-size:15px;font-weight:bold;}
+.wb.x:hover{background:#ff1111;}
+.wp{font-size:12px;color:var(--g2);padding:2px 8px;background:#0d0d0d;border-bottom:1px solid #1a1a1a;display:flex;align-items:center;gap:5px;flex-shrink:0;}
+.wbk{cursor:none;color:var(--pk);font-size:17px;padding:1px 3px;background:none;border:none;font-family:var(--mn);line-height:1;}
+.wbk:hover{color:var(--pk2);}
+.wb0{flex:1;overflow-y:auto;padding:10px;font-size:13px;line-height:1.6;}
+.wb0::-webkit-scrollbar{width:4px;}.wb0::-webkit-scrollbar-thumb{background:var(--r2);}
+.wrz{position:absolute;bottom:0;right:0;width:12px;height:12px;cursor:nwse-resize;background:linear-gradient(135deg,transparent 50%,#333 50%);}
+/* BLOG white */
+.win.blog-white .wb0{background:#f5f0ee;color:#111;}
+.win.blog-white .wp{background:#e8e0dc;color:#333;border-color:#ccc;}
+.pc{border:1px solid #e0d8d4;padding:8px;margin-bottom:7px;background:#fff;}
+.pm{font-size:10px;color:var(--g2);margin-bottom:4px;}
+.tg{display:inline-block;background:var(--r2);color:var(--cr);font-size:9px;padding:1px 5px;margin:0 2px;}
+.pimg{width:100%;max-height:110px;object-fit:cover;display:block;margin-bottom:6px;}
+/* FOLDER */
+.fg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:7px;}
+.fc{background:#1a1a1a;border:1px solid #222;padding:8px 5px 6px;text-align:center;cursor:none;}
+.fc:hover{background:#2a0e0e;border-color:var(--r2);}
+.fc svg{width:40px;height:32px;margin:0 auto 4px;display:block;}
+.fl{font-size:11px;color:var(--g2);}
+/* ABOUT */
+.asc{margin-bottom:11px;}
+.asc h3{font-family:var(--mn);font-size:17px;color:var(--pk);margin-bottom:4px;}
+.asc p,.asc li{font-size:13px;color:var(--g2);line-height:1.7;}
+.asc ul{padding-left:14px;}
+.stg{display:inline-block;background:#1a1a1a;border:1px solid #2a2a2a;font-size:11px;padding:2px 6px;margin:2px;color:var(--g2);}
+.cl2{display:block;padding:6px 0;border-bottom:1px solid #1a1a1a;font-family:var(--mn);font-size:15px;color:var(--pk2);text-decoration:none;cursor:none;}
+.cl2:hover{color:var(--cr);}
+/* MANIFESTO */
+@keyframes glt{0%{text-shadow:2px 0 var(--pk),-2px 0 #0ff;transform:translate(0);}25%{text-shadow:-3px 0 var(--pk),3px 0 #0ff;transform:translate(3px,-1px) skewX(4deg);}50%{text-shadow:2px 2px var(--r),-2px -2px #0ff;}75%{text-shadow:-2px 0 #0ff,2px 0 var(--pk);transform:translate(1px,2px);}100%{text-shadow:0 0 var(--cr);transform:translate(0);}}
+@keyframes vb{0%,100%{opacity:1;}50%{opacity:0;}}
+@keyframes mcrawl{from{transform:translateX(100%);}to{transform:translateX(-110%);}}
+.mani-crawl{overflow:hidden;white-space:nowrap;font-family:var(--mn);font-size:13px;color:var(--pk);border-top:1px solid var(--r2);border-bottom:1px solid var(--r2);padding:3px 0;margin:6px 0;}
+.mani-crawl span{display:inline-block;animation:mcrawl 14s linear infinite;}
+.mani-blink{animation:vb .5s step-start infinite;font-family:var(--mn);font-size:26px;color:var(--r);text-align:center;display:block;margin:7px 0;}
+@keyframes mgstr{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+.mg{height:60px;position:relative;overflow:hidden;margin:8px 0;}
+.mgs{position:absolute;height:8px;width:200%;}
+.mgs:nth-child(1){top:0;background:repeating-linear-gradient(90deg,var(--r) 0,var(--r) 8px,transparent 8px,transparent 16px);animation:mgstr .7s linear infinite;}
+.mgs:nth-child(2){top:12px;background:repeating-linear-gradient(90deg,var(--pk3) 0,var(--pk3) 12px,transparent 12px,transparent 24px);animation:mgstr 1.1s linear infinite reverse;}
+.mgs:nth-child(3){top:24px;background:repeating-linear-gradient(90deg,#fff 0,#fff 4px,transparent 4px,transparent 10px);animation:mgstr .6s linear infinite;}
+.mgs:nth-child(4){top:36px;background:repeating-linear-gradient(90deg,var(--r) 0,var(--r) 20px,var(--pk) 20px,var(--pk) 40px);animation:mgstr 1.3s linear infinite;}
+.mgs:nth-child(5){top:48px;background:repeating-linear-gradient(90deg,#0d0d0d 0,#0d0d0d 6px,var(--r) 6px,var(--r) 12px);animation:mgstr .9s linear infinite reverse;}
+.mani-txt{font-family:var(--mn);font-size:14px;color:var(--g2);line-height:1.9;white-space:pre-wrap;padding:4px 8px;}
+/* DAS DASEIN */
+.das-block{border-left:2px solid var(--r);padding-left:12px;margin:10px 0;}
+/* EYE PAGE */
+#ep{position:fixed;inset:0;z-index:7000;background:#0a0a0a;display:none;align-items:center;justify-content:center;flex-direction:column;overflow-y:auto;}
+#ep.o{display:flex;}
+#ep-inner{max-width:700px;width:95%;padding:30px 10px;}
+.ep-manifesto{font-family:var(--mn);font-size:13px;color:var(--g2);line-height:2;white-space:pre-wrap;border:1px solid #1a1a1a;padding:14px;margin-bottom:24px;background:#0d0d0d;}
+/* GLITCH */
+#gp{position:fixed;inset:0;z-index:7100;background:#000;display:none;align-items:center;justify-content:center;flex-direction:column;overflow:hidden;}
+#gp.o{display:flex;}
+.glitch-txt{font-family:var(--mn);font-size:clamp(30px,7vw,90px);color:var(--r);text-align:center;line-height:1.2;animation:glt .09s step-start infinite;}
+.gp-strip{position:absolute;left:0;right:0;height:3px;background:var(--r);opacity:.7;animation:gps .4s step-start infinite;}
+@keyframes gps{0%{top:10%;}15%{top:80%;}30%{top:40%;}45%{top:6%;}60%{top:65%;}75%{top:25%;}90%{top:90%;}100%{top:50%;}}
+.gp-strip2{position:absolute;left:0;right:0;height:1px;background:var(--pk);animation:gps2 .28s step-start infinite;}
+@keyframes gps2{0%{top:30%;}25%{top:70%;}50%{top:15%;}75%{top:55%;}100%{top:88%;}}
+/* PW */
+#pw{position:fixed;inset:0;z-index:9400;background:rgba(8,8,8,.97);display:flex;align-items:center;justify-content:center;}
+#pw.h{display:none;}
+#pwb{background:#111;border:1px solid var(--r);padding:26px 32px;width:280px;text-align:center;box-shadow:5px 5px 0 rgba(0,0,0,.9);}
+#pwb h2{font-family:var(--mn);font-size:22px;color:var(--r);letter-spacing:.08em;margin-bottom:10px;}
+#pwb p{font-size:12px;color:var(--g2);margin-bottom:8px;}
+#pwi,#pwu{width:100%;background:#0d0d0d;color:var(--cr);border:none;border-bottom:1px solid #333;font-family:var(--mn);font-size:18px;padding:6px 10px;text-align:center;outline:none;cursor:text;margin-bottom:6px;}
+#pwi{border-bottom-color:var(--r);}
+#pwg{display:block;width:100%;margin-top:10px;background:var(--r2);color:var(--cr);border:1px solid var(--r);font-family:var(--mn);font-size:15px;padding:7px;cursor:pointer;}
+#pwg:hover{background:var(--r);}
+#pwe{font-size:11px;color:var(--r);margin-top:6px;min-height:14px;font-family:var(--mn);}
+/* CURSOR EDITOR */
+#cte{position:fixed;inset:0;z-index:7400;background:rgba(8,8,8,.96);display:none;align-items:center;justify-content:center;}
+#cte.o{display:flex;}
+#ctm{background:#111;border:1px solid var(--r);padding:16px;max-width:380px;width:92%;}
+#ctm h3{font-family:var(--mn);font-size:17px;color:var(--r);margin-bottom:9px;}
+.ctb{display:flex;gap:3px;margin-bottom:7px;}
+.ctbt{background:#0d0d0d;color:var(--g2);border:1px solid #2a2a2a;font-family:var(--mn);font-size:12px;padding:3px 8px;cursor:pointer;flex:1;text-align:center;}
+.ctbt.a{background:var(--r2);color:var(--cr);border-color:var(--r);}
+#cg{display:grid;grid-template-columns:repeat(16,1fr);gap:1px;background:#2a2a2a;width:180px;height:180px;margin:0 auto 7px;}
+.cp{background:#0d0d0d;cursor:crosshair;}.cp.w{background:var(--cr);}.cp.r{background:var(--r);}.cp.p{background:var(--pk);}
+.ccl{display:flex;gap:4px;justify-content:center;margin-bottom:7px;}
+.cl{width:22px;height:22px;cursor:pointer;border:2px solid transparent;flex-shrink:0;}.cl.a{border-color:#fff;}
+.cta{display:flex;gap:5px;}
+.cta button{flex:1;background:#0d0d0d;color:var(--cr);border:1px solid #2a2a2a;font-family:var(--mn);font-size:12px;padding:5px;cursor:pointer;}
+#cta0{background:var(--r2);border-color:var(--r);}
+/* VIRUS */
+#vrs{position:fixed;inset:0;z-index:9000;background:#000;display:none;align-items:center;justify-content:center;}
+#vrs.on{display:flex;}
+#vrst{font-family:var(--mn);font-size:clamp(28px,6vw,72px);color:var(--r);text-align:center;animation:vb .3s step-start infinite;}
+#vrsc{position:absolute;bottom:20px;right:24px;font-family:var(--mn);font-size:13px;color:#444;cursor:none;}
+/* RICKROLL */
+#rr{position:fixed;inset:0;z-index:9800;background:#000;display:none;align-items:center;justify-content:center;}
+#rr.on{display:flex;}
+#rr iframe{width:100vw;height:100vh;border:none;pointer-events:all;}
+#rrc{position:fixed;top:14px;right:18px;z-index:9900;background:var(--r2);color:var(--cr);border:1px solid var(--r);font-family:var(--mn);font-size:13px;padding:5px 14px;cursor:pointer;}
+/* START MENU */
+#sm{position:fixed;bottom:34px;left:5px;width:260px;background:#0f0f0f;border:1px solid #222;border-bottom:none;z-index:6000;display:none;box-shadow:4px -4px 0 rgba(0,0,0,.8);max-height:calc(100vh - 50px);overflow-y:auto;}
+#sm.o{display:block;}
+.smh{background:linear-gradient(90deg,var(--r2),var(--r));padding:9px 12px;font-family:var(--mn);font-size:20px;color:var(--cr);letter-spacing:.05em;}
+.smi{padding:6px 12px;font-family:var(--mn);font-size:14px;color:var(--cr);cursor:none;display:flex;align-items:center;gap:8px;border-bottom:1px solid #181818;}
+.smi:hover{background:#1a1a1a;color:var(--pk2);}
+.smd{border-top:1px solid #1e1e1e;margin:2px 0;}
+.smg{padding:4px 12px;font-size:11px;color:var(--g2);text-transform:uppercase;letter-spacing:.1em;border-bottom:1px solid #181818;}
+/* TASKBAR */
+#tb{position:fixed;bottom:0;left:0;right:0;height:34px;z-index:5000;background:#090909;border-top:1px solid #1a1a1a;display:flex;align-items:center;padding:0 5px;gap:4px;}
+#tbs{height:26px;padding:0 10px;background:var(--r2);border:1px solid var(--r);color:var(--cr);font-family:var(--mn);font-size:16px;cursor:none;letter-spacing:.04em;}
+#tbs:hover{background:var(--r);}
+.tbi{width:28px;height:26px;background:#161616;border:1px solid #222;display:flex;align-items:center;justify-content:center;cursor:none;flex-shrink:0;}
+.tbi:hover{background:#1e0808;border-color:var(--r2);}
+#tlg{font-family:var(--mn);font-size:12px;color:var(--g2);cursor:none;padding:2px 7px;border:1px solid #222;background:#161616;letter-spacing:.08em;flex-shrink:0;}
+#tlg:hover{color:var(--cr);border-color:var(--r2);}
+#tbw{display:flex;gap:3px;flex:1;overflow:hidden;}
+.tw{height:22px;padding:0 7px;background:#161616;border:1px solid #222;color:var(--g2);font-family:var(--mn);font-size:11px;cursor:none;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.tw.a{background:#1e0808;border-color:var(--r2);color:var(--cr);}
+#clk{margin-left:auto;text-align:right;font-family:var(--mn);font-size:13px;color:var(--cr);border-left:1px solid #1a1a1a;padding:0 8px;line-height:1.3;white-space:nowrap;flex-shrink:0;}
+#wk{font-size:11px;color:var(--g2);}
+/* GUESTBOOK */
+.gbrw{border:1px solid #1e1e1e;padding:8px;margin-bottom:6px;background:#151515;}
+.gbdraw{width:100%;height:80px;border:1px solid #333;margin-bottom:4px;display:block;}
+.gbre{display:flex;gap:4px;flex-wrap:wrap;margin-top:4px;}
+.gbre button{background:#0d0d0d;color:var(--g2);border:1px solid #222;font-family:var(--mn);font-size:11px;padding:2px 6px;cursor:pointer;}
+/* YOU */
+#you-gif{width:100%;height:160px;position:relative;overflow:hidden;background:#000;}
+.yg-s{position:absolute;height:100%;width:200%;}
+.you-num{font-family:var(--mn);font-size:clamp(36px,10vw,90px);text-align:center;color:var(--r);animation:glt .07s step-start infinite;line-height:1;padding:10px 0;}
+/* PROJ */
+.proj-card{border:1px solid #2a2a2a;background:#151515;padding:10px;margin-bottom:8px;cursor:none;}
+.proj-card:hover{border-color:var(--r2);}
+.proj-card h4{font-family:var(--mn);font-size:16px;color:var(--pk);margin-bottom:5px;}
+.proj-card p{font-size:12px;color:var(--g2);line-height:1.7;}
+/* CURATOR */
+#curator{position:fixed;inset:0;z-index:7200;background:#000;display:none;overflow-y:auto;}
+#curator.o{display:block;}
+.cur-header{text-align:center;padding:30px 20px 10px;font-family:var(--mn);font-size:clamp(18px,4vw,36px);color:var(--pk);letter-spacing:.1em;animation:glt .2s step-start infinite;}
+.cur-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;padding:20px;max-width:1000px;margin:0 auto;}
+.cur-item{background:#111;border:1px solid #222;padding:10px;cursor:none;}
+.cur-item:hover{border-color:var(--pk3);}
+.cur-item img{width:100%;height:110px;object-fit:cover;display:block;filter:grayscale(.3) contrast(1.1);}
+.cur-item .cur-cap{font-family:var(--mn);font-size:12px;color:var(--g2);padding-top:5px;}
+#cur-close{display:block;text-align:center;padding:20px;font-family:var(--mn);font-size:14px;color:var(--pk);cursor:none;}
+/* EPHEMERAL */
+.eph::after{content:'';position:absolute;inset:0;background:rgba(0,0,0,0);transition:background .4s;pointer-events:none;}
+.eph{position:relative;}
+.eph.seen-1::after{background:rgba(0,0,0,.3);}
+.eph.seen-2::after{background:rgba(0,0,0,.6);}
+.eph.seen-3{opacity:.4;filter:grayscale(1);}
+.eph.gone{filter:grayscale(1) blur(2px);opacity:.2;pointer-events:none;}
+/* ADMIN */
+.adm-btns{display:flex;gap:4px;margin-bottom:8px;flex-wrap:wrap;}
+.adm-btn{background:#1a1a1a;border:1px solid #2a2a2a;color:var(--g2);font-family:var(--mn);font-size:13px;padding:4px 8px;cursor:none;}
+.adm-btn:hover,.adm-btn.act{background:var(--r2);color:var(--cr);border-color:var(--r);}
+.bi,.bs,.btx{background:#0d0d0d;color:var(--cr);border:1px solid #1e1e1e;font-family:var(--mn);font-size:13px;padding:4px 6px;outline:none;width:100%;}
+.btx{min-height:70px;resize:vertical;}
+.bi:focus,.bs:focus,.btx:focus{border-color:var(--r2);}
+.brow{display:flex;gap:4px;margin-top:4px;flex-wrap:wrap;}
+.bb{background:var(--r2);color:var(--cr);border:1px solid var(--r);font-family:var(--mn);font-size:14px;padding:3px 12px;cursor:none;}
+.bb:hover{background:var(--r);}
+#bio-out{font-family:var(--mn);font-size:14px;color:var(--pk2);line-height:2;padding:8px;border:1px solid #1e1e1e;background:#0d0d0d;min-height:120px;}
+/* ORACLE floating widget */
+#oracle-pop{position:fixed;top:44px;right:10px;z-index:4999;background:#111;border:1px solid var(--pk3);padding:8px 12px;font-family:var(--mn);font-size:13px;color:var(--pk2);max-width:220px;line-height:1.5;opacity:0;transition:opacity .6s;pointer-events:none;}
+#oracle-pop.show{opacity:1;}
+/* JOKE */
+#joke-display{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:#0d0d0d;height:100%;padding:20px;}
+#joke-setup{font-family:var(--mn);font-size:17px;color:var(--pk2);margin-bottom:20px;line-height:1.7;max-width:300px;}
+#joke-punchline{font-family:var(--mn);font-size:20px;color:var(--r);margin-bottom:22px;line-height:1.5;max-width:300px;display:none;animation:glt .15s step-start infinite;}
+/* COUNTER */
+#cnt-display{font-family:var(--mn);font-size:clamp(28px,8vw,72px);color:var(--r);text-align:center;padding:20px;animation:glt .3s step-start infinite;}
+/* BUY BUTTON */
+.buy-btn{display:inline-block;margin-top:5px;background:var(--r2);color:var(--cr);border:1px solid var(--r);font-family:var(--mn);font-size:13px;padding:3px 12px;cursor:pointer;letter-spacing:.04em;}
+.buy-btn:hover{background:var(--r);}
+/* LOCKED POST */
+.post-locked{background:#0d0d0d;border:1px solid var(--r2);padding:10px;margin-bottom:8px;}
+.post-locked p{font-size:11px;color:var(--g2);margin-bottom:6px;}
+.post-locked input{width:120px;background:#000;color:var(--cr);border:1px solid #333;font-family:var(--mn);font-size:14px;padding:3px 6px;outline:none;}
+.post-locked button{background:var(--r2);color:var(--cr);border:1px solid var(--r);font-family:var(--mn);font-size:13px;padding:2px 8px;cursor:pointer;margin-left:4px;}
+/* BLINK effect */
+@keyframes blinkScreen{0%,100%{opacity:1;}50%{opacity:0;}}
+/* MOBILE */
+@media(max-width:600px){
+  .win{width:100vw!important;height:calc(100vh - 34px)!important;left:0!important;top:0!important;right:0!important;}
+  .win.open{position:fixed!important;}
+  .ic{width:68px;}
+  .ic svg{width:44px;height:36px;}
+  .ilb{font-size:11px;}
+  #desk{left:0;overflow-y:auto;overflow-x:hidden;}
+  #sm{width:100%!important;}
+  .fg{grid-template-columns:repeat(2,1fr);}
+  .cur-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr));}
+  #ep-inner{padding:16px 8px;}
+  #scroll-arrow{bottom:44px;font-size:24px;}
+}
+/* PIXEL art improvements */
+.win,.ic,.wtb,.wb,.tbi,.tbs,.smi,.smg,.smh{image-rendering:pixelated;}
+.wtb{border-bottom:2px solid var(--r2);}
+.wb0::-webkit-scrollbar{width:6px;background:#0d0d0d;}
+.wb0::-webkit-scrollbar-thumb{background:var(--r2);border:1px solid #000;}
+
+@keyframes catchMeShake {
+  0%{transform:translate(0,0) rotate(0deg);}
+  20%{transform:translate(-3px,2px) rotate(-2deg);}
+  40%{transform:translate(3px,-2px) rotate(2deg);}
+  60%{transform:translate(-2px,3px) rotate(-1deg);}
+  80%{transform:translate(2px,-1px) rotate(1deg);}
+  100%{transform:translate(0,0) rotate(0deg);}
+}
+/* ADMIN LINK */
+#adm-link{position:fixed;bottom:36px;right:0;font-family:var(--mn);font-size:10px;color:#1a1a1a;z-index:4990;padding:2px 4px;cursor:pointer;opacity:0;transition:opacity .3s;}
+#adm-link:hover{opacity:1;color:var(--g2)!important;}
+
+/* SCROLL SECTIONS */
+#scroll-page{position:fixed;inset:0;z-index:20;overflow-y:scroll;pointer-events:none;opacity:0;background:rgba(10,10,10,.95);}
+#scroll-page.active{pointer-events:all;}
+#scroll-desktop{height:100vh;position:relative;}
+#scroll-content{min-height:400vh;background:transparent;}
+.scroll-section{padding:60px 40px;max-width:700px;margin:0 auto;opacity:0;transform:translateY(30px);transition:opacity .8s ease,transform .8s ease;}
+.scroll-section.visible{opacity:1;transform:translateY(0);}
+.scroll-section h2{font-family:var(--mn);font-size:clamp(22px,4vw,42px);color:var(--r);letter-spacing:.08em;margin-bottom:16px;animation:glt .3s step-start infinite;}
+.scroll-section p{font-family:var(--mn);font-size:14px;color:var(--g2);line-height:2;margin-bottom:10px;}
+.scroll-section a{color:var(--pk);text-decoration:none;font-family:var(--mn);}
+.scroll-section a:hover{color:var(--cr);}
+.scroll-divider{border:none;border-top:1px solid #1a1a1a;margin:20px 0;}
+.scroll-tag{display:inline-block;background:var(--r2);color:var(--cr);font-family:var(--mn);font-size:11px;padding:2px 8px;margin:2px;}
+#scroll-hint{position:fixed;bottom:50px;left:50%;transform:translateX(-50%);z-index:21;font-family:var(--mn);font-size:13px;color:var(--g2);letter-spacing:.1em;opacity:0;transition:opacity 1s;pointer-events:none;animation:sbounce 1.2s ease-in-out infinite;}
+#scroll-hint.show{opacity:.7;}
+@keyframes sbounce{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(6px);}}
+#scroll-close{position:fixed;top:10px;right:14px;z-index:22;font-family:var(--mn);font-size:13px;color:var(--g2);cursor:pointer;opacity:0;transition:opacity .4s;pointer-events:none;}
+#scroll-close.show{opacity:.6;pointer-events:all;}
+#scroll-close:hover{color:var(--pk);}
+
+/* GOTCHA */
+#gotcha-wrap{height:200vh;display:flex;align-items:flex-end;justify-content:center;padding-bottom:60px;}
+#gotcha-txt{font-family:var(--mn);font-size:clamp(14px,3vw,22px);letter-spacing:.12em;animation:gotcha-blink .4s step-start infinite;}
+@keyframes gotcha-blink{0%,49%{color:var(--r);}50%,100%{color:#f5f0ee;}}
+
+/* DRAG TO TRASH */
+.ic.drag-over-trash{outline:2px dashed var(--r);opacity:.6;}
+#ic-trash.trash-ready{background:rgba(204,51,51,.15);border:1px dashed var(--r)!important;}
+.ic.dragging{opacity:.5;z-index:9999!important;}
+
+/* SCROLL TRIGGER ARROW */
+#scroll-arrow{position:fixed;bottom:42px;left:50%;transform:translateX(-50%);z-index:30;font-family:var(--mn);font-size:20px;color:var(--g2);cursor:pointer;opacity:0;transition:opacity 1s;animation:sbounce 1.2s ease-in-out infinite;pointer-events:none;}
+#scroll-arrow.show{opacity:.5;pointer-events:all;}
+#scroll-arrow:hover{color:var(--pk);opacity:1!important;}
+</style>
+</head>
+<body>
+<div id="cur"><svg id="csv" width="20" height="26" viewBox="0 0 8 10"><path d="M0 0L0 9L3 6L4 9L5.5 8.5L4.5 6L7 6Z" fill="#f5f0ee" stroke="#0d0d0d" stroke-width=".6"/></svg></div>
+<div id="vbg"><iframe src="https://www.youtube.com/embed/9As7O7U1yUU?autoplay=1&mute=1&loop=1&playlist=9As7O7U1yUU&controls=0&rel=0&iv_load_policy=3&modestbranding=1&playsinline=1" frameborder="0" allow="autoplay;encrypted-media"></iframe><div style="position:absolute;inset:0;z-index:1;"></div></div>
+<div id="vov"></div><div id="gbg"></div><div id="rs"></div><div id="scan"></div>
+<div id="veil"></div>
+<div id="heye" onclick="offVeil()"><svg width="34" height="20" viewBox="0 0 34 20"><ellipse cx="17" cy="10" rx="15" ry="7" fill="none" stroke="#555" stroke-width="1.2"/><circle cx="17" cy="10" r="4" fill="#444"/></svg></div>
+<!-- VIRUS -->
+<div id="vrs"><div id="vrst">THE CURIOUS<br>WILL BE<br>REWARDED</div><div id="vrsc" onclick="location.reload()">[ refresh ]</div></div>
+<!-- RICKROLL -->
+<div id="rr"><iframe id="rri" src="" allow="autoplay"></iframe><button id="rrc" onclick="closeRR()">× close</button></div>
+<!-- GLITCH -->
+<div id="gp">
+  <div class="gp-strip"></div><div class="gp-strip2"></div>
+  <div class="glitch-txt" id="gp-txt">THE CURIOUS<br>WILL BE<br>REWARDED</div>
+  <div onclick="closeGP()" style="position:absolute;bottom:30px;font-family:var(--mn);font-size:14px;color:var(--g2);cursor:none" data-i18n="back">← back</div>
+</div>
+<!-- EYE PAGE -->
+<div id="ep">
+  <div id="ep-inner">
+    <div style="text-align:center;font-family:var(--mn);font-size:11px;color:var(--g2);margin-bottom:10px;letter-spacing:.1em">annaili.net — <span data-i18n="das">das Dasein</span></div>
+    <pre class="ep-manifesto" id="ep-mani-text"></pre>
+    <div style="text-align:center;margin:20px 0 10px">
+      <svg id="eye-svg" width="100%" height="220" viewBox="0 0 360 220" style="max-width:600px;overflow:visible">
+        <path d="M10 110 Q180 20 350 110 Q180 200 10 110Z" fill="none" stroke="var(--pk)" stroke-width="2"/>
+        <circle cx="180" cy="110" r="38" fill="none" stroke="var(--pk)" stroke-width="1.5"/>
+        <circle cx="180" cy="110" r="17" fill="var(--pk3)" opacity=".8"/>
+        <circle cx="188" cy="102" r="6" fill="var(--cr)" opacity=".4"/>
+        <g id="top-lashes"></g>
+        <g id="bot-lashes"></g>
+        <circle id="secret-lash" r="16" fill="transparent" style="cursor:none;" onclick="showPw()"/>
+      </svg>
+    </div>
+    <div onclick="closeEP()" style="text-align:center;font-family:var(--mn);font-size:14px;color:var(--pk);cursor:none;margin-top:10px;" data-i18n="back">← back</div>
+  </div>
+</div>
+<!-- PASSWORD -->
+<div id="pw" class="h">
+  <div id="pwb">
+    <h2>// enter</h2>
+    <p data-i18n="pw-hint">credentials required</p>
+    <input type="text" id="pwu" placeholder="login" autocomplete="off">
+    <input type="password" id="pwi" placeholder="········" autocomplete="off">
+    <button id="pwg" onclick="chkPw()">→</button>
+    <div id="pwe"></div>
+  </div>
+</div>
+<!-- CURSOR EDITOR -->
+<div id="cte">
+  <div id="ctm">
+    <h3 data-i18n="cur-draw">// draw cursor</h3>
+    <div class="ctb">
+      <div class="ctbt a" onclick="setCT(0)" data-i18n="cur-normal">normal</div>
+      <div class="ctbt" onclick="setCT(1)" data-i18n="cur-hover">hover</div>
+      <div class="ctbt" onclick="setCT(2)" data-i18n="cur-click">click</div>
+    </div>
+    <div id="cg"></div>
+    <div class="ccl">
+      <div class="cl a" style="background:var(--cr)" onclick="setCC('w')"></div>
+      <div class="cl" style="background:var(--r)" onclick="setCC('r')"></div>
+      <div class="cl" style="background:var(--pk)" onclick="setCC('p')"></div>
+      <div class="cl" style="background:#111;border:1px solid #444" onclick="setCC('e')"></div>
+    </div>
+    <div class="cta">
+      <button id="cta0" onclick="apCur()" data-i18n="apply">APPLY</button>
+      <button onclick="clCur()" data-i18n="clear">CLEAR</button>
+      <button onclick="document.getElementById('cte').classList.remove('o')" data-i18n="close">CLOSE</button>
+    </div>
+  </div>
+</div>
+<!-- CURATOR -->
+<div id="curator">
+  <div class="cur-header" data-i18n="curator-title">// EXHIBITION</div>
+  <div class="cur-grid" id="cur-grid"></div>
+  <div id="cur-close" onclick="document.getElementById('curator').classList.remove('o')" data-i18n="back">← back</div>
+</div>
+<!-- ORACLE POPUP -->
+<div id="oracle-pop"></div>
+<!-- START MENU -->
+<div id="sm">
+  <div class="smh" data-i18n="start">ANNA</div>
+  <div class="smg" data-i18n="sm-photo">— Фото / Видео</div>
+  <div class="smi" onclick="oW('ph');csm()" data-i18n="ph">Ph</div>
+  <div class="smi" onclick="oW('vid');csm()" data-i18n="vid">Vid</div>
+  <div class="smi" onclick="oW('show');csm()" data-i18n="show">Showreel</div>
+  <div class="smg" data-i18n="sm-art">— Арт</div>
+  <div class="smi" onclick="oW('sk');csm()" data-i18n="sk">Sketchbook</div>
+  <div class="smi" onclick="oW('art');csm()" data-i18n="art">Art / 3D</div>
+  <div class="smi" onclick="oW('mani');csm()" data-i18n="mani">Manifesto</div>
+  <div class="smg" data-i18n="sm-info">— Инфо</div>
+  <div class="smi" onclick="oW('about');csm()" data-i18n="about">About</div>
+  <div class="smi" onclick="oW('contact');csm()" data-i18n="contact">Contact</div>
+  <div class="smi" onclick="oW('col');csm()" data-i18n="col">Collab.</div>
+  <div class="smi" onclick="oW('shop');csm()" data-i18n="shop">Shop</div>
+  <div class="smi" onclick="oW('blog');csm()" data-i18n="blog">Blog</div>
+  <div class="smi" onclick="oW('arch');csm()" data-i18n="arch">Archive</div>
+  <div class="smg" data-i18n="sm-special">— Особое</div>
+  <div class="smi" onclick="openEP();csm()" data-i18n="das">das Dasein</div>
+  <div class="smi" onclick="oW('proj');csm()" data-i18n="proj">Proj.</div>
+  <div class="smi" onclick="oW('guest');csm()" data-i18n="guest">Guestbook</div>
+  <div class="smi" onclick="oW('joke');csm()" data-i18n="joke">★ Jokes</div>
+  <div class="smi" onclick="oW('cnt');csm()">📊 Счётчик</div>
+  <div class="smi" onclick="openCTE();csm()" data-i18n="cur-draw">✦ Курсор</div>
+  <div class="smi" onclick="openCurator();csm()" data-i18n="curator">)) Куратор</div>
+  <div class="smd"></div>
+  <div class="smi" onclick="location.reload()" data-i18n="restart">↺ Перезапуск</div>
+</div>
+
+<!-- ═══ DESKTOP ═══ -->
+<div id="adm-link" onclick="window.open('admin.html','_blank')">admin →</div>
+
+<!-- SCROLL ARROW (desktop hint) -->
+<div id="scroll-arrow" onclick="openScrollPage()">▼ scroll</div>
+
+<!-- SCROLL PAGE -->
+<div id="scroll-page">
+  <div id="scroll-desktop"></div>
+  <div id="scroll-content">
+    <div class="scroll-section" id="ss-works">
+      <h2>// current works</h2>
+      <hr class="scroll-divider">
+      <p><span class="scroll-tag">2026</span> ИЗБАВЛЕНИЕ — long-form doc, ongoing</p>
+      <p><span class="scroll-tag">vid</span> Archive of Presence — experimental short, post-prod</p>
+      <p><span class="scroll-tag">ph</span> Bodies in Space series — ongoing</p>
+      <p><span class="scroll-tag">art</span> 3D: decay as texture, generative archive</p>
+    </div>
+    <div class="scroll-section" id="ss-about">
+      <h2>// about</h2>
+      <hr class="scroll-divider">
+      <p data-i18n="about-desc">"Annie going gonzo" — Director · Cameraman · Editor · Artist</p>
+      <p data-i18n="not-afraid">she is not afraid.</p>
+      <p data-i18n="das-text">Digital immortality is a crisis of Dasein. The body dies. The data does not.</p>
+    </div>
+    <div class="scroll-section" id="ss-contact">
+      <h2>// contact</h2>
+      <hr class="scroll-divider">
+      <p>→ <a href="/cdn-cgi/l/email-protection#563738383716373838373f3a3f78383322"><span class="__cf_email__" data-cfemail="472629292607262929262e2b2e69292233">[email&#160;protected]</span></a></p>
+      <p>→ Telegram for proposals &amp; collabs</p>
+      <p>→ Instagram: <a href="#">@annaili</a></p>
+    </div>
+    <div id="gotcha-wrap">
+      <div id="gotcha-txt">вот ты и попался</div>
+    </div>
+  </div>
+  <div id="scroll-close" onclick="closeScrollPage()">× close</div>
+</div>
+
+<div id="desk">
+
+<!-- LEFT COLUMN -->
+<div class="ic" id="ic-ph" style="left:12px;top:12px" ondblclick="oW('ph')">
+<svg viewBox="0 0 54 44" fill="none"><circle cx="27" cy="22" r="19" stroke="var(--r)" stroke-width="2.5"/><line x1="4" y1="4" x2="50" y2="40" stroke="var(--r)" stroke-width="3"/><circle cx="27" cy="22" r="8" fill="var(--r2)"/><line x1="27" y1="3" x2="27" y2="41" stroke="var(--cr)" stroke-width="1.2" opacity=".5"/></svg>
+<div class="ilb" data-i18n="ph">Ph</div></div>
+
+<div class="ic" id="ic-vid" style="left:12px;top:108px" ondblclick="oW('vid')">
+<svg viewBox="0 0 54 44" fill="none"><polygon points="4,40 27,4 50,40" stroke="var(--r)" stroke-width="2.5" fill="none"/><line x1="4" y1="40" x2="50" y2="40" stroke="var(--pk3)" stroke-width="3"/><circle cx="27" cy="24" r="5" fill="var(--r2)"/></svg>
+<div class="ilb" data-i18n="vid">Vid</div></div>
+
+<div class="ic" id="ic-sk" style="left:12px;top:204px" ondblclick="oW('sk')">
+<svg viewBox="0 0 54 44" fill="none"><rect x="4" y="4" width="46" height="36" stroke="var(--pk3)" stroke-width="2"/><circle cx="20" cy="22" r="12" stroke="var(--pk)" stroke-width="2" fill="none"/><rect x="30" y="10" width="16" height="16" fill="var(--r2)" stroke="var(--r)" stroke-width="1.5"/></svg>
+<div class="ilb" data-i18n="sk">Sketchbook</div></div>
+
+<div class="ic" id="ic-arch" style="left:12px;top:300px" ondblclick="oW('arch')">
+<svg viewBox="0 0 54 44" fill="none"><rect x="2" y="4" width="50" height="9" fill="var(--g)" stroke="var(--g2)" stroke-width="1.5"/><rect x="7" y="17" width="40" height="9" fill="var(--g2)" fill-opacity=".4" stroke="var(--g2)" stroke-width="1.5"/><rect x="14" y="30" width="26" height="9" fill="none" stroke="var(--g2)" stroke-width="1.5"/><line x1="2" y1="4" x2="40" y2="39" stroke="var(--r)" stroke-width="1.5" opacity=".6"/></svg>
+<div class="ilb" data-i18n="arch">Archive</div></div>
+
+<div class="ic" id="ic-blog" style="left:12px;top:396px" ondblclick="oW('blog')">
+<svg viewBox="0 0 54 44" fill="none"><path d="M4 22 Q27 4 50 22 Q27 40 4 22Z" stroke="var(--pk3)" stroke-width="2.5" fill="none"/><circle cx="27" cy="22" r="10" stroke="var(--pk3)" stroke-width="2" fill="none"/><circle cx="27" cy="22" r="5" fill="var(--pk3)"/><line x1="12" y1="10" x2="10" y2="6" stroke="var(--pk3)" stroke-width="1.3"/><line x1="27" y1="8" x2="27" y2="3" stroke="var(--pk3)" stroke-width="1.3"/><line x1="42" y1="10" x2="44" y2="6" stroke="var(--pk3)" stroke-width="1.3"/></svg>
+<div class="ilb" data-i18n="blog">Blog</div></div>
+
+<div class="ic" id="ic-das" style="left:12px;top:492px" ondblclick="openEP()">
+<svg viewBox="0 0 54 44" fill="none"><rect x="8" y="2" width="38" height="28" stroke="var(--pk)" stroke-width="2" fill="none"/><rect x="8" y="30" width="10" height="12" stroke="var(--pk3)" stroke-width="1.5" fill="none"/><rect x="22" y="30" width="10" height="12" stroke="var(--pk3)" stroke-width="1.5" fill="none"/><rect x="36" y="30" width="10" height="12" stroke="var(--pk3)" stroke-width="1.5" fill="none"/><line x1="8" y1="18" x2="46" y2="18" stroke="var(--pk)" stroke-width="1.5"/></svg>
+<div class="ilb" data-i18n="das">das Dasein</div></div>
+
+<div class="ic" id="ic-guest" style="left:12px;top:588px" ondblclick="oW('guest')">
+<svg viewBox="0 0 54 44" fill="none"><line x1="27" y1="4" x2="27" y2="40" stroke="var(--g2)" stroke-width="2"/><path d="M4 10 L27 4 L27 40 L4 40 Z" stroke="var(--pk3)" stroke-width="2" fill="none"/><path d="M50 10 L27 4 L27 40 L50 40 Z" stroke="var(--pk3)" stroke-width="2" fill="none"/><line x1="8" y1="18" x2="24" y2="16" stroke="var(--g2)" stroke-width="1.2"/><line x1="8" y1="25" x2="24" y2="23" stroke="var(--g2)" stroke-width="1.2"/><line x1="30" y1="16" x2="46" y2="18" stroke="var(--g2)" stroke-width="1.2"/></svg>
+<div class="ilb" data-i18n="guest">Guestbook</div></div>
+
+<!-- RIGHT COLUMN -->
+<div class="ic" id="ic-show" style="right:12px;top:12px" ondblclick="oW('show')">
+<svg viewBox="0 0 54 44" fill="none"><circle cx="7" cy="7" r="5" stroke="var(--pk3)" stroke-width="2" fill="none"/><circle cx="47" cy="37" r="5" stroke="var(--pk3)" stroke-width="2" fill="none"/><line x1="7" y1="7" x2="47" y2="37" stroke="var(--cr)" stroke-width="3"/><polygon points="34,4 50,4 50,18 36,12" fill="var(--r)"/><circle cx="28" cy="24" r="5" fill="none" stroke="var(--r)" stroke-width="2"/></svg>
+<div class="ilb" data-i18n="show">Showreel</div></div>
+
+<div class="ic" id="ic-art" style="right:12px;top:108px" ondblclick="oW('art')">
+<svg viewBox="0 0 54 44" fill="none"><circle cx="18" cy="20" r="14" stroke="var(--pk3)" stroke-width="2" fill="none"/><rect x="22" y="8" width="28" height="28" stroke="var(--r)" stroke-width="2" fill="none"/><polygon points="24,36 40,36 32,22" fill="var(--r2)" fill-opacity=".6"/><circle cx="18" cy="20" r="5" fill="var(--pk3)" opacity=".5"/></svg>
+<div class="ilb" data-i18n="art">Art / 3D</div></div>
+
+<div class="ic" id="ic-mani" style="right:12px;top:204px" ondblclick="oW('mani')">
+<svg viewBox="0 0 54 44" fill="none"><rect x="2" y="2" width="50" height="40" stroke="var(--r)" stroke-width="2"/><rect x="2" y="2" width="50" height="14" fill="var(--r)" fill-opacity=".8"/><line x1="2" y1="22" x2="52" y2="22" stroke="var(--r)" stroke-width="1.5"/><line x1="8" y1="28" x2="46" y2="28" stroke="var(--g2)" stroke-width=".9"/><line x1="8" y1="34" x2="38" y2="34" stroke="var(--g2)" stroke-width=".9"/></svg>
+<div class="ilb" data-i18n="mani">Manifesto</div></div>
+
+<div class="ic" id="ic-about" style="right:12px;top:300px" ondblclick="oW('about')">
+<svg viewBox="0 0 54 44" fill="none"><circle cx="27" cy="10" r="8" stroke="var(--pk3)" stroke-width="2" fill="none"/><polygon points="13,44 27,18 41,44" stroke="var(--pk3)" stroke-width="2" fill="none"/><line x1="13" y1="30" x2="41" y2="30" stroke="var(--pk3)" stroke-width="2"/><circle cx="27" cy="10" r="3" fill="var(--pk3)"/></svg>
+<div class="ilb" data-i18n="about">About</div></div>
+
+<div class="ic" id="ic-col" style="right:12px;top:396px" ondblclick="oW('col')">
+<svg viewBox="0 0 54 44" fill="none"><polygon points="2,40 22,4 42,40" stroke="var(--pk3)" stroke-width="2" fill="none"/><polygon points="12,40 32,4 52,40" stroke="var(--g2)" stroke-width="2" fill="none"/><polygon points="22,40 27,30 32,40" fill="var(--pk3)" fill-opacity=".5"/></svg>
+<div class="ilb" data-i18n="col">Collab.</div></div>
+
+<div class="ic" id="ic-proj" style="right:12px;top:492px" ondblclick="oW('proj')">
+<svg viewBox="0 0 54 44" fill="none"><rect x="2" y="4" width="50" height="36" stroke="var(--g2)" stroke-width="2" fill="none"/><circle cx="27" cy="22" r="10" stroke="var(--r)" stroke-width="2" fill="none"/><circle cx="27" cy="22" r="4" fill="var(--r2)"/><line x1="27" y1="4" x2="27" y2="12" stroke="var(--r)" stroke-width="2"/><line x1="27" y1="32" x2="27" y2="40" stroke="var(--r)" stroke-width="2"/><line x1="2" y1="22" x2="17" y2="22" stroke="var(--r)" stroke-width="2"/><line x1="37" y1="22" x2="52" y2="22" stroke="var(--r)" stroke-width="2"/></svg>
+<div class="ilb" data-i18n="proj">Proj.</div></div>
+
+<div class="ic" id="ic-sq" style="right:12px;top:588px" ondblclick="openGP()">
+<svg viewBox="0 0 54 44" fill="none"><polygon points="27 4 50 40 4 40" stroke="var(--pk3)" stroke-width="2.5" fill="none"/><polygon points="27 14 42 38 12 38" fill="var(--pk3)" fill-opacity=".15" stroke="var(--pk)" stroke-width="1.5"/><circle cx="27" cy="28" r="4" fill="var(--pk3)" opacity=".7"/></svg>
+<div class="ilb" data-i18n="sq">square</div></div>
+
+<!-- BOTTOM ROW -->
+<div class="ic" id="ic-con" style="left:12px;bottom:4px" ondblclick="oW('contact')">
+<svg viewBox="0 0 54 44" fill="none"><rect x="4" y="8" width="46" height="28" stroke="var(--g2)" stroke-width="2" fill="none"/><polyline points="4,8 27,24 50,8" stroke="var(--g2)" stroke-width="2" fill="none"/></svg>
+<div class="ilb" data-i18n="contact">Contact</div></div>
+
+<div class="ic" id="ic-shop" style="left:100px;bottom:4px" ondblclick="oW('shop')">
+<svg viewBox="0 0 54 44" fill="none"><polygon points="4,24 24,4 50,4 50,40 4,40" stroke="var(--g2)" stroke-width="2" fill="none"/><circle cx="38" cy="16" r="5" stroke="var(--pk3)" stroke-width="1.5" fill="none"/><line x1="4" y1="24" x2="50" y2="24" stroke="var(--r)" stroke-width="1.5"/></svg>
+<div class="ilb" data-i18n="shop">Shop</div></div>
+
+<!-- JOKE ICON — constructivist star -->
+<div class="ic" id="ic-joke" style="left:192px;bottom:4px" ondblclick="oW('joke')">
+<svg viewBox="0 0 54 44" fill="none">
+  <polygon points="27,2 31,17 46,8 37,21 52,23 37,29 44,42 27,35 10,42 17,29 2,23 17,21 8,8 23,17" stroke="var(--r)" stroke-width="2" fill="none" stroke-linejoin="round"/>
+  <circle cx="27" cy="24" r="8" fill="var(--r2)" stroke="var(--r)" stroke-width="1.5"/>
+  <circle cx="23" cy="22" r="2" fill="var(--cr)"/>
+  <circle cx="31" cy="22" r="2" fill="var(--cr)"/>
+  <path d="M22 27 Q27 31 32 27" stroke="var(--cr)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+</svg>
+<div class="ilb" data-i18n="joke">★</div></div>
+
+<div class="ic" id="ic-q" style="right:192px;bottom:4px" ondblclick="goRandArchive()">
+<svg viewBox="0 0 54 44" fill="none"><circle cx="27" cy="22" r="20" stroke="var(--r)" stroke-width="2.5" fill="none"/><path d="M19 14 Q19 8 27 8 Q35 8 35 15 Q35 21 27 22 L27 28" stroke="var(--cr)" stroke-width="2.5" fill="none" stroke-linecap="round"/><circle cx="27" cy="34" r="2.5" fill="var(--cr)"/></svg>
+<div class="ilb" data-i18n="random">?</div></div>
+
+<div class="ic" id="ic-you" style="right:100px;bottom:4px" ondblclick="oW('you')">
+<svg viewBox="0 0 54 44" fill="none"><circle cx="27" cy="12" r="8" stroke="var(--pk3)" stroke-width="2" fill="none"/><polyline points="10,44 20,28 27,34 34,28 44,44" stroke="var(--pk3)" stroke-width="2" fill="none"/><circle cx="27" cy="12" r="3" fill="var(--r)"/><line x1="4" y1="44" x2="50" y2="44" stroke="var(--g2)" stroke-width="1.2"/></svg>
+<div class="ilb">YOU</div></div>
+
+<div class="ic" id="ic-cur2" style="right:12px;bottom:4px" ondblclick="openCurator()">
+<svg viewBox="0 0 54 44" fill="none"><path d="M12 4 Q2 22 12 40" stroke="var(--r)" stroke-width="3" fill="none"/><path d="M22 4 Q12 22 22 40" stroke="var(--r)" stroke-width="2.5" fill="none"/><path d="M32 4 Q42 22 32 40" stroke="var(--pk3)" stroke-width="2.5" fill="none"/><path d="M42 4 Q52 22 42 40" stroke="var(--pk3)" stroke-width="3" fill="none"/></svg>
+<div class="ilb">))</div></div>
+
+<div class="ic" id="ic-skull" style="left:284px;bottom:4px" ondblclick="startVirus()">
+<svg viewBox="0 0 54 44" fill="none"><circle cx="27" cy="18" r="16" stroke="var(--g2)" stroke-width="2" fill="none"/><circle cx="18" cy="16" r="5" fill="var(--k)" stroke="var(--g2)" stroke-width="1.5"/><circle cx="36" cy="16" r="5" fill="var(--k)" stroke="var(--g2)" stroke-width="1.5"/><path d="M14 32 L14 40 L22 40 L22 36 L27 36 L27 40 L32 40 L32 36 L40 40 L40 32 Z" stroke="var(--g2)" stroke-width="1.5" fill="none"/></svg>
+<div class="ilb" style="color:var(--g2)">☠</div></div>
+
+<!-- CURSOR EDITOR ICON -->
+<div class="ic" id="ic-cte" style="left:376px;bottom:4px" ondblclick="openCTE()">
+<svg viewBox="0 0 54 44" fill="none"><path d="M4 4L4 36L14 26L18 36L24 33L20 23L30 23Z" stroke="var(--pk)" stroke-width="1.8" fill="none"/><rect x="32" y="8" width="16" height="16" fill="none" stroke="var(--pk3)" stroke-width="1.5"/><rect x="34" y="10" width="3" height="3" fill="var(--r)"/><rect x="39" y="10" width="3" height="3" fill="var(--cr)"/><rect x="34" y="15" width="3" height="3" fill="var(--cr)"/><rect x="39" y="15" width="3" height="3" fill="var(--pk)"/></svg>
+<div class="ilb" style="color:var(--pk)" data-i18n="cursor-lbl">cursor</div></div>
+
+<!-- CLICK COUNTER ICON -->
+<div class="ic" id="ic-cnt" style="left:470px;bottom:4px" ondblclick="oW('cnt')">
+<svg viewBox="0 0 54 44" fill="none"><rect x="4" y="8" width="46" height="28" stroke="var(--r)" stroke-width="2" fill="none"/><line x1="4" y1="8" x2="50" y2="8" stroke="var(--r)" stroke-width="3"/><text x="27" y="28" font-family="monospace" font-size="10" fill="var(--r)" text-anchor="middle" id="cnt-ico-num">0</text></svg>
+<div class="ilb" id="cnt-icon-lbl" style="color:var(--r)" data-i18n="counter">counter</div></div>
+
+<div class="ic" id="ic-trash" style="display:none" ondblclick="oW('trash')">
+<svg viewBox="0 0 54 44" fill="none"><rect x="8" y="14" width="38" height="26" stroke="var(--g2)" stroke-width="2" fill="none"/><rect x="2" y="10" width="50" height="6" stroke="var(--g2)" stroke-width="1.5" fill="var(--g)" fill-opacity=".4"/><rect x="16" y="4" width="22" height="8" stroke="var(--g2)" stroke-width="1.2"/><line x1="18" y1="20" x2="18" y2="36" stroke="var(--g2)" stroke-width="1.2"/><line x1="27" y1="20" x2="27" y2="36" stroke="var(--g2)" stroke-width="1.2"/><line x1="36" y1="20" x2="36" y2="36" stroke="var(--g2)" stroke-width="1.2"/></svg>
+<div class="ilb" data-i18n="trash">Trash</div></div>
+
+
+<!-- CATCH ME ICON -->
+<div class="ic" id="ic-catchme" style="left:200px;top:200px" onclick="moveCatchMe(event)">
+<svg viewBox="0 0 54 44" fill="none">
+  <!-- Pixel rabbit/cursor that runs away -->
+  <rect x="20" y="4" width="14" height="4" fill="var(--pk)"/>
+  <rect x="16" y="8" width="22" height="16" fill="var(--pk)"/>
+  <rect x="12" y="12" width="4" height="8" fill="var(--pk)"/>
+  <rect x="38" y="12" width="4" height="8" fill="var(--pk)"/>
+  <rect x="20" y="14" width="4" height="4" fill="var(--k)"/>
+  <rect x="30" y="14" width="4" height="4" fill="var(--k)"/>
+  <rect x="22" y="20" width="10" height="2" fill="var(--r)"/>
+  <rect x="14" y="26" width="8" height="10" fill="var(--pk)"/>
+  <rect x="24" y="26" width="6" height="12" fill="var(--pk)"/>
+  <rect x="32" y="26" width="8" height="10" fill="var(--pk)"/>
+  <!-- speed lines -->
+  <line x1="2" y1="18" x2="10" y2="18" stroke="var(--g2)" stroke-width="1.5" opacity=".7"/>
+  <line x1="4" y1="24" x2="10" y2="24" stroke="var(--g2)" stroke-width="1" opacity=".5"/>
+  <line x1="2" y1="30" x2="8" y2="30" stroke="var(--g2)" stroke-width="1" opacity=".4"/>
+</svg>
+<div class="ilb" id="catchme-lbl" style="color:var(--pk2)" data-i18n="catchme">catch me</div></div>
+
+<!-- ═══ WINDOWS ═══ -->
+<!-- PH -->
+<div class="win" id="win-ph" style="left:100px;top:46px;width:490px;height:360px">
+  <div class="wtb"><span class="wt" data-i18n="ph">Ph</span><div class="wbc"><div class="wb" onclick="tFP('ph')">□</div><div class="wb x" onclick="cW('ph')">×</div></div></div>
+  <div class="wp"><span class="wbk" onclick="cW('ph')">←</span> annaili.net / Ph</div>
+  <div class="wb0"><div class="fg" id="ph-grid"></div></div><div class="wrz"></div>
+</div>
+<!-- PH subs -->
+<div class="win" id="win-ph-portraits" style="left:120px;top:66px;width:480px;height:360px">
+  <div class="wtb"><span class="wt" data-i18n="portraits">portraits/</span><div class="wbc"><div class="wb" onclick="tFP('ph-portraits')">□</div><div class="wb x" onclick="cW('ph-portraits')">×</div></div></div>
+  <div class="wp"><span class="wbk" onclick="cW('ph-portraits');oW('ph')">←</span> Ph / portraits</div>
+  <div class="wb0"><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+    <div class="eph" id="eph-p1" onclick="viewEph('eph-p1',this)"><img class="pimg" src="https://picsum.photos/seed/ann-p1/300/180" style="height:120px"><div class="eph-lbl pm">portrait_001.jpg <span style="color:var(--r)">[ephemeral]</span></div></div>
+    <div><img class="pimg" src="https://picsum.photos/seed/ann-p2/300/180" style="height:120px"><div class="pm">portrait_002.jpg</div></div>
+    <div><img class="pimg" src="https://picsum.photos/seed/ann-p3/300/180" style="height:120px"><div class="pm">portrait_003.jpg</div></div>
+    <div><img class="pimg" src="https://picsum.photos/seed/ann-p4/300/180" style="height:120px"><div class="pm">portrait_004.jpg</div></div>
+  </div></div><div class="wrz"></div>
+</div>
+<div class="win" id="win-ph-arch2" style="left:125px;top:70px;width:460px;height:320px">
+  <div class="wtb"><span class="wt" data-i18n="architecture">architecture/</span><div class="wbc"><div class="wb x" onclick="cW('ph-arch2')">×</div></div></div>
+  <div class="wp"><span class="wbk" onclick="cW('ph-arch2');oW('ph')">←</span> Ph / architecture</div>
+  <div class="wb0"><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+    <div><img class="pimg" src="https://picsum.photos/seed/arch1/300/180" style="height:110px"><div class="pm">brutalist_001.jpg</div></div>
+    <div class="eph" id="eph-a1" onclick="viewEph('eph-a1',this)"><img class="pimg" src="https://picsum.photos/seed/arch2/300/180" style="height:110px"><div class="eph-lbl pm">stairwell.jpg <span style="color:var(--r)">[ephemeral]</span></div></div>
+    <div><img class="pimg" src="https://picsum.photos/seed/arch3/300/180" style="height:110px"><div class="pm">facade_01.jpg</div></div>
+    <div><img class="pimg" src="https://picsum.photos/seed/arch4/300/180" style="height:110px"><div class="pm">rooftop_3am.jpg</div></div>
+  </div></div><div class="wrz"></div>
+</div>
+<div class="win" id="win-ph-fashion" style="left:125px;top:70px;width:440px;height:300px">
+  <div class="wtb"><span class="wt" data-i18n="fashion">fashion/</span><div class="wbc"><div class="wb x" onclick="cW('ph-fashion')">×</div></div></div>
+  <div class="wp"><span class="wbk" onclick="cW('ph-fashion');oW('ph')">←</span> Ph / fashion</div>
+  <div class="wb0"><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+    <div><img class="pimg" src="https://picsum.photos/seed/fash1/300/220" style="height:140px"><div class="pm">lookbook_ss24_001.jpg</div></div>
+    <div><img class="pimg" src="https://picsum.photos/seed/fash2/300/220" style="height:140px"><div class="pm">lookbook_ss24_002.jpg</div></div>
+  </div></div><div class="wrz"></div>
+</div>
+<div class="win" id="win-ph-concerts" style="left:130px;top:74px;width:460px;height:340px">
+  <div class="wtb"><span class="wt" data-i18n="concerts">concerts/</span><div class="wbc"><div class="wb x" onclick="cW('ph-concerts')">×</div></div></div>
+  <div class="wp"><span class="wbk" onclick="cW('ph-concerts');oW('ph')">←</span> Ph / concerts</div>
+  <div class="wb0"><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+    <div class="eph" id="eph-c1" onclick="viewEph('eph-c1',this)"><img class="pimg" src="https://picsum.photos/seed/conc1/300/180" style="height:110px;filter:contrast(1.3) grayscale(.2)"><div class="eph-lbl pm">factory_2025.jpg <span style="color:var(--r)">[ephemeral]</span></div></div>
+    <div><img class="pimg" src="https://picsum.photos/seed/conc2/300/180" style="height:110px;filter:contrast(1.3)"><div class="pm">the_audience_001.jpg</div></div>
+    <div><img class="pimg" src="https://picsum.photos/seed/conc3/300/180" style="height:110px;filter:contrast(1.3)"><div class="pm">stage_light_004.jpg</div></div>
+    <div><img class="pimg" src="https://picsum.photos/seed/conc4/300/180" style="height:110px;filter:grayscale(.5)"><div class="pm">crowd_002.jpg</div></div>
+  </div></div><div class="wrz"></div>
+</div>
+<div class="win" id="win-ph-still" style="left:130px;top:74px;width:420px;height:280px">
+  <div class="wtb"><span class="wt" data-i18n="still">still/</span><div class="wbc"><div class="wb x" onclick="cW('ph-still')">×</div></div></div>
+  <div class="wp"><span class="wbk" onclick="cW('ph-still');oW('ph')">←</span> Ph / still</div>
+  <div class="wb0"><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+    <div><img class="pimg" src="https://picsum.photos/seed/still1/300/200" style="height:120px"><div class="pm">table_01.jpg</div></div>
+    <div><img class="pimg" src="https://picsum.photos/seed/still2/300/200" style="height:120px"><div class="pm">objects_002.jpg</div></div>
+  </div></div><div class="wrz"></div>
+</div>
+<div class="win" id="win-ph-report" style="left:130px;top:74px;width:440px;height:320px">
+  <div class="wtb"><span class="wt" data-i18n="reportage">reportage/</span><div class="wbc"><div class="wb x" onclick="cW('ph-report')">×</div></div></div>
+  <div class="wp"><span class="wbk" onclick="cW('ph-report');oW('ph')">←</span> Ph / reportage</div>
+  <div class="wb0"><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+    <div><img class="pimg" src="https://picsum.photos/seed/rep1/300/180" style="height:110px"><div class="pm">street_doc_01.jpg</div></div>
+    <div><img class="pimg" src="https://picsum.photos/seed/rep2/300/180" style="height:110px"><div class="pm">event_cover_024.jpg</div></div>
+    <div><img class="pimg" src="https://picsum.photos/seed/rep3/300/180" style="height:110px"><div class="pm">raw_moment_007.jpg</div></div>
+  </div></div><div class="wrz"></div>
+</div>
+<!-- VID -->
+<div class="win" id="win-vid" style="left:110px;top:54px;width:490px;height:340px">
+  <div class="wtb"><span class="wt" data-i18n="vid">Vid</span><div class="wbc"><div class="wb" onclick="tFP('vid')">□</div><div class="wb x" onclick="cW('vid')">×</div></div></div>
+  <div class="wp"><span class="wbk" onclick="cW('vid')">←</span> annaili.net / Vid</div>
+  <div class="wb0"><div class="fg" id="vid-grid"></div></div><div class="wrz"></div>
+</div>
+<div class="win" id="win-vid-conc" style="left:130px;top:72px;width:440px;height:310px">
+  <div class="wtb"><span class="wt" data-i18n="concerts">concerts/</span><div class="wbc"><div class="wb x" onclick="cW('vid-conc')">×</div></div></div>
+  <div class="wp"><span class="wbk" onclick="cW('vid-conc');oW('vid')">←</span> Vid / concerts</div>
+  <div class="wb0">
+    <div class="pc"><div class="pm">2025-03-14 · 4K · 22min</div>Godspeed You! Black Emperor — abandoned factory. Handheld Sony FX3. The crowd breathed as one organism.</div>
+    <div class="pc"><div class="pm">2024-11-08 · FullHD · 8min</div>Molchat Doma — underground venue, Chemnitz. Rain on windows. Zero permission.</div>
+    <div class="pc"><div class="pm">2024-08-22 · 4K · 14min</div>Summer noise festival. 6 bands. 400 people. 14 hours compressed into silence.</div>
+  </div><div class="wrz"></div>
+</div>
+<div class="win" id="win-vid-art" style="left:130px;top:72px;width:440px;height:310px">
+  <div class="wtb"><span class="wt" data-i18n="artfilms">art films/</span><div class="wbc"><div class="wb x" onclick="cW('vid-art')">×</div></div></div>
+  <div class="wp"><span class="wbk" onclick="cW('vid-art');oW('vid')">←</span> Vid / art films</div>
+  <div class="wb0">
+    <div class="pc eph" id="eph-v1" onclick="viewEph('eph-v1',this)"><div class="pm">2025 · ИЗБАВЛЕНИЕ I · 7min · <span style="color:var(--r)">[ephemeral — 3 views max]</span></div><div class="eph-lbl">A woman walks into a building. The building forgets her. Time does not.</div></div>
+    <div class="pc"><div class="pm">2024 · "25 kilogramms" · 12min</div>Portrait film. Shot over 8 months. Score by accident.</div>
+    <div class="pc"><div class="pm">2023 · "das Dasein" · 4min</div>Single-take. Abandoned sanatorium. Philosophical.</div>
+  </div><div class="wrz"></div>
+</div>
+<div class="win" id="win-vid-vlogs" style="left:130px;top:72px;width:420px;height:290px">
+  <div class="wtb"><span class="wt" data-i18n="vlogs">vlogs/</span><div class="wbc"><div class="wb x" onclick="cW('vid-vlogs')">×</div></div></div>
+  <div class="wp"><span class="wbk" onclick="cW('vid-vlogs');oW('vid')">←</span> Vid / vlogs</div>
+  <div class="wb0">
+    <div class="pc"><div class="pm">2026-01-15</div>Studio day. Colour graded 30 seconds for 4 hours. Correct decision.</div>
+    <div class="pc"><div class="pm">2025-12-31</div>New Year. Filmed the ceiling for 3 minutes. Best video of the year.</div>
+    <div class="pc"><div class="pm">2025-09-03</div>Concert documentary process. Behind the camera behind the camera.</div>
+  </div><div class="wrz"></div>
+</div>
+<!-- SKETCHBOOK -->
+<div class="win" id="win-sk" style="left:120px;top:60px;width:440px;height:320px">
+  <div class="wtb"><span class="wt" data-i18n="sk">Sketchbook</span><div class="wbc"><div class="wb x" onclick="cW('sk')">×</div></div></div>
+  <div class="wp"><span class="wbk" onclick="cW('sk')">←</span> annaili.net / Sketchbook</div>
+  <div class="wb0"><div class="fg" id="sk-grid"></div></div><div class="wrz"></div>
+</div>
+<!-- ARCHIVE -->
+<div class="win" id="win-arch" style="left:108px;top:52px;width:500px;height:390px">
+  <div class="wtb"><span class="wt" data-i18n="arch">Archive</span><div class="wbc"><div class="wb" onclick="tFP('arch')">□</div><div class="wb x" onclick="cW('arch')">×</div></div></div>
+  <div class="wp"><span class="wbk" onclick="cW('arch')">←</span> annaili.net / archive</div>
+  <div class="wb0"><div class="fg" id="arch-year-grid"></div><div id="arch-posts"></div></div><div class="wrz"></div>
+</div>
+<div class="win" id="win-arch-2018" style="left:140px;top:76px;width:440px;height:340px"><div class="wtb"><span class="wt">2018</span><div class="wbc"><div class="wb x" onclick="cW('arch-2018')">×</div></div></div><div class="wp"><span class="wbk" onclick="cW('arch-2018');oW('arch')">←</span> archive / 2018</div><div class="wb0" id="ay-2018"></div><div class="wrz"></div></div>
+<div class="win" id="win-arch-2019" style="left:140px;top:76px;width:440px;height:340px"><div class="wtb"><span class="wt">2019</span><div class="wbc"><div class="wb x" onclick="cW('arch-2019')">×</div></div></div><div class="wp"><span class="wbk" onclick="cW('arch-2019');oW('arch')">←</span> archive / 2019</div><div class="wb0" id="ay-2019"></div><div class="wrz"></div></div>
+<div class="win" id="win-arch-2020" style="left:140px;top:76px;width:440px;height:340px"><div class="wtb"><span class="wt">2020</span><div class="wbc"><div class="wb x" onclick="cW('arch-2020')">×</div></div></div><div class="wp"><span class="wbk" onclick="cW('arch-2020');oW('arch')">←</span> archive / 2020</div><div class="wb0" id="ay-2020"></div><div class="wrz"></div></div>
+<div class="win" id="win-arch-2021" style="left:140px;top:76px;width:440px;height:340px"><div class="wtb"><span class="wt">2021</span><div class="wbc"><div class="wb x" onclick="cW('arch-2021')">×</div></div></div><div class="wp"><span class="wbk" onclick="cW('arch-2021');oW('arch')">←</span> archive / 2021</div><div class="wb0" id="ay-2021"></div><div class="wrz"></div></div>
+<div class="win" id="win-arch-2022" style="left:140px;top:76px;width:440px;height:340px"><div class="wtb"><span class="wt">2022</span><div class="wbc"><div class="wb x" onclick="cW('arch-2022')">×</div></div></div><div class="wp"><span class="wbk" onclick="cW('arch-2022');oW('arch')">←</span> archive / 2022</div><div class="wb0" id="ay-2022"></div><div class="wrz"></div></div>
+<div class="win" id="win-arch-2023" style="left:140px;top:76px;width:440px;height:340px"><div class="wtb"><span class="wt">2023</span><div class="wbc"><div class="wb x" onclick="cW('arch-2023')">×</div></div></div><div class="wp"><span class="wbk" onclick="cW('arch-2023');oW('arch')">←</span> archive / 2023</div><div class="wb0" id="ay-2023"></div><div class="wrz"></div></div>
+<div class="win" id="win-arch-2024" style="left:140px;top:76px;width:440px;height:340px"><div class="wtb"><span class="wt">2024</span><div class="wbc"><div class="wb x" onclick="cW('arch-2024')">×</div></div></div><div class="wp"><span class="wbk" onclick="cW('arch-2024');oW('arch')">←</span> archive / 2024</div><div class="wb0" id="ay-2024"></div><div class="wrz"></div></div>
+<div class="win" id="win-arch-2025" style="left:140px;top:76px;width:440px;height:340px"><div class="wtb"><span class="wt">2025</span><div class="wbc"><div class="wb x" onclick="cW('arch-2025')">×</div></div></div><div class="wp"><span class="wbk" onclick="cW('arch-2025');oW('arch')">←</span> archive / 2025</div><div class="wb0" id="ay-2025"></div><div class="wrz"></div></div>
+<div class="win" id="win-arch-2026" style="left:140px;top:76px;width:440px;height:340px"><div class="wtb"><span class="wt">2026</span><div class="wbc"><div class="wb x" onclick="cW('arch-2026')">×</div></div></div><div class="wp"><span class="wbk" onclick="cW('arch-2026');oW('arch')">←</span> archive / 2026</div><div class="wb0" id="ay-2026"></div><div class="wrz"></div></div>
+<!-- BLOG -->
+<div class="win blog-white" id="win-blog" style="left:118px;top:58px;width:500px;height:430px">
+  <div class="wtb"><span class="wt" id="blt" data-i18n="blog">Blog</span><div class="wbc"><div class="wb" onclick="tFP('blog')">□</div><div class="wb x" onclick="cW('blog')">×</div></div></div>
+  <div class="wp"><span class="wbk" onclick="cW('blog')">←</span> annaili.net / blog</div>
+  <div class="wb0" id="blb" style="background:#f5f0ee;color:#111"></div><div class="wrz"></div>
+</div>
+<!-- SHOWREEL -->
+<div class="win" id="win-show" style="left:98px;top:46px;width:560px;height:360px">
+  <div class="wtb"><span class="wt" data-i18n="show">Showreel</span><div class="wbc"><div class="wb" onclick="tFP('show')">□</div><div class="wb x" onclick="cW('show')">×</div></div></div>
+  <div class="wp"><span class="wbk" onclick="cW('show')">←</span> annaili.net / showreel</div>
+  <div class="wb0" style="padding:0;background:#000"><iframe width="100%" height="100%" src="https://www.youtube.com/embed/4o8_7r5KevI?rel=0&modestbranding=1" frameborder="0" allow="accelerometer;autoplay;encrypted-media;gyroscope;picture-in-picture" allowfullscreen style="pointer-events:all;cursor:default;display:block"></iframe></div><div class="wrz"></div>
+</div>
+<!-- ART -->
+<div class="win" id="win-art" style="left:128px;top:64px;width:460px;height:360px">
+  <div class="wtb"><span class="wt" data-i18n="art">Art / 3D</span><div class="wbc"><div class="wb x" onclick="cW('art')">×</div></div></div>
+  <div class="wp"><span class="wbk" onclick="cW('art')">←</span> annaili.net / art</div>
+  <div class="wb0">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+      <div class="eph" id="eph-3d1" onclick="viewEph('eph-3d1',this)"><img class="pimg" src="https://picsum.photos/seed/art3d1/300/180" style="height:110px;filter:hue-rotate(200deg) saturate(1.5)"><div class="eph-lbl pm">sculpture_001.png <span style="color:var(--r)">[ephemeral]</span></div></div>
+      <div><img class="pimg" src="https://picsum.photos/seed/art3d2/300/180" style="height:110px;filter:hue-rotate(180deg)"><div class="pm">blender_study_12.png</div></div>
+      <div><img class="pimg" src="https://picsum.photos/seed/art3d3/300/180" style="height:110px;filter:grayscale(.5) contrast(1.2)"><div class="pm">collage_analog_04.jpg</div></div>
+      <div><img class="pimg" src="https://picsum.photos/seed/art3d4/300/180" style="height:110px"><div class="pm">mixed_media_08.jpg</div></div>
+    </div>
+    <div style="font-size:11px;color:var(--g2);border-top:1px solid #222;padding-top:8px">Blender · collage · mixed media · some disappear</div>
+  </div><div class="wrz"></div>
+</div>
+<!-- MANIFESTO -->
+<div class="win" id="win-mani" style="left:138px;top:68px;width:480px;height:440px">
+  <div class="wtb"><span class="wt" data-i18n="mani">Manifesto</span><div class="wbc"><div class="wb" onclick="tFP('mani')">□</div><div class="wb x" onclick="cW('mani')">×</div></div></div>
+  <div class="wp"><span class="wbk" onclick="cW('mani')">←</span> manifesto.txt · <span style="color:var(--pk);font-size:11px;cursor:none" onclick="genMani()">↻ new</span></div>
+  <div class="wb0" style="background:#000">
+    <div class="mg"><div class="mgs"></div><div class="mgs"></div><div class="mgs"></div><div class="mgs"></div><div class="mgs"></div></div>
+    <span class="mani-blink">★ ИЗБАВЛЕНИЕ ★</span>
+    <div class="mani-crawl"><span data-i18n="crawl1">★ ANNA ELIZABETH ★ GOING GONZO ★ ИЗБАВЛЕНИЕ ★ BEING-THERE ★ 25KG ★ ARCHIVE IS ALIVE ★</span></div>
+    <div class="mg"><div class="mgs"></div><div class="mgs"></div><div class="mgs"></div><div class="mgs"></div><div class="mgs"></div></div>
+    <pre class="mani-txt" id="mani-out"></pre>
+    <div class="mg"><div class="mgs"></div><div class="mgs"></div><div class="mgs"></div><div class="mgs"></div><div class="mgs"></div></div>
+    <div class="mani-crawl"><span data-i18n="crawl2">★ EVERY FRAME ★ THE BODY DIES ★ THE DATA DOES NOT ★</span></div>
+    <span class="mani-blink" style="font-size:18px;color:var(--pk)">annaili.net · 2026</span>
+  </div><div class="wrz"></div>
+</div>
+<!-- ABOUT -->
+<div class="win" id="win-about" style="left:148px;top:74px;width:460px;height:420px">
+  <div class="wtb"><span class="wt" data-i18n="about">About</span><div class="wbc"><div class="wb x" onclick="cW('about')">×</div></div></div>
+  <div class="wp"><span class="wbk" onclick="cW('about')">←</span> annaili.net / about</div>
+  <div class="wb0">
+    <div class="asc"><h3>Anna Elizabeth</h3><p style="color:var(--pk);font-size:14px;line-height:1.6">Multimedia Artist · Director · Cinematographer · Editor</p><p style="font-size:12px;color:var(--g2);margin-top:6px;line-height:1.7">I work at the intersection of painting, moving image, and presence. My practice spans fine art, film, and live production — with a restless interest in whatever resists easy categorisation.</p></div>
+    <div class="asc"><h3>Practice</h3><ul>
+      <li>Painting &amp; mixed-media canvas works</li>
+      <li>Directing, producing &amp; shooting documentary and art film</li>
+      <li>Concert &amp; event cinematography — live &amp; backstage</li>
+      <li>Music video direction &amp; promo production</li>
+      <li>Live broadcast direction &amp; streaming (OBS, multi-cam)</li>
+      <li>Portrait, editorial &amp; reportage photography</li>
+      <li>Art direction &amp; production design</li>
+      <li>Motion graphics, compositing &amp; visual effects</li>
+    </ul></div>
+    <div class="asc"><h3>Tools</h3>
+      <span class="stg">Adobe Premiere</span><span class="stg">After Effects</span><span class="stg">Audition</span>
+      <span class="stg">DaVinci Resolve</span><span class="stg">Final Cut Pro</span><span class="stg">CapCut</span>
+      <span class="stg">Blender</span><span class="stg">TouchDesigner</span><span class="stg">Ableton Live</span>
+      <span class="stg">OBS Studio</span><span class="stg">Photoshop / Illustrator</span>
+    </div>
+    <div class="asc" style="font-size:11px;color:var(--g2);border-top:1px solid #1a1a1a;padding-top:8px;margin-top:8px">"No time for small things. Every frame is a decision."</div>
+  </div><div class="wrz"></div>
+</div>
+<!-- CONTACT -->
+<div class="win" id="win-contact" style="left:158px;top:78px;width:350px;height:250px">
+  <div class="wtb"><span class="wt" data-i18n="contact">Contact</span><div class="wbc"><div class="wb x" onclick="cW('contact')">×</div></div></div>
+  <div class="wp"><span class="wbk" onclick="cW('contact')">←</span> annaili.net / contact</div>
+  <div class="wb0">
+    <p style="font-size:12px;color:var(--g2);margin-bottom:12px" data-i18n="not-afraid">she is not afraid.</p>
+    <a class="cl2" href="https://www.instagram.com/annailinet/" target="_blank">Instagram →</a>
+    <a class="cl2" href="https://t.me/anna_ili_net" target="_blank">Telegram →</a>
+    <a class="cl2" href="https://www.youtube.com/channel/UC0kcBnRLqDRu7nHkrTrefyA" target="_blank">YouTube →</a>
+  </div><div class="wrz"></div>
+</div>
+<!-- COLLAB -->
+<div class="win" id="win-col" style="left:148px;top:74px;width:420px;height:300px">
+  <div class="wtb"><span class="wt" data-i18n="col">Collab.</span><div class="wbc"><div class="wb x" onclick="cW('col')">×</div></div></div>
+  <div class="wp"><span class="wbk" onclick="cW('col')">←</span> annaili.net / collab</div>
+  <div class="wb0">
+    <div class="pc"><div class="pm">2025 · Звуковые_Волны collective</div>Concert documentation. 6 shows. Ongoing.</div>
+    <div class="pc"><div class="pm">2024 · Theatre "Leer"</div>Short film for experimental theatre season.</div>
+    <div class="pc"><div class="pm">2023 · Zine "Осколки"</div>Photography. 400 copies. Sold out.</div>
+    <p style="font-size:12px;color:var(--g2);margin-top:10px">→ contact via Telegram for proposals</p>
+  </div><div class="wrz"></div>
+</div>
+<!-- SHOP -->
+<div class="win" id="win-shop" style="left:158px;top:78px;width:380px;height:280px">
+  <div class="wtb"><span class="wt" data-i18n="shop">Shop</span><div class="wbc"><div class="wb x" onclick="cW('shop')">×</div></div></div>
+  <div class="wp"><span class="wbk" onclick="cW('shop')">←</span> annaili.net / shop</div>
+  <div class="wb0">
+    <div class="pc"><div class="pm">photo print · A3 · signed · 25€</div>"The audience" series — 5 prints available<br><button class="buy-btn" onclick="alert('→ напиши в Telegram @anna_ili_net')">КУПИТЬ</button></div>
+    <div class="pc"><div class="pm">zine · 20 pages · 8€</div>"25 kilogramms" — 3rd edition, 200 copies<br><button class="buy-btn" onclick="alert('→ напиши в Telegram @anna_ili_net')">КУПИТЬ</button></div>
+    <div class="pc"><div class="pm">coming soon · USB 64GB · limited</div>Raw archive footage · limited edition<br><button class="buy-btn" style="opacity:.5;cursor:not-allowed">СКОРО</button></div>
+    <p style="font-size:11px;color:var(--g2);margin-top:8px">→ все заказы через Telegram</p>
+  </div><div class="wrz"></div>
+</div>
+<!-- PROJ -->
+<div class="win" id="win-proj" style="left:128px;top:64px;width:460px;height:360px">
+  <div class="wtb"><span class="wt" data-i18n="proj">Proj.</span><div class="wbc"><div class="wb x" onclick="cW('proj')">×</div></div></div>
+  <div class="wp"><span class="wbk" onclick="cW('proj')">←</span> annaili.net / proj</div>
+  <div class="wb0">
+    <div class="proj-card" onclick="oSub('proj-bio','proj')"><h4 data-i18n="proj-bio-title">Visitor Biography</h4><p data-i18n="proj-bio-desc">The site invents who you are based on the moment you arrived.</p></div>
+    <div class="proj-card" onclick="oW('proj-rand')"><h4 data-i18n="proj-rand-title">Random Experience</h4><p data-i18n="proj-rand-desc">Unexpected combination of media. Reconfigures every time.</p></div>
+  </div><div class="wrz"></div>
+</div>
+<div class="win" id="win-proj-bio" style="left:148px;top:82px;width:440px;height:340px">
+  <div class="wtb"><span class="wt" data-i18n="proj-bio-title">Visitor Biography</span><div class="wbc"><div class="wb x" onclick="cW('proj-bio')">×</div></div></div>
+  <div class="wp"><span class="wbk" onclick="cW('proj-bio');oW('proj')">←</span> proj / biography</div>
+  <div class="wb0">
+    <div id="bio-out">…</div>
+    <div style="margin-top:10px"><button class="bb" onclick="genBio()">↻ Regenerate</button></div>
+    <div id="bio-data" style="margin-top:8px;font-size:11px;color:var(--g)"></div>
+  </div><div class="wrz"></div>
+</div>
+<div class="win" id="win-proj-rand" style="left:138px;top:72px;width:490px;height:380px">
+  <div class="wtb"><span class="wt" data-i18n="proj-rand-title">Random Experience</span><div class="wbc"><div class="wb x" onclick="cW('proj-rand')">×</div></div></div>
+  <div class="wp"><span class="wbk" onclick="cW('proj-rand');oW('proj')">←</span> proj / random · <span style="color:var(--pk);cursor:none" onclick="genRandExp()">→ next</span></div>
+  <div class="wb0" id="rand-exp-out" style="background:#000;padding:0"></div><div class="wrz"></div>
+</div>
+<!-- YOU -->
+<div class="win" id="win-you" style="left:128px;top:62px;width:360px;height:320px">
+  <div class="wtb"><span class="wt">YOU</span><div class="wbc"><div class="wb x" onclick="cW('you')">×</div></div></div>
+  <div class="wp"><span class="wbk" onclick="cW('you')">←</span> visitor statistics · as exposition</div>
+  <div class="wb0" style="padding:0;background:#000">
+    <div id="you-gif">
+      <div class="yg-s" style="background:repeating-linear-gradient(90deg,var(--r) 0,var(--r) 20px,var(--pk) 20px,var(--pk) 40px,#0ff 40px,#0ff 60px,#000 60px,#000 80px);animation:mgstr .3s linear infinite"></div>
+      <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">
+        <div class="you-num" id="you-count">0</div>
+        <div style="font-family:var(--mn);font-size:12px;color:var(--cr);letter-spacing:.1em;animation:vb .6s step-start infinite" data-i18n="unique-visitors">UNIQUE VISITORS</div>
+      </div>
+    </div>
+    <div style="padding:12px;font-size:12px;color:var(--g2)">each visitor is a witness. witnessing is accumulation. the archive is becoming.</div>
+  </div><div class="wrz"></div>
+</div>
+<!-- JOKE WINDOW -->
+<div class="win" id="win-joke" style="left:160px;top:78px;width:400px;height:280px">
+  <div class="wtb"><span class="wt" data-i18n="joke">★ Jokes</span><div class="wbc"><div class="wb x" onclick="cW('joke')">×</div></div></div>
+  <div class="wp"><span class="wbk" onclick="cW('joke')">←</span> <span id="joke-lang-lbl">jokes · click below</span></div>
+  <div class="wb0" style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:#0d0d0d">
+    <div id="joke-setup" style="font-family:var(--mn);font-size:17px;color:var(--pk2);margin-bottom:20px;line-height:1.7;max-width:300px"></div>
+    <div id="joke-punchline" style="display:none;font-family:var(--mn);font-size:20px;color:var(--r);margin-bottom:22px;line-height:1.5;max-width:300px;animation:glt .15s step-start infinite"></div>
+    <button class="bb" id="joke-btn" onclick="jokeStep()">→ punchline</button>
+  </div><div class="wrz"></div>
+</div>
+<!-- GUESTBOOK -->
+<div class="win" id="win-guest" style="left:100px;top:46px;width:560px;height:480px">
+  <div class="wtb"><span class="wt" data-i18n="guest">Guestbook</span><div class="wbc"><div class="wb" onclick="tFP('guest')">□</div><div class="wb x" onclick="cW('guest')">×</div></div></div>
+  <div class="wp"><span class="wbk" onclick="cW('guest')">←</span> leave a mark. draw something.</div>
+  <div class="wb0" id="gb-body"></div><div class="wrz"></div>
+</div>
+<!-- ADMIN -->
+<div class="win" id="win-adm" style="left:80px;top:40px;width:560px;height:460px">
+  <div class="wtb"><span class="wt">// ADMIN</span><div class="wbc"><div class="wb" onclick="tFP('adm')">□</div><div class="wb x" onclick="cW('adm')">×</div></div></div>
+  <div class="wp">admin panel · <span style="font-size:11px;color:var(--g2)">logout: refresh page</span></div>
+  <div class="wb0">
+    <div class="adm-btns" id="adm-type-btns">
+      <button class="adm-btn act" onclick="setAdmMode('text')">✍ text</button>
+      <button class="adm-btn" onclick="setAdmMode('image')">🖼 image</button>
+      <button class="adm-btn" onclick="setAdmMode('video')">▶ video</button>
+    </div>
+    <div id="adm-form"></div>
+    <div id="adm-out" style="margin-top:6px;font-size:11px;color:var(--pk)"></div>
+    <div style="margin-top:12px;border-top:1px solid #1e1e1e;padding-top:8px">
+      <div style="font-size:11px;color:var(--g2);margin-bottom:6px">// Guestbook entries (admin can delete/edit)</div>
+      <div id="adm-gb-list"></div>
+    </div>
+  </div><div class="wrz"></div>
+</div>
+<!-- CLICK COUNTER WINDOW -->
+<div class="win" id="win-cnt" style="left:180px;top:90px;width:320px;height:200px">
+  <div class="wtb"><span class="wt">// СЧЁТЧИК</span><div class="wbc"><div class="wb x" onclick="cW('cnt')">×</div></div></div>
+  <div class="wp">каждый клик — след в архиве</div>
+  <div class="wb0" style="background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px">
+    <div id="cnt-display">0</div>
+    <div style="font-family:var(--mn);font-size:12px;color:var(--g2);letter-spacing:.1em;animation:vb .6s step-start infinite">КЛИКОВ СДЕЛАНО</div>
+    <button class="bb" style="margin-top:8px" onclick="resetClickCount()">сбросить</button>
+  </div><div class="wrz"></div>
+</div>
+<!-- TRASH -->
+<div class="win" id="win-trash" style="left:158px;top:78px;width:300px;height:200px">
+  <div class="wtb"><span class="wt" data-i18n="trash">Trash</span><div class="wbc"><div class="wb x" onclick="cW('trash')">×</div></div></div>
+  <div class="wp"><span class="wbk" onclick="cW('trash')">←</span> <span id="trc">0</span> items &nbsp;<button id="trash-restore-btn" onclick="restoreAllIcons()" style="background:var(--r2);color:var(--cr);border:1px solid var(--r);font-family:var(--mn);font-size:11px;padding:1px 7px;cursor:pointer;margin-left:4px" data-i18n="restore">restore all</button></div>
+  <div class="wb0" id="trb" style="text-align:center;padding-top:24px;color:var(--g2);font-size:12px" data-i18n="trash-empty">trash is empty</div><div class="wrz"></div>
+</div>
+</div><!-- /desk -->
+
+<!-- TASKBAR -->
+<div id="tb">
+  <button id="tbs" onclick="toggleSM()" data-i18n="start">ANNA</button>
+  <div class="tbi" onclick="onVeil()"><svg width="18" height="12" viewBox="0 0 18 12"><ellipse cx="9" cy="6" rx="8" ry="5" fill="none" stroke="var(--r)" stroke-width="1.2"/><circle cx="9" cy="6" r="3" fill="var(--r)"/></svg></div>
+  <div id="tlg" onclick="cyLang()">EN</div>
+  <div id="tbw"></div>
+  <div id="clk"><div id="ct">00:00</div><div id="wk"></div></div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ══ SITE CONFIG ══
+(function applyCfg(){
+  try{
+    const cfg=JSON.parse(localStorage.getItem('ann_site_cfg')||'{}');
+    if(cfg.bg) document.documentElement.style.setProperty('--k',cfg.bg);
+    if(cfg.r) document.documentElement.style.setProperty('--r',cfg.r);
+    if(cfg.r2) document.documentElement.style.setProperty('--r2',cfg.r2);
+    if(cfg.pk) document.documentElement.style.setProperty('--pk',cfg.pk);
+    if(cfg.cr) document.documentElement.style.setProperty('--cr',cfg.cr);
+    if(cfg.g2) document.documentElement.style.setProperty('--g2',cfg.g2);
+    if(cfg.title) document.title=cfg.title;
+    if(cfg.subtitle){const el=document.querySelector('.mani-blink');if(el)el.textContent=cfg.subtitle;}
+  }catch(e){}
+})();
+
+// ══ APPLY SAVED ICON POSITIONS ══
+(function applyIconPos(){
+  try{
+    const pos=JSON.parse(localStorage.getItem('ann_icon_pos')||'{}');
+    Object.entries(pos).forEach(([id,p])=>{
+      const el=document.getElementById(id);
+      if(el&&p.left) el.style.left=p.left;
+      if(el&&p.top) el.style.top=p.top;
+    });
+  }catch(e){}
+})();
+
+// ══ CONFIG ══
+const C={USER:'zhopa',PW:'gnida',BIRTH:'1996-06-30'};
+const LANGS=['EN','RU','DE'];
+let li=0;
+
+// ══ I18N ══
+const T={
+EN:{start:'ANNA',ph:'Ph',vid:'Vid',sk:'Sketchbook',arch:'Archive',blog:'Blog',show:'Showreel',art:'Art / 3D',mani:'Manifesto',about:'About',contact:'Contact',col:'Collab.',shop:'Shop',das:'das Dasein',sq:'△ — □',proj:'Proj.',guest:'Guestbook',joke:'★ Jokes',random:'?',trash:'Trash',back:'← back',apply:'APPLY',clear:'CLEAR',close:'CLOSE',restart:'Restart','cur-draw':'Draw cursor','cur-normal':'normal','cur-hover':'hover','cur-click':'click',curator:'Curator Mode','curator-title':'// EXHIBITION — generated',portraits:'portraits/',architecture:'architecture/',fashion:'fashion/',concerts:'concerts/',still:'still/',reportage:'reportage/',artfilms:'art films/',vlogs:'vlogs/','sm-photo':'— Photo','sm-video':'— Video','sm-art':'— Art','sm-info':'— Info','sm-special':'— Special','pw-hint':'credentials required','about-desc':'"Annie going gonzo" — Director · Cameraman · Editor · Artist',skills:'Skills','sk1':'Live shows / Backstage','sk2':'Documentary, art films','sk3':'Promo for music bands','sk4':'Advertisement','sk5':'Portrait, reportage, weddings','sk6':'Art!',tools:'Tools','about-quote':'"No time for small things."','not-afraid':'she is not afraid.','das-text':'Digital immortality is a crisis of Dasein. The body dies. The data does not.','being-there':'"Being-there"','proj-bio-title':'Visitor Biography','proj-bio-desc':'The site invents who you are.','proj-rand-title':'Random Experience','proj-rand-desc':'Unexpected combination of media.',text:'✍ text',image:'🖼 image',video:'▶ video','unique-visitors':'UNIQUE VISITORS','trash-empty':'trash is empty','catchme':'catch me','crawl1':'★ ANNA ELIZABETH ★ GOING GONZO ★ ИЗБАВЛЕНИЕ ★ BEING-THERE ★','crawl2':'★ EVERY FRAME ★ THE BODY DIES ★ THE DATA DOES NOT ★','joke-btn':'→ punchline','joke-next':'→ next joke','counter':'counter','gp-txt':'THE CURIOUS<br>WILL BE<br>REWARDED','gotcha':'now i got you','restore':'restore all','cursor-lbl':'cursor',},
+RU:{start:'АННА',ph:'Фот',vid:'Вид',sk:'Скетчбук',arch:'Архив',blog:'Блог',show:'Шоурил',art:'Арт / 3D',mani:'Манифест',about:'О себе',contact:'Контакт',col:'Коллаб.',shop:'Магазин',das:'das Dasein',sq:'△ — □',proj:'Проекты',guest:'Гостевая',joke:'★ Шутки',random:'?',trash:'В утиль',back:'← назад',apply:'ПРИМЕНИТЬ',clear:'СТЕРЕТЬ',close:'ЗАКРЫТЬ',restart:'↺ ПЕРЕЗАПУСК','cur-draw':'// нарисуй курсор','cur-normal':'норм','cur-hover':'наведение','cur-click':'клик',curator:'Режим куратора','curator-title':'// ВЫСТАВКА — сгенерирована',portraits:'портреты/',architecture:'архитектура/',fashion:'мода/',concerts:'концерты/',still:'натюрморт/',reportage:'репортаж/',artfilms:'арт-фильмы/',vlogs:'влоги/','sm-photo':'— Фото / Видео','sm-video':'— Видео','sm-art':'— Арт','sm-info':'— Инфо','sm-special':'— Закрытая зона','pw-hint':'// нужны учётные данные','about-desc':'"Гонзо идёт в объектив" — режиссёр · оператор · монтажёр · призрак',skills:'Навыки','sk1':'Концерты / бэкстейдж — живое','sk2':'Документалистика, арт-фильмы','sk3':'Промо для музыкантов','sk4':'Реклама','sk5':'Портрет, репортаж, свадьбы','sk6':'Арт — просто арт.',tools:'Инструменты','about-quote':'"Всё мелкое умирает первым."','not-afraid':'она не боится. она уже была там.','das-text':'Цифровое бессмертие — кризис Дазайна. Тело умирает. Данные — нет.','being-there':'"бытие-вот"','proj-bio-title':'Биография посетителя','proj-bio-desc':'Сайт придумывает, кто ты.','proj-rand-title':'Случайный опыт','proj-rand-desc':'Неожиданная комбинация медиа.',text:'✍ текст',image:'🖼 изображение',video:'▶ видео','unique-visitors':'УНИКАЛЬНЫХ ПРИЗРАКОВ','trash-empty':'корзина пуста — пока','catchme':'поймай меня','crawl1':'★ АННА ЭЛИЗАБЕТ ★ ГОНЗО ★ ИЗБАВЛЕНИЕ ★ БЫТИЕ-ВОТ ★','crawl2':'★ КАЖДЫЙ КАДР ★ ТЕЛО УМИРАЕТ ★ ДАННЫЕ НЕТ ★','joke-btn':'→ развязка','joke-next':'→ следующая','counter':'счётчик','gp-txt':'ЛЮБОПЫТНЫМ<br>ЗДЕСЬ<br>НАГРАДА','gotcha':'вот ты и попался','restore':'восстановить всё','cursor-lbl':'курсор',},
+DE:{start:'ANNA',ph:'Ph',vid:'Vid',sk:'Skizzenbuch',arch:'Archiv',blog:'Blog',show:'Showreel',art:'Kunst / 3D',mani:'Manifest',about:'Über mich',contact:'Kontakt',col:'Kolab.',shop:'Shop',das:'das Dasein',sq:'△ — □',proj:'Proj.',guest:'Gästebuch',joke:'★ Witze',random:'?',trash:'Papierkorb',back:'← zurück',apply:'ANWENDEN',clear:'LÖSCHEN',close:'SCHLIESSEN',restart:'Neustart','cur-draw':'Cursor zeichnen','cur-normal':'normal','cur-hover':'hover','cur-click':'klick',curator:'Kurator-Modus','curator-title':'// AUSSTELLUNG — generiert',portraits:'Porträts/',architecture:'Architektur/',fashion:'Mode/',concerts:'Konzerte/',still:'Stillleben/',reportage:'Reportage/',artfilms:'Kunstfilme/',vlogs:'Vlogs/','sm-photo':'— Foto','sm-video':'— Video','sm-art':'— Kunst','sm-info':'— Info','sm-special':'— Besonderes','pw-hint':'Zugangsdaten erforderlich','about-desc':'"Annie geht gonzo" — Regisseurin · Kamerafrau · Cutterin',skills:'Fähigkeiten','sk1':'Konzerte / Backstage','sk2':'Dokumentarfilm, Kunstfilme','sk3':'Promo für Bands','sk4':'Werbung','sk5':'Porträt, Reportage, Hochzeiten','sk6':'Kunst!',tools:'Werkzeuge','about-quote':'"Keine Zeit für Kleinigkeiten."','not-afraid':'sie hat keine Angst.','das-text':'Digitale Unsterblichkeit ist eine Krise des Daseins.','being-there':'"Da-sein"','proj-bio-title':'Besucherbiografie','proj-bio-desc':'Die Website erfindet, wer du bist.','proj-rand-title':'Zufällige Erfahrung','proj-rand-desc':'Unerwartete Medienkombination.',text:'✍ Text',image:'🖼 Bild',video:'▶ Video','unique-visitors':'EINDEUTIGE BESUCHER','trash-empty':'Papierkorb ist leer','catchme':'fang mich','crawl1':'★ ANNA ELIZABETH ★ GONZO ★ ИЗБАВЛЕНИЕ ★ DASEIN ★','crawl2':'★ JEDER FRAME ★ DER KÖRPER STIRBT ★ DIE DATEN NICHT ★','joke-btn':'→ Pointe','joke-next':'→ nächster Witz','counter':'Zähler','gp-txt':'DIE NEUGIER<br>WIRD<br>BELOHNT','gotcha':'jetzt hab ich dich','restore':'alle wiederherstellen','cursor-lbl':'Cursor',}
+};
+function tr(k){return T[LANGS[li]][k]||T.EN[k]||k;}
+function applyLang(){document.querySelectorAll('[data-i18n]').forEach(el=>{el.textContent=tr(el.dataset.i18n);});const gpt=document.getElementById('gp-txt');if(gpt)gpt.innerHTML=tr('gp-txt');const gt=document.getElementById('gotcha-txt');if(gt)gt.textContent=tr('gotcha');const rb=document.getElementById('trash-restore-btn');if(rb)rb.textContent=tr('restore');}
+
+// ══ CURSOR ══
+const curEl=document.getElementById('cur');
+let hov=false,ckd=false;
+document.addEventListener('mousemove',e=>{curEl.style.left=e.clientX+'px';curEl.style.top=e.clientY+'px';hov=!!e.target.closest('.ic,.wb,.bb,.smi,.fc,.ctbt,.adm-btn,.cl2,.proj-card,.cl');updateCurState();});
+document.addEventListener('mousedown',()=>{ckd=true;updateCurState();});
+document.addEventListener('mouseup',()=>{ckd=false;updateCurState();});
+function updateCurState(){
+  const idx=ckd?2:hov?1:0;
+  const svg=document.getElementById('csv');if(!svg)return;
+  const d=CD[idx];
+  if(!d||d.every(v=>!v)){svg.setAttribute('viewBox','0 0 8 10');svg.innerHTML=`<path d="M0 0L0 9L3 6L4 9L5.5 8.5L4.5 6L7 6Z" fill="${hov?'var(--pk)':'#f5f0ee'}" stroke="#0d0d0d" stroke-width=".6"/>`;return;}
+  const S=16;svg.setAttribute('viewBox',`0 0 ${S} ${S}`);
+  let r='';d.forEach((v,i)=>{if(!v)return;const x=i%S,y=Math.floor(i/S),f=v==='r'?'#cc3333':v==='p'?'#f5c8d8':'#f5f0ee';r+=`<rect x="${x}" y="${y}" width="1" height="1" fill="${f}"/>`;});
+  svg.innerHTML=r;
+}
+
+// ══ CLOCK ══
+function tick(){const n=new Date();document.getElementById('ct').textContent=String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0');const wks=Math.floor((n-new Date(C.BIRTH))/604800000);document.getElementById('wk').textContent=wks;}
+tick();setInterval(tick,30000);
+
+// ══ VEIL ══
+let vOn=false,vInt=null;
+function onVeil(){vOn=true;document.getElementById('veil').classList.add('on');document.getElementById('heye').classList.add('vis');vInt=setInterval(()=>{if(!vOn)return;document.getElementById('veil').style.opacity='0';setTimeout(()=>{if(vOn)document.getElementById('veil').style.opacity='1';},500);},30000);}
+function offVeil(){vOn=false;document.getElementById('veil').classList.remove('on');document.getElementById('heye').classList.remove('vis');if(vInt)clearInterval(vInt);}
+function offVeilBlink(){
+  // Space pressed in the dark: light comes back but sometimes blinks
+  const v=document.getElementById('veil');
+  v.style.transition='opacity .1s';
+  v.classList.remove('on');
+  offVeil();
+  // Random blink chance
+  if(Math.random()<0.6){
+    const blinks=Math.floor(Math.random()*3)+1;
+    let t=0;
+    for(let i=0;i<blinks;i++){
+      setTimeout(()=>{v.style.opacity='1';},t+=200+Math.random()*300);
+      setTimeout(()=>{v.style.opacity='0';},t+=80+Math.random()*150);
+    }
+  }
+  setTimeout(()=>{v.style.transition='opacity .6s';},2000);
+}
+document.addEventListener('keydown',e=>{
+  if(e.code==='Space'&&vOn){e.preventDefault();offVeilBlink();}
+});
+
+// ══ CLICK COUNTER ══
+let totalClicks=0;
+try{totalClicks=parseInt(localStorage.getItem('ann_clicks')||'0');}catch(e){}
+document.addEventListener('click',()=>{
+  totalClicks++;
+  try{localStorage.setItem('ann_clicks',totalClicks);}catch(e){}
+  const d=document.getElementById('cnt-display');if(d)d.textContent=totalClicks;
+  const ico=document.getElementById('cnt-ico-num');if(ico)ico.textContent=totalClicks>999?'9k+':totalClicks;
+});
+function resetClickCount(){totalClicks=0;try{localStorage.removeItem('ann_clicks');}catch(e){}const d=document.getElementById('cnt-display');if(d)d.textContent=0;}
+
+// ══ WINDOWS ══
+let zN=200;const ow={};
+let virusMode=false;
+const VIRUS_IDS=['ph','vid','sk','arch','blog','show','art','mani','about','contact'];
+function oW(id){
+  if(id==='blog')rBlog();if(id==='arch')rArch();if(id==='mani')genMani();
+  if(id==='guest')initGB();if(id==='adm')initAdm();if(id==='you')initYou();
+  if(id==='proj-bio')genBio();if(id==='proj-rand')genRandExp();if(id==='joke')loadJoke();
+  if(id==='cnt'){const d=document.getElementById('cnt-display');if(d)d.textContent=totalClicks;}
+  const w=document.getElementById('win-'+id);if(!w)return;
+  w.classList.add('open');liftW(w);ow[id]=true;uTB();
+}
+function cW(id){
+  const w=document.getElementById('win-'+id);if(w){w.classList.remove('open');w.classList.remove('fp');}
+  delete ow[id];uTB();
+  // VIRUS MODE: closing a window spawns 3 more
+  if(virusMode){
+    setTimeout(()=>{
+      for(let i=0;i<3;i++){
+        const rid=VIRUS_IDS[Math.floor(Math.random()*VIRUS_IDS.length)];
+        setTimeout(()=>{
+          const vw=document.getElementById('win-'+rid);
+          if(vw){
+            vw.style.left=(Math.random()*55+2)+'%';vw.style.top=(Math.random()*45+2)+'%';
+            vw.style.right='auto';vw.style.bottom='auto';
+            vw.classList.add('open');ow[rid]=true;liftW(vw);uTB();
+          }
+        },i*80);
+      }
+    },200);
+  }
+}
+function liftW(w){document.querySelectorAll('.win').forEach(x=>x.classList.remove('top'));w.style.zIndex=++zN;w.classList.add('top');}
+function tFP(id){const w=document.getElementById('win-'+id);if(w)w.classList.toggle('fp');}
+function uTB(){document.getElementById('tbw').innerHTML=Object.keys(ow).map(id=>{const w=document.getElementById('win-'+id);const tt=w?w.querySelector('.wt').textContent:id;return`<div class="tw ${w&&w.classList.contains('top')?'a':''}" onclick="fcW('${id}')">${tt.substring(0,12)}</div>`;}).join('');}
+function fcW(id){const w=document.getElementById('win-'+id);if(w){liftW(w);uTB();}}
+function oSub(id,parentId){oW(id);const bk=document.querySelector(`#win-${id} .wbk`);if(bk&&parentId)bk.onclick=()=>{cW(id);oW(parentId);};}
+
+// Drag windows
+document.querySelectorAll('.win').forEach(win=>{
+  const tb=win.querySelector('.wtb');if(!tb)return;
+  tb.addEventListener('mousedown',e=>{if(win.classList.contains('fp'))return;e.preventDefault();let ox=win.offsetLeft,oy=win.offsetTop,sx=e.clientX,sy=e.clientY,d=true;liftW(win);uTB();
+    const mm=e=>{if(d){win.style.left=(ox+e.clientX-sx)+'px';win.style.top=(oy+e.clientY-sy)+'px';win.style.right='auto';win.style.bottom='auto';}};
+    const mu=()=>{d=false;document.removeEventListener('mousemove',mm);document.removeEventListener('mouseup',mu);};
+    document.addEventListener('mousemove',mm);document.addEventListener('mouseup',mu);});
+  win.addEventListener('mousedown',()=>{liftW(win);uTB();});
+});
+
+// Drag icons
+const ltap={};
+document.querySelectorAll('.ic').forEach(ic=>{
+  ic.addEventListener('mousedown',e=>{e.preventDefault();let ox=ic.offsetLeft,oy=ic.offsetTop,sx=e.clientX,sy=e.clientY,d=true,mv=false;
+    const mm=e=>{if(d){mv=true;ic._wasDragged=true;ic.style.left=(ox+e.clientX-sx)+'px';ic.style.top=(oy+e.clientY-sy)+'px';ic.style.right='auto';ic.style.bottom='auto';}};
+    const mu=()=>{d=false;document.removeEventListener('mousemove',mm);document.removeEventListener('mouseup',mu);setTimeout(()=>{ic._wasDragged=false;},50);};
+    document.addEventListener('mousemove',mm);document.addEventListener('mouseup',mu);});
+  ic.addEventListener('touchend',()=>{const n=Date.now(),id=ic.id;if(ltap[id]&&n-ltap[id]<400)ic.ondblclick&&ic.ondblclick();ltap[id]=n;});
+  ic.addEventListener('contextmenu',e=>{e.preventDefault();if(confirm('Send to Trash?'))trashIc(ic.id);});
+});
+
+// Trash
+document.getElementById('ic-trash').style.display='block';
+const trashed=new Set();
+function trashIc(id){const ic=document.getElementById(id);if(!ic||id==='ic-trash')return;ic.style.display='none';trashed.add(id);document.getElementById('trc').textContent=trashed.size;document.getElementById('trb').textContent=trashed.size+' item(s)';if([...document.querySelectorAll('.ic')].filter(i=>i.id!=='ic-trash'&&i.style.display!=='none').length===0)rRoll();}
+function rRoll(){document.getElementById('rri').src='https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1';document.getElementById('rr').classList.add('on');}
+function closeRR(){document.getElementById('rr').classList.remove('on');document.getElementById('rri').src='';}
+
+// START MENU
+let smO=false;
+function toggleSM(){smO=!smO;document.getElementById('sm').classList.toggle('o',smO);}
+function csm(){smO=false;document.getElementById('sm').classList.remove('o');}
+document.addEventListener('click',e=>{if(!e.target.closest('#sm,#tbs'))csm();});
+
+// Glitch/Square
+function openGP(){document.getElementById('gp').classList.add('o');}
+function closeGP(){document.getElementById('gp').classList.remove('o');}
+
+// Eye page
+function openEP(){genManiEye();buildEye();document.getElementById('ep').classList.add('o');document.getElementById('ep').scrollTop=0;}
+function closeEP(){document.getElementById('ep').classList.remove('o');}
+function buildEye(){
+  const N=13,LL=24;
+  const tG=document.getElementById('top-lashes'),bG=document.getElementById('bot-lashes');
+  tG.innerHTML='';bG.innerHTML='';
+  const mkL=(g,x1,y1,x2,y2)=>{const l=document.createElementNS('http://www.w3.org/2000/svg','line');l.setAttribute('x1',x1.toFixed(1));l.setAttribute('y1',y1.toFixed(1));l.setAttribute('x2',x2.toFixed(1));l.setAttribute('y2',y2.toFixed(1));l.setAttribute('stroke','var(--pk)');l.setAttribute('stroke-width','2');l.setAttribute('stroke-linecap','round');g.appendChild(l);return l;};
+  for(let i=0;i<N;i++){
+    const ti=(i+1)/(N+1);
+    const tx=(1-ti)*(1-ti)*10+2*ti*(1-ti)*180+ti*ti*350,ty=(1-ti)*(1-ti)*110+2*ti*(1-ti)*20+ti*ti*110;
+    const tdx=2*(1-ti)*(180-10)+2*ti*(350-180),tdy=2*(1-ti)*(20-110)+2*ti*(110-20);
+    const tlen=Math.sqrt(tdx*tdx+tdy*tdy)||1;let tnx=-tdy/tlen,tny=tdx/tlen;
+    if(tny>0){tnx=-tnx;tny=-tny;}
+    mkL(tG,tx,ty,tx+tnx*LL,ty+tny*LL);
+    const bx=(1-ti)*(1-ti)*10+2*ti*(1-ti)*180+ti*ti*350,by=(1-ti)*(1-ti)*110+2*ti*(1-ti)*200+ti*ti*110;
+    const bdx=2*(1-ti)*(180-10)+2*ti*(350-180),bdy=2*(1-ti)*(200-110)+2*ti*(110-200);
+    const blen=Math.sqrt(bdx*bdx+bdy*bdy)||1;let bnx=-bdy/blen,bny=bdx/blen;
+    if(bny<0){bnx=-bnx;bny=-bny;}
+    mkL(bG,bx,by,bx+bnx*LL,by+bny*LL);
+    // 6th from right bottom = index N-6 = 7
+    if(i===N-6){const sc=document.getElementById('secret-lash');sc.setAttribute('cx',(bx+bnx*LL/2).toFixed(1));sc.setAttribute('cy',(by+bny*LL/2).toFixed(1));}
+  }
+}
+
+// PASSWORD
+function showPw(){document.getElementById('pw').classList.remove('h');setTimeout(()=>document.getElementById('pwu').focus(),100);}
+function chkPw(){
+  const u=document.getElementById('pwu').value,p=document.getElementById('pwi').value;
+  if(u===C.USER&&p===C.PW){try{sessionStorage.setItem('ann_adm','1');}catch(e){}document.getElementById('pw').classList.add('h');closeEP();initAdm();oW('adm');}
+  else{document.getElementById('pwe').textContent='// wrong';document.getElementById('pwi').value='';}
+}
+document.getElementById('pwi').addEventListener('keydown',e=>{if(e.key==='Enter')chkPw();});
+document.getElementById('pwu').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('pwi').focus();});
+
+// ══ DADA MANIFESTO GENERATOR ══
+const DADA={
+EN:{
+  openers:['I HEREBY DECLARE that','BY ORDER OF NOBODY:','FROM THIS MOMENT ON,','THE COMMITTEE ANNOUNCES:','NOTICE IS GIVEN:','ALGORITHM CONFIRMS:','THE SERVER LOGS SHOW:'],
+  subj:['the left sock','all photographs taken on Thursdays','memory number 7','the colour of tuesday','the fourth thought after waking','everything not yet archived','the word "perhaps"','the sound of a camera clicking','the last unseen notification','a JPG of someone else\'s grief','your cached self','the hyperlink to nothing'],
+  verb:['must be abolished immediately','is hereby mandatory in triplicate','will now vibrate at 432 hz','refuses to exist on weekdays','has been archived without consent','no longer requires explanation','is loading (75%)','has been flagged for review','exists simultaneously in all tabs'],
+  conc:['— Signed: the archive itself','— Verified: smell of developer fluid','— Countersigned: a woman at 3am','— Authority: the shutter speed','— Certified: a corrupted .psd file','— Filed under: everything'],
+  body:['I once met a man who was his own documentation. He filed himself alphabetically. He was missing from A to Y.',
+    'There are 25 kilogramms of data. This is heavier than a body. The body is confused.',
+    'The eye blinks once every 4 seconds. Multiply by your age. This is how many times you have not seen something.',
+    'To document is to love without permission. To be documented is to exist in someone else\'s past.',
+    'Dada knew that meaning is something you do to art. The camera knows nothing. Anna also knows this, but differently.',
+    'The irony is sincere. The sincerity is ironic. Both are rendered at 4K. The compression is emotional.',
+    'Post-internet does not mean after internet. It means the internet is already inside the body now. It metabolises at night.',
+    'A screenshot is a confession. A selfie is a letter to no-one. An algorithm is a mirror with no reflection.',
+    'The metamodern position: oscillate. The camera oscillates. The artist oscillates. The archive holds still. Suspicious.',
+    'Every upload is an act of hope. Every error 404 is a form of elegy. Every autoplay is a form of grief.'],
+  metamodern:['Naive and knowing, earnest and ironic — both true, simultaneously, without resolution.',
+    'We rebuild sincerity from its own ruins. We mean it. We also know that we mean it. This changes everything.',
+    'The new depth is constructed from surfaces. The new surfaces are made of depth. This is not a contradiction.',
+    'Hope without naivety. Critique without cynicism. Art without apology. All of the above at once.'],
+  postinternet:['The network is not a metaphor for the world. The world is now a metaphor for the network.',
+    'Image as currency. Attention as infrastructure. Memory as cloud storage. The body: legacy hardware.',
+    'Content leaks through the screen and becomes real. Reality leaks into the screen and becomes content.',
+    'Everything is already distributed. The original is nowhere. The copy is everywhere. Both are the work.'],
+  titles:['MANIFESTO OF THE ABSENT PRESENT','DECLARATION OF PHOTOGRAPHIC URGENCY','THE ARCHIVE SPEAKS','ON THE MATTER OF LIGHT','NOTICE TO ALL MOMENTS','TERMS & CONDITIONS OF EXISTENCE','README.txt FOR THE SELF','VERSION HISTORY OF NOW']
+},
+RU:{
+  openers:['НАСТОЯЩИМ ОБЪЯВЛЯЕТСЯ:','ПРИКАЗОМ НИКОГО:','С ЭТОГО МОМЕНТА,','КОМИТЕТ СООБЩАЕТ:','К СВЕДЕНИЮ:','АЛГОРИТМ ПОДТВЕРЖДАЕТ:','СЕРВЕР ЗАФИКСИРОВАЛ:'],
+  subj:['левый носок','все фотографии из среды','воспоминание номер семь','цвет вторника','четвёртая мысль после пробуждения','всё ещё не архивированное','последнее непрочитанное уведомление','кэшированная версия себя','JPG чужой боли'],
+  verb:['немедленно упраздняется','обязательно в трёх экземплярах','будет вибрировать на 432 гц','отказывается существовать по будням','архивировано без согласия','загружается (75%)','отправлено на проверку модератором'],
+  conc:['— Подписано: самим архивом','— Заверено: запахом проявителя','— Скреплено: женщина в 3 ночи','— Зарегистрировано: повреждённый .psd'],
+  body:['Однажды человек встретил сам себя. Оба исчезли.',
+    'Существует 25 килограммов данных. Это тяжелее тела. Тело недоумевает.',
+    'Глаз моргает раз в четыре секунды. Умножьте на возраст. Столько раз вы не заметили.',
+    'Архивировать — значит любить без разрешения. Быть архивированным — жить в чужом прошлом.',
+    'Хармс знал: событие происходит тогда, когда уже закончилось. Аппарат это тоже знает.',
+    'Постинтернет — не после интернета. Это когда интернет уже внутри тела. Метаболизирует ночью.',
+    'Каждый скриншот — признание. Каждый сторис — письмо в никуда. Каждый автовоспроизвод — форма горя.',
+    'Метамодернизм: осциллировать. Камера осциллирует. Художник осциллирует. Архив стоит неподвижно. Подозрительно.'],
+  metamodern:['Наивный и знающий, искренний и ироничный — оба правы, одновременно, без разрешения.',
+    'Мы перестраиваем искренность из её собственных руин. Мы имеем в виду это. Мы также знаем, что имеем в виду. Это всё меняет.',
+    'Надежда без наивности. Критика без цинизма. Искусство без извинений. Всё сразу.'],
+  postinternet:['Сеть — не метафора мира. Мир теперь — метафора сети.',
+    'Образ как валюта. Внимание как инфраструктура. Память как облачное хранилище. Тело: устаревшее железо.',
+    'Всё уже распределено. Оригинал нигде. Копия везде. Обе — работа.'],
+  titles:['МАНИФЕСТ ОТСУТСТВУЮЩЕГО НАСТОЯЩЕГО','ДЕКЛАРАЦИЯ ФОТОГРАФИЧЕСКОЙ СРОЧНОСТИ','АРХИВ ГОВОРИТ','О ВОПРОСЕ СВЕТА','УВЕДОМЛЕНИЕ ВСЕМ МОМЕНТАМ','УСЛОВИЯ СУЩЕСТВОВАНИЯ','README.txt ДЛЯ СЕБЯ']
+},
+DE:{
+  openers:['HIERMIT WIRD ERKLÄRT:','AUF BEFEHL VON NIEMANDEM:','AB DIESEM MOMENT,','DER AUSSCHUSS MELDET:','ZUR KENNTNIS:','DER ALGORITHMUS BESTÄTIGT:'],
+  subj:['die linke Socke','alle Fotos vom Donnerstag','Erinnerung Nummer sieben','die Farbe des Dienstags','alles noch nicht Archivierte','die letzte ungesehene Benachrichtigung','das gecachte Selbst'],
+  verb:['wird sofort abgeschafft','ist hiermit dreifach Pflicht','vibriert nun mit 432 hz','weigert sich an Wochentagen zu existieren','wird auf 75% geladen','wurde ohne Zustimmung archiviert'],
+  conc:['— Unterzeichnet: das Archiv selbst','— Beglaubigt: Geruch von Entwicklerflüssigkeit','— Registriert: eine beschädigte .psd-Datei'],
+  body:['Es gibt 25 Kilogramm Daten. Das ist schwerer als ein Körper. Der Körper ist verwirrt.',
+    'Das Auge blinzelt alle vier Sekunden. Mit deinem Alter multipliziert. So viele Male hast du nicht gesehen.',
+    'Archivieren ist lieben ohne Erlaubnis. Archiviert zu werden ist in der Vergangenheit eines anderen zu existieren.',
+    'Post-Internet bedeutet nicht nach dem Internet. Es bedeutet: das Internet ist jetzt im Körper. Es metabolisiert nachts.',
+    'Jeder Screenshot ist ein Geständnis. Jeder Autoplay ist eine Form der Trauer.'],
+  metamodern:['Naiv und wissend, aufrichtig und ironisch — beides gleichzeitig, ohne Auflösung.',
+    'Hoffnung ohne Naivität. Kritik ohne Zynismus. Kunst ohne Entschuldigung. Alles auf einmal.'],
+  postinternet:['Das Netz ist keine Metapher für die Welt. Die Welt ist nun eine Metapher für das Netz.',
+    'Alles ist bereits verteilt. Das Original ist nirgendwo. Die Kopie ist überall. Beides ist das Werk.'],
+  titles:['MANIFEST DER ABWESENDEN GEGENWART','ERKLÄRUNG DER FOTOGRAFISCHEN DRINGLICHKEIT','DAS ARCHIV SPRICHT','NUTZUNGSBEDINGUNGEN DER EXISTENZ','README.txt FÜR DAS SELBST']
+}
+};
+const rnd=arr=>arr[Math.floor(Math.random()*arr.length)];
+function genManifest(lang){
+  const D=DADA[lang]||DADA.EN;
+  const sep='─'.repeat(38);
+  // Always generate at least 5 paragraphs (dadaist opener block + body + metamodern + post-internet + conclusion)
+  const p1=`${rnd(D.openers)} ${rnd(D.subj)} ${rnd(D.verb)} ${rnd(D.conc)}.`;
+  const p2=`${rnd(D.openers)} ${rnd(D.subj)} ${rnd(D.verb)}.`;
+  const p3=`${rnd(D.openers)} ${rnd(D.subj)} ${rnd(D.verb)} ${rnd(D.conc)}.`;
+  const body1=rnd(D.body);
+  const body2=(()=>{let b;do{b=rnd(D.body);}while(b===body1);return b;})();
+  const meta=rnd(D.metamodern);
+  const post=rnd(D.postinternet);
+  return `${rnd(D.titles)}\n${sep}\n\n${p1}\n\n${p2}\n\n${p3}\n\n${sep}\n\n${body1}\n\n${body2}\n\n${sep}\n\n${meta}\n\n${post}\n\n${sep}\nannaili.net · ${new Date().getFullYear()} · ИЗБАВЛЕНИЕ`;
+}
+function genMani(){const el=document.getElementById('mani-out');if(el)el.textContent=genManifest(LANGS[li]);}
+function genManiEye(){const el=document.getElementById('ep-mani-text');if(el)el.textContent=genManifest(LANGS[li]);}
+
+// ══ JOKES ══
+const JOKES={
+EN:[
+  {s:'A photographer walks into a bar.',p:'The barman says: "Sorry, we don\'t do shots here."'},
+  {s:'Why did the artist go to jail?',p:'For sketchy behaviour.'},
+  {s:'How many surrealists does it take to change a lightbulb?',p:'A fish.'},
+  {s:'I tried to archive my personality.',p:'Error 404: character not found.'},
+  {s:'An archivist dies and goes to heaven.',p:'St. Peter says: "Great — we\'ve been looking for you in our records. Can\'t find you anywhere."'},
+  {s:'Why did Heidegger never finish anything?',p:'He was always already distracted by Being.'},
+  {s:'I photographed my own shadow.',p:'It filed a copyright claim.'},
+  {s:'Why do photographers never get sad?',p:'Every day is a developing situation.'},
+  {s:'What\'s the difference between a photographer and a pizza?',p:'A pizza can feed a family of four.'},
+  {s:'I told my camera I loved it.',p:'It said: "I only see you in a negative light."'},
+  {s:'Why did the video editor refuse therapy?',p:'She said she needed to cut something first.'},
+  {s:'What do you call a Dada poet in a supermarket?',p:'Lost. Deliberately.'},
+  {s:'I deleted my most recent photo.',p:'It immediately became my best work.'},
+  {s:'Why do archivists never throw anything away?',p:'They\'re still processing it.'},
+  {s:'An experimental filmmaker walks into a bar.',p:'Nobody saw the end coming. That was the point.'},
+  {s:'Nietzsche, Sartre and Foucault walk into a bar.',p:'The bartender asks: "What will it be?" They all wrote 400 pages and still couldn\'t answer.'},
+],
+RU:[
+  {s:'Фотограф заходит в бар.',p:'Бармен: «Извините, шоты мы не делаем».'},
+  {s:'Почему художник попал в тюрьму?',p:'За подозрительное поведение.'},
+  {s:'Сколько сюрреалистов нужно, чтобы вкрутить лампочку?',p:'Рыба.'},
+  {s:'Я попробовал заархивировать свою личность.',p:'Ошибка 404: персонаж не найден.'},
+  {s:'Хармс зашёл в кафе и попросил чай.',p:'Ему принесли чай. Это напугало его больше всего.'},
+  {s:'Я сфотографировал свою тень.',p:'Она подала на меня в суд за использование образа без согласия.'},
+  {s:'Почему у архивариуса нет друзей?',p:'Он помнит всё, что вы говорили.'},
+  {s:'Дада: почему курица перешла дорогу?',p:'Потому что да.'},
+  {s:'Я признался камере в любви.',p:'Она ответила: «Я вижу тебя только в негативном свете»'},
+  {s:'Монтажёр умер и попал в рай.',p:'Пётр: «У тебя 48 часов». Монтажёр: «Это мало для финального рендера».'},
+  {s:'Почему видеограф никогда не сдаётся?',p:'Потому что всегда есть второй дубль.'},
+  {s:'Что общего между экзистенциалистом и свечкой?',p:'Оба думают, что горят — а потом гаснут.'},
+  {s:'Я удалил самую лучшую фотографию.',p:'Она сразу стала моей лучшей работой.'},
+  {s:'Документалист снимает рыбный рынок.',p:'Две трети рыб требуют пересмотра своих сцен.'},
+  {s:'Почему Достоевский никогда не читал свои черновики?',p:'Он не мог вынести спойлеров собственной жизни.'},
+  {s:'Ницше, Сартр и Фуко заходят в бар.',p:'Бармен спрашивает: «Что будете?» — Они написали по 400 страниц и так и не ответили.'},
+],
+DE:[
+  {s:'Ein Fotograf geht in eine Bar.',p:'Der Barkeeper sagt: "Tut mir leid, wir machen keine Shots."'},
+  {s:'Wie viele Surrealisten braucht man für eine Glühbirne?',p:'Ein Fisch.'},
+  {s:'Ich habe versucht, meine Persönlichkeit zu archivieren.',p:'Fehler 404: Charakter nicht gefunden.'},
+  {s:'Warum wurde Heidegger nie fertig?',p:'Er war immer schon vom Sein abgelenkt.'},
+  {s:'Ich habe meinen Schatten fotografiert.',p:'Er hat Urheberrechtsklage eingereicht.'},
+  {s:'Was ist der Unterschied zwischen einem Fotografen und einer Pizza?',p:'Eine Pizza kann eine Familie ernähren.'},
+  {s:'Dada: Warum überquerte das Huhn die Straße?',p:'Weil ja.'},
+  {s:'Ich sagte meiner Kamera, dass ich sie liebe.',p:'Sie sagte: "Ich sehe dich nur in einem negativen Licht."'},
+  {s:'Warum weint der Archivarius nie?',p:'Er hat alles schon dokumentiert. Einschließlich des Weinens.'},
+  {s:'Nietzsche, Sartre und Foucault gehen in eine Bar.',p:'Der Barmann fragt: "Was darf es sein?" — Sie schrieben je 400 Seiten und antworteten nicht.'},
+]
+};
+let jokeIdx=0,jokePhase=0;
+function loadJoke(){
+  const lang=LANGS[li];
+  const jokes=JOKES[lang]||JOKES.EN;
+  jokeIdx=Math.floor(Math.random()*jokes.length);
+  jokePhase=0;
+  const s=document.getElementById('joke-setup');
+  const p=document.getElementById('joke-punchline');
+  const btn=document.getElementById('joke-btn');
+  if(s)s.textContent=jokes[jokeIdx].s;
+  if(p){p.style.display='none';p.textContent='';}
+  if(btn)btn.textContent=tr('joke-btn');
+  const lbl=document.getElementById('joke-lang-lbl');
+  if(lbl)lbl.textContent=`jokes in ${lang} · click for another`;
+}
+function jokeStep(){
+  const lang=LANGS[li];
+  const jokes=JOKES[lang]||JOKES.EN;
+  const s=document.getElementById('joke-setup');
+  const p=document.getElementById('joke-punchline');
+  const btn=document.getElementById('joke-btn');
+  if(jokePhase===0){
+    if(p){p.textContent=jokes[jokeIdx].p;p.style.display='block';}
+    if(btn)btn.textContent=tr('joke-next');
+    jokePhase=1;
+  }else{
+    jokeIdx=(jokeIdx+1)%jokes.length;jokePhase=0;
+    if(s)s.textContent=jokes[jokeIdx].s;
+    if(p){p.style.display='none';p.textContent='';}
+    if(btn)btn.textContent=tr('joke-btn');
+  }
+}
+
+// ══ BLOG ══
+const SEED=[
+  {id:1,date:'2026-02-14T23:59:00Z',text:'happy valentines. gave myself 1TB of storage and a new lens. romance is subjective.',tag:'daily',cat:'2026',img:'https://picsum.photos/seed/ann5/400/200'},
+  {id:2,date:'2026-01-03T11:30:00Z',text:'cutting a concert video. band played in an abandoned factory. light was impossible — and perfect.',tag:'work',cat:'2026',img:'https://picsum.photos/seed/ann6/400/200'},
+  {id:3,date:'2025-09-03T08:40:00Z',text:'i always photograph the audience, not the artist. the audience is the truth.',tag:'ph',cat:'2025',img:'https://picsum.photos/seed/ann4/400/200'},
+  {id:4,date:'2025-01-20T16:05:00Z',text:'this site is my Dasein archive. digital immortality starts now.',tag:'thoughts',cat:'2025',img:''},
+  {id:5,date:'2024-06-08T22:14:00Z',text:'the edit took 12 hours. deleted everything. started over at 3am. now it\'s perfect.',tag:'work',cat:'2024',img:'https://picsum.photos/seed/ann2/400/200'},
+  {id:6,date:'2024-03-15T10:22:00Z',text:'shot on the rooftop until dawn. the streetlights flickered as if they knew.',tag:'diary',cat:'2024',img:'https://picsum.photos/seed/ann1/400/200'},
+];
+function gPosts(){try{return JSON.parse(localStorage.getItem('ap5')||'null')||[...SEED];}catch(e){return[...SEED];}}
+function sPosts(p){try{localStorage.setItem('ap5',JSON.stringify(p));}catch(e){}}
+function rBlog(){
+  const adm=isAdm(),posts=gPosts(),bl=document.getElementById('blb');if(!bl)return;
+  const blt=document.getElementById('blt');if(blt)blt.textContent=adm?`${tr('blog')} [admin]`:tr('blog');
+  const lastDate=posts.length?new Date(posts[0].date):null;
+  const stale=!lastDate||(Date.now()-lastDate.getTime()>86400000);
+  if(stale&&!adm){
+    bl.innerHTML=`<div style="text-align:center;padding:40px 20px"><div style="font-family:var(--mn);font-size:34px;color:#333;margin-bottom:18px">Сегодня ничего не произошло.</div><div style="font-size:13px;color:#888;margin-bottom:10px">тишина — тоже данные.</div><div style="font-size:11px;color:#aaa;border-top:1px solid #ddd;padding-top:10px">${lastDate?'последняя запись: '+lastDate.toLocaleDateString():'постов нет.'}</div></div>`;
+    return;
+  }
+  let html='';
+  if(adm)html+=`<div style="padding:8px;border-bottom:1px solid #ddd;margin-bottom:8px;background:#fff"><textarea class="btx" id="btx" placeholder="напиши что-нибудь..." style="background:#f5f0ee;color:#111;border-color:#ddd;min-height:60px"></textarea><div class="brow"><input class="bi" id="btg" placeholder="тег" style="background:#f5f0ee;color:#111;border-color:#ddd;flex:1"><select class="bs" id="bct" style="background:#f5f0ee;color:#111;border-color:#ddd"><option value="">— раздел —</option><option>2026</option><option>2025</option><option>2024</option><option>2023</option><option>2022</option></select><button class="bb" onclick="pub()">ОПУБЛИКОВАТЬ</button></div></div>`;
+  html+=posts.slice(0,20).map(p=>{
+    if(p.locked){
+      return`<div class="pc" style="border-color:#ddd;background:#faf8f6"><div class="pm" style="color:#888">${new Date(p.date).toLocaleDateString()} 🔒 <span class="tg">${p.tag||'locked'}</span></div><div style="color:#aaa;font-size:12px;margin-bottom:6px">// этот пост защищён паролем</div><div style="display:flex;gap:4px"><input type="password" id="blk-${p.id}" placeholder="пароль" style="flex:1;background:#eee;color:#111;border:1px solid #ddd;font-family:var(--mn);font-size:14px;padding:3px 6px;outline:none"><button style="background:var(--r2);color:var(--cr);border:1px solid var(--r);font-family:var(--mn);font-size:13px;padding:2px 8px;cursor:pointer" onclick="unlockBlogPost(${p.id})">→</button></div></div>`;
+    }
+    return`<div class="pc" style="border-color:#ddd;background:#faf8f6">${p.img?`<img class="pimg" src="${p.img}" onerror="this.style.display='none'" loading="lazy">`:''}<div class="pm" style="color:#888">${new Date(p.date).toLocaleDateString()}${p.tag?` <span class="tg">${p.tag}</span>`:''}</div><div style="color:#222;font-size:13px">${p.text}</div>${p.file?`<div style="font-size:11px;color:var(--pk3);margin-top:4px">📎 ${p.file.name}</div>`:''}</div>`;
+  }).join('');
+  bl.innerHTML=html;
+}
+function unlockBlogPost(id){
+  const inp=document.getElementById('blk-'+id);if(!inp)return;
+  const posts=gPosts();const p=posts.find(x=>x.id===id);if(!p)return;
+  if(inp.value===p.pw){rBlog();} else{inp.style.borderColor='var(--r)';setTimeout(()=>inp.style.borderColor='',600);}
+}
+function pub(){const tx=document.getElementById('btx');if(!tx||!tx.value.trim())return;const ps=gPosts();ps.unshift({id:Date.now(),date:new Date().toISOString(),text:tx.value.trim(),tag:document.getElementById('btg').value,cat:document.getElementById('bct').value,img:''});sPosts(ps);rBlog();}
+
+// ══ ARCHIVE ══
+const ARCH_YEARS=['2026','2025','2024','2023','2022','2021','2020','2019','2018'];
+const MONTH_NAMES=['янв','фев','мар','апр','май','июн','июл','авг','сен','окт','ноя','дек'];
+function mkFS(c1,c2){return`<svg viewBox="0 0 42 32" fill="none"><rect x="1" y="6" width="40" height="22" stroke="${c1}" stroke-width="1.5" fill="${c2}" fill-opacity=".3"/><rect x="1" y="3" width="14" height="5" fill="${c1}" fill-opacity=".8"/></svg>`;}
+function renderPost(p){
+  if(p.locked){
+    return`<div class="post-locked"><div class="pm">${new Date(p.date).toLocaleDateString()}${p.tag?` <span class="tg">${p.tag}</span>`:''}</div><p>🔒 защищено паролем</p><input type="password" id="plk-${p.id}" placeholder="пароль"><button onclick="unlockPost(${p.id},'plk-${p.id}',this.parentNode)">→</button></div>`;
+  }
+  return`<div class="pc"><div class="pm">${new Date(p.date).toLocaleDateString()}${p.tag?` <span class="tg">${p.tag}</span>`:''}</div>${p.img?`<img class="pimg" src="${p.img}" loading="lazy" onerror="this.style.display='none'">`:''}${p.text?`<div style="font-size:13px">${p.text}</div>`:''}${p.file?`<div style="font-size:11px;color:var(--pk);margin-top:4px">📎 ${p.file.name}</div>`:''}</div>`;
+}
+function unlockPost(id,inputId,wrap){
+  const inp=document.getElementById(inputId);if(!inp)return;
+  const posts=gPosts();const p=posts.find(x=>x.id===id);if(!p)return;
+  if(inp.value===p.pw){wrap.innerHTML=renderPost({...p,locked:false});}
+  else{inp.style.borderColor='var(--r)';setTimeout(()=>inp.style.borderColor='',600);}
+}
+function rArch(){
+  const yg=document.getElementById('arch-year-grid');
+  if(yg)yg.innerHTML=ARCH_YEARS.map(yr=>`<div class="fc" ondblclick="openArchYear('${yr}')">${mkFS('var(--g2)','var(--g)')}<div class="fl">${yr}/</div></div>`).join('');
+  const posts=gPosts();
+  ARCH_YEARS.forEach(yr=>{
+    const el=document.getElementById('ay-'+yr);if(!el)return;
+    const mGrid=document.createElement('div');mGrid.className='fg';
+    for(let m=1;m<=12;m++){
+      const mStr=String(m).padStart(2,'0');
+      const cnt=posts.filter(p=>p.cat===yr&&(p.month===mStr||p.month===String(m))).length;
+      const cell=document.createElement('div');cell.className='fc';
+      cell.innerHTML=`${mkFS(cnt?'var(--r)':'var(--g2)','var(--g)')}<div class="fl">${mStr}/${MONTH_NAMES[m-1]}</div>`;
+      cell.ondblclick=()=>openArchMonth(yr,mStr);
+      mGrid.appendChild(cell);
+    }
+    el.innerHTML='';el.appendChild(mGrid);
+  });
+}
+function openArchYear(yr){
+  let w=document.getElementById('win-arch-'+yr);
+  if(!w){
+    w=document.createElement('div');w.id='win-arch-'+yr;w.className='win';
+    w.style.cssText='left:140px;top:76px;width:440px;height:340px';
+    w.innerHTML=`<div class="wtb"><span class="wt">${yr}</span><div class="wbc"><div class="wb x" onclick="cW('arch-${yr}')">×</div></div></div><div class="wp"><span class="wbk" onclick="cW('arch-${yr}');oW('arch')">←</span> archive / ${yr}</div><div class="wb0" id="ay-${yr}"></div><div class="wrz"></div>`;
+    document.getElementById('desk').appendChild(w);
+    w.querySelector('.wtb').addEventListener('mousedown',e=>{if(w.classList.contains('fp'))return;let ox=w.offsetLeft,oy=w.offsetTop,sx=e.clientX,sy=e.clientY,d=true;const mm=e=>{if(d){w.style.left=(ox+e.clientX-sx)+'px';w.style.top=(oy+e.clientY-sy)+'px';}};const mu=()=>{d=false;document.removeEventListener('mousemove',mm);document.removeEventListener('mouseup',mu);};document.addEventListener('mousemove',mm);document.addEventListener('mouseup',mu);});
+    w.addEventListener('mousedown',()=>{liftW(w);uTB();});
+  }
+  w.classList.add('open');liftW(w);ow['arch-'+yr]=true;uTB();
+  const el=document.getElementById('ay-'+yr);if(!el)return;
+  const posts=gPosts();el.innerHTML='';
+  const mGrid=document.createElement('div');mGrid.className='fg';
+  for(let m=1;m<=12;m++){
+    const mStr=String(m).padStart(2,'0');
+    const cnt=posts.filter(p=>p.cat===yr&&(p.month===mStr||p.month===String(m))).length;
+    const cell=document.createElement('div');cell.className='fc';
+    cell.innerHTML=`${mkFS(cnt?'var(--r)':'var(--g2)','var(--g)')}<div class="fl">${mStr}/${MONTH_NAMES[m-1]}</div>`;
+    cell.ondblclick=()=>openArchMonth(yr,mStr);
+    mGrid.appendChild(cell);
+  }
+  el.appendChild(mGrid);
+}
+function openArchMonth(yr,m){
+  const id=`arch-${yr}-${m}`;
+  let w=document.getElementById('win-'+id);
+  if(!w){
+    w=document.createElement('div');w.id='win-'+id;w.className='win';
+    w.style.cssText='left:160px;top:90px;width:420px;height:320px';
+    w.innerHTML=`<div class="wtb"><span class="wt">${yr}/${m}</span><div class="wbc"><div class="wb x" onclick="cW('${id}')">×</div></div></div><div class="wp"><span class="wbk" onclick="cW('${id}');openArchYear('${yr}')">←</span> archive / ${yr} / ${m}</div><div class="wb0" id="am-${id}"></div><div class="wrz"></div>`;
+    document.getElementById('desk').appendChild(w);
+    w.querySelector('.wtb').addEventListener('mousedown',e=>{let ox=w.offsetLeft,oy=w.offsetTop,sx=e.clientX,sy=e.clientY,d=true;const mm=e=>{if(d){w.style.left=(ox+e.clientX-sx)+'px';w.style.top=(oy+e.clientY-sy)+'px';}};const mu=()=>{d=false;document.removeEventListener('mousemove',mm);document.removeEventListener('mouseup',mu);};document.addEventListener('mousemove',mm);document.addEventListener('mouseup',mu);});
+    w.addEventListener('mousedown',()=>{liftW(w);uTB();});
+  }
+  const posts=gPosts().filter(p=>p.cat===yr&&(p.month===m||p.month===String(parseInt(m))));
+  const el=document.getElementById('am-'+id);
+  if(el)el.innerHTML=posts.length?posts.map(p=>renderPost(p)).join(''):'<div style="font-size:12px;color:var(--g2);padding:12px">// пусто</div>';
+  w.classList.add('open');liftW(w);ow[id]=true;uTB();
+}
+
+// ══ RANDOM ARCHIVE ══
+function goRandArchive(){
+  const posts=gPosts();if(!posts.length)return;
+  const p=posts[Math.floor(Math.random()*posts.length)];
+  const id='rarch-'+p.id;
+  let w=document.getElementById('win-'+id);
+  if(!w){
+    w=document.createElement('div');w.id='win-'+id;w.className='win';
+    w.style.cssText=`left:${100+Math.random()*200}px;top:${50+Math.random()*100}px;width:400px;height:280px`;
+    w.innerHTML=`<div class="wtb"><span class="wt">? → ${new Date(p.date).toLocaleDateString()}</span><div class="wbc"><div class="wb x" onclick="cW('${id}')">×</div></div></div><div class="wp">${p.cat||'archive'} / random</div><div class="wb0">${p.img?`<img class="pimg" src="${p.img}" style="margin-bottom:8px">`:''}<p style="font-size:13px">${p.text}</p></div><div class="wrz"></div>`;
+    document.getElementById('desk').appendChild(w);
+    w.querySelector('.wtb').addEventListener('mousedown',e=>{let ox=w.offsetLeft,oy=w.offsetTop,sx=e.clientX,sy=e.clientY,d=true;const mm=e=>{if(d){w.style.left=(ox+e.clientX-sx)+'px';w.style.top=(oy+e.clientY-sy)+'px';}};const mu=()=>{d=false;document.removeEventListener('mousemove',mm);document.removeEventListener('mouseup',mu);};document.addEventListener('mousemove',mm);document.addEventListener('mouseup',mu);});
+  }
+  w.classList.add('open');liftW(w);ow[id]=true;uTB();
+}
+
+// ══ EPHEMERAL ══
+function getEphCounts(){try{return JSON.parse(localStorage.getItem('ann_eph')||'{}');}catch(e){return{};}}
+function viewEph(id,el){
+  const c=getEphCounts();c[id]=(c[id]||0)+1;try{localStorage.setItem('ann_eph',JSON.stringify(c));}catch(e){}
+  const v=c[id];el.className='eph '+(v>=4?'gone':v===3?'seen-3':v===2?'seen-2':'seen-1');
+  if(v>=4){const img=el.querySelector('img');if(img){img.style.filter='grayscale(1) blur(3px)';img.style.opacity='.2';}const lbl=el.querySelector('.eph-lbl');if(lbl)lbl.textContent='[this work no longer exists]';}
+}
+function initEph(){
+  const c=getEphCounts();
+  document.querySelectorAll('.eph[id]').forEach(el=>{
+    const v=c[el.id]||0;if(v===0)return;
+    el.className='eph '+(v>=4?'gone':v===3?'seen-3':v===2?'seen-2':'seen-1');
+    if(v>=4){const img=el.querySelector('img');if(img){img.style.filter='grayscale(1) blur(3px)';img.style.opacity='.2';}const lbl=el.querySelector('.eph-lbl');if(lbl)lbl.textContent='[this work no longer exists]';}
+  });
+}
+
+// ══ VISITOR STATS ══
+function getVisits(){try{return parseInt(localStorage.getItem('ann_vis')||'0');}catch(e){return 0;}}
+function incVisit(){try{if(!sessionStorage.getItem('ann_vis_s')){sessionStorage.setItem('ann_vis_s','1');localStorage.setItem('ann_vis',String(getVisits()+1));}}catch(e){}}
+function initYou(){const el=document.getElementById('you-count');if(el)el.textContent=String(getVisits());}
+incVisit();
+
+// ══ CURATOR ══
+function openCurator(){
+  const posts=gPosts();const grid=document.getElementById('cur-grid');if(!grid)return;
+  grid.innerHTML=[...posts].sort(()=>Math.random()-.5).slice(0,12).map(p=>`<div class="cur-item">${p.img?`<img src="${p.img}" onerror="this.style.display='none'" loading="lazy">`:''}<div class="cur-cap">${p.text.substring(0,80)}${p.text.length>80?'…':''}<br><span style="color:var(--g);font-size:10px">${new Date(p.date).toLocaleDateString()}</span></div></div>`).join('');
+  document.getElementById('curator').classList.add('o');
+}
+
+// ══ BIOGRAPHY ══
+const BIO_EN=[['You arrived at {time}. This is significant.','Before this you were somewhere else. Probably near a window.','Your name begins with a letter in the middle of the alphabet. Careful with maps, reckless with phone chargers.','You have three unfinished projects and one that is secretly done but you are not ready to say so.','You once left something important in a jacket pocket. You still think about it.'],['At {time} you opened this page. You had already done this before, in another window, in another life.','You prefer photographs to be slightly overexposed. You are not sure why.','You have bookmarked things you will never return to. This is not failure. This is how the archive grows.']];
+const BIO_RU=[['Вы пришли в {time}. Это имеет значение.','До этого вы были где-то ещё. Вероятно, стояли у окна.','У вас три незаконченных проекта и один тайно законченный.','Вы однажды оставили что-то важное в кармане куртки. Вы до сих пор об этом думаете.'],['В {time} вы открыли эту страницу. Вы уже делали это раньше, в другой жизни.','Вы закладывали вещи, к которым никогда не вернётесь. Это не провал. Так растёт архив.']];
+function genBio(){
+  const el=document.getElementById('bio-out');if(!el)return;
+  const now=new Date(),time=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
+  const sets=LANGS[li]==='RU'?BIO_RU:BIO_EN;
+  const set=sets[Math.floor(Math.random()*sets.length)];
+  el.innerHTML=set.map(s=>s.replace('{time}',time)).map(s=>`<span style="display:block;margin-bottom:8px">${s}</span>`).join('');
+  const dd=document.getElementById('bio-data');
+  if(dd)dd.textContent=`screen: ${screen.width}×${screen.height} · tz: ${Intl.DateTimeFormat().resolvedOptions().timeZone}`;
+}
+
+// ══ RANDOM EXPERIENCE ══
+const RX_T=['a body is a hard drive with a cooling problem','das Dasein is not a metaphor. it is you, right now','the archive does not forget. the archive does not sleep','25 kilogramms of data. not a diet plan','every concert exists twice: in the room, and in the camera','the 6th lash from the right is always the important one'];
+const RX_I=['ann1','ann2','ann4','arch1','conc1','fash1','still1','art3d1','rep1'];
+function genRandExp(){
+  const el=document.getElementById('rand-exp-out');if(!el)return;
+  const img=RX_I[Math.floor(Math.random()*RX_I.length)],txt=RX_T[Math.floor(Math.random()*RX_T.length)],hue=Math.floor(Math.random()*360);
+  el.innerHTML=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:0;height:100%"><div style="overflow:hidden"><img src="https://picsum.photos/seed/${img}/300/300" style="width:100%;height:100%;object-fit:cover;filter:hue-rotate(${hue}deg) saturate(${1+Math.random()*2}) contrast(${0.8+Math.random()*0.5})" onerror="this.style.display='none'"></div><div style="display:flex;align-items:center;justify-content:center;padding:20px;background:#0a0a0a"><div style="font-family:var(--mn);font-size:clamp(12px,2vw,18px);color:var(--pk2);line-height:1.8;text-align:center">${txt}</div></div></div>`;
+}
+
+// ══ GUESTBOOK ══
+function getGB(){try{return JSON.parse(localStorage.getItem('ann_gb')||'[]');}catch(e){return[];}}
+function sGB(e){try{localStorage.setItem('ann_gb',JSON.stringify(e));}catch(ex){}}
+let gbCtx=null,gbDrawing=false,gbColor='#f5f0ee',gbSize=3;
+function initGB(){
+  const body=document.getElementById('gb-body');if(!body)return;
+  const adm=isAdm(),entries=getGB();
+  body.innerHTML=`<div style="padding:8px;border-bottom:1px solid #1e1e1e;margin-bottom:8px"><div style="font-size:11px;color:var(--g2);margin-bottom:5px">draw & write your review</div><canvas id="gbcv" width="420" height="120" style="width:100%;height:120px;cursor:crosshair;background:#111;border:1px solid #333;display:block"></canvas><div style="display:flex;gap:4px;margin:5px 0;align-items:center;flex-wrap:wrap">${['#f5f0ee','#cc3333','#f5c8d8','#c06878','#8888a0','#0d0d0d'].map(c=>`<div onclick="gbColor='${c}';event.target.parentNode.querySelectorAll('div').forEach(d=>d.style.outline='none');event.target.style.outline='2px solid #fff'" style="width:20px;height:20px;background:${c};cursor:pointer;border:1px solid #444;flex-shrink:0"></div>`).join('')}<input type="range" id="gbsz" min="1" max="14" value="3" style="flex:1;height:16px" oninput="gbSize=+this.value"><button style="background:#0d0d0d;color:var(--g2);border:1px solid #222;font-family:var(--mn);font-size:11px;padding:2px 7px;cursor:pointer" onclick="gbCtx&&gbCtx.clearRect(0,0,420,120)">✕ clear</button></div><input id="gb-name" placeholder="name (optional)" style="width:100%;background:#0d0d0d;color:var(--cr);border:1px solid #1e1e1e;font-family:var(--mn);font-size:13px;padding:4px 6px;outline:none;margin-bottom:5px"><textarea id="gb-text" placeholder="write something..." style="width:100%;min-height:55px;background:#0d0d0d;color:var(--cr);border:1px solid #1e1e1e;font-family:var(--mn);font-size:13px;padding:4px 6px;outline:none;resize:vertical"></textarea><button class="bb" style="margin-top:4px" onclick="submitGB()">SUBMIT</button></div><div id="gb-list">${entries.map((e,i)=>renderGBE(e,i,adm)).join('')}</div>`;
+  setTimeout(()=>{
+    const cv=document.getElementById('gbcv');if(!cv)return;
+    gbCtx=cv.getContext('2d');gbCtx.lineCap='round';
+    const gP=ev=>{const r=cv.getBoundingClientRect();return[(ev.clientX-r.left)*(420/r.width),(ev.clientY-r.top)*(120/r.height)];};
+    cv.addEventListener('mousedown',e=>{gbDrawing=true;gbCtx.strokeStyle=gbColor;gbCtx.lineWidth=gbSize;gbCtx.beginPath();const[x,y]=gP(e);gbCtx.moveTo(x,y);});
+    cv.addEventListener('mousemove',e=>{if(!gbDrawing)return;const[x,y]=gP(e);gbCtx.lineTo(x,y);gbCtx.stroke();});
+    cv.addEventListener('mouseup',()=>gbDrawing=false);cv.addEventListener('mouseleave',()=>gbDrawing=false);
+  },100);
+}
+function renderGBE(e,i,adm){return`<div class="gbrw"><div style="font-size:10px;color:var(--g2);margin-bottom:4px">${e.name||'anonymous'} · ${new Date(e.date).toLocaleDateString()}</div>${e.img?`<img style="width:100%;max-height:80px;object-fit:contain;display:block;margin-bottom:4px;image-rendering:pixelated;background:#0d0d0d" src="${e.img}" onerror="this.style.display='none'">`:''  }${e.text?`<div style="font-size:13px;color:var(--g2)">${e.text.replace(/</g,'&lt;')}</div>`:''  }${adm?`<div class="gbre"><button onclick="deleteGB(${i})">🗑 delete</button><button onclick="editGB(${i})">✏ edit</button></div>`:''}</div>`;}
+function submitGB(){
+  const cv=document.getElementById('gbcv'),text=(document.getElementById('gb-text')||{}).value||'',name=(document.getElementById('gb-name')||{}).value||'';
+  const img=cv?cv.toDataURL():'';
+  const isBlank=!text.trim()&&(!cv||img===document.createElement('canvas').toDataURL());
+  if(isBlank)return;
+  const e=getGB();e.unshift({date:new Date().toISOString(),img:cv?cv.toDataURL():'',text:text.substring(0,500),name:name.substring(0,40)});sGB(e);initGB();
+}
+function deleteGB(i){const e=getGB();e.splice(i,1);sGB(e);initGB();if(isAdm())initAdm();}
+function editGB(i){const e=getGB();const nt=prompt('Edit text:',e[i].text);if(nt!==null){e[i].text=nt;sGB(e);initGB();if(isAdm())initAdm();}}
+
+// ══ ADMIN ══
+let admMode='text';
+function isAdm(){try{return sessionStorage.getItem('ann_adm')==='1';}catch(e){return false;}}
+function initAdm(){
+  if(!isAdm())return;setAdmMode('text');
+  const gl=document.getElementById('adm-gb-list');if(!gl)return;
+  const entries=getGB();
+  gl.innerHTML=entries.length?entries.map((e,i)=>`<div style="border:1px solid #1e1e1e;padding:5px;margin-bottom:4px;display:flex;align-items:center;gap:6px"><div style="flex:1;font-size:11px;color:var(--g2)">${e.name||'anon'} · ${new Date(e.date).toLocaleDateString()} · "${(e.text||'').substring(0,40)}"</div><button class="adm-btn" style="padding:2px 5px;font-size:10px" onclick="deleteGB(${i});initAdm()">del</button><button class="adm-btn" style="padding:2px 5px;font-size:10px" onclick="editGB(${i});initAdm()">edit</button></div>`).join(''):'<div style="font-size:11px;color:var(--g2)">no entries yet</div>';
+}
+function setAdmMode(m){
+  admMode=m;document.querySelectorAll('#adm-type-btns .adm-btn').forEach((b,i)=>b.classList.toggle('act',['text','image','video'][i]===m));
+  const f=document.getElementById('adm-form');if(!f)return;
+  if(m==='text')f.innerHTML=`<textarea class="btx" id="adm-t" placeholder="text..."></textarea><div class="brow"><input class="bi" id="adm-tg" placeholder="tag" style="flex:.5"><select class="bs" id="adm-ct"><option value="">section</option><option>2026</option><option>2025</option><option>2024</option><option>thoughts</option></select><button class="bb" onclick="admPub()">PUBLISH</button></div>`;
+  else if(m==='image')f.innerHTML=`<input class="bi" id="adm-url" placeholder="image URL"><textarea class="btx" id="adm-cap" placeholder="caption..." style="min-height:50px;margin-top:4px"></textarea><div class="brow"><select class="bs" id="adm-ct"><option value="">section</option><option>2026</option><option>ph</option></select><button class="bb" onclick="admPub()">ADD</button></div>`;
+  else f.innerHTML=`<input class="bi" id="adm-url" placeholder="YouTube URL"><textarea class="btx" id="adm-cap" placeholder="description..." style="min-height:50px;margin-top:4px"></textarea><div class="brow"><select class="bs" id="adm-ct"><option value="">section</option><option>2026</option><option>vid</option></select><button class="bb" onclick="admPub()">ADD</button></div>`;
+}
+function admPub(){
+  const t2=document.getElementById('adm-t'),url=document.getElementById('adm-url'),cap=document.getElementById('adm-cap'),ct=document.getElementById('adm-ct');
+  const text=((t2?t2.value:'')+(cap?' '+cap.value:'')).trim(),img=admMode==='image'&&url?url.value:'';
+  if(!text&&!img)return;
+  const ps=gPosts();ps.unshift({id:Date.now(),date:new Date().toISOString(),text:text||img,tag:admMode,cat:ct?ct.value:'',img});sPosts(ps);
+  const o=document.getElementById('adm-out');if(o){o.textContent='✓ published';setTimeout(()=>o.textContent='',3000);}
+}
+
+// ══ CURSOR EDITOR ══
+const CS=16;
+const CD=[new Array(CS*CS).fill(null),new Array(CS*CS).fill(null),new Array(CS*CS).fill(null)];
+let curTab=0,curColor='w',curDrawing=false;
+function openCTE(){bCG();document.getElementById('cte').classList.add('o');}
+function setCT(idx){curTab=idx;document.querySelectorAll('.ctbt').forEach((b,i)=>b.classList.toggle('a',i===idx));bCG();}
+function setCC(c){curColor=c;document.querySelectorAll('.cl').forEach(el=>el.classList.remove('a'));event.target.classList.add('a');}
+function bCG(){
+  const g=document.getElementById('cg');g.innerHTML='';
+  for(let i=0;i<CS*CS;i++){
+    const px=document.createElement('div');px.className='cp '+(CD[curTab][i]||'');
+    const pt=()=>{if(curColor==='e'){CD[curTab][i]=null;px.className='cp';}else{CD[curTab][i]=curColor;px.className='cp '+curColor;}};
+    px.addEventListener('mousedown',e=>{e.preventDefault();curDrawing=true;pt();});
+    px.addEventListener('mouseenter',()=>{if(curDrawing)pt();});
+    g.appendChild(px);
+  }
+  document.addEventListener('mouseup',()=>curDrawing=false);
+}
+function clCur(){CD[curTab]=new Array(CS*CS).fill(null);bCG();}
+function apCur(){try{localStorage.setItem('ac4',JSON.stringify(CD));}catch(e){}document.getElementById('cte').classList.remove('o');updateCurState();}
+(()=>{try{const s=JSON.parse(localStorage.getItem('ac4')||'null');if(Array.isArray(s)&&s.length===3)s.forEach((d,i)=>{if(Array.isArray(d))CD[i]=d;});}catch(e){}})();
+
+// ══ FOLDER GRIDS ══
+const PH_SUBS=[['portraits','portraits/','var(--r)','var(--r2)'],['arch2','architecture/','var(--pk3)','var(--pk3)'],['fashion','fashion/','var(--r)','var(--r2)'],['concerts','concerts/','var(--pk3)','var(--pk3)'],['still','still/','var(--r)','var(--r2)'],['report','reportage/','var(--g2)','var(--g)']];
+const VID_SUBS=[['conc','concerts/','var(--r)','var(--r2)'],['art','art films/','var(--pk3)','var(--pk3)'],['vlogs','vlogs/','var(--g2)','var(--g)']];
+const SK_YEARS=['2018','2019','2020','2021','2022','2023','2024','2025','2026'];
+(()=>{
+  const pg=document.getElementById('ph-grid');if(pg)pg.innerHTML=PH_SUBS.map(([id,lbl,c1,c2])=>`<div class="fc" ondblclick="oSub('ph-${id}','ph')">${mkFS(c1,c2)}<div class="fl">${lbl}</div></div>`).join('');
+  const vg=document.getElementById('vid-grid');if(vg)vg.innerHTML=VID_SUBS.map(([id,lbl,c1,c2])=>`<div class="fc" ondblclick="oSub('vid-${id}','vid')">${mkFS(c1,c2)}<div class="fl">${lbl}</div></div>`).join('');
+  const sg=document.getElementById('sk-grid');if(sg)sg.innerHTML=SK_YEARS.map(yr=>`<div class="fc" ondblclick="openSkYear('${yr}')">${mkFS('var(--pk3)','var(--pk3)')}<div class="fl">${yr}/</div></div>`).join('');
+})();
+function openSkYear(yr){
+  let w=document.getElementById('win-sk-'+yr);
+  if(!w){
+    w=document.createElement('div');w.id='win-sk-'+yr;w.className='win';w.style.cssText=`left:145px;top:82px;width:440px;height:300px`;
+    const desc={2022:'Early sketchbooks. Metro faces. "the metro face" — one notebook.',2023:'Shift to mixed media. Photographs drawn over. First collages.',2024:'"Architecture of the self" — 48 pages. Some torn out deliberately.',2025:'Video storyboards. Concert prep. Notes toward das Dasein.',2026:'Current. Live. Updated in real time (approximately).'}[yr]||'';
+    w.innerHTML=`<div class="wtb"><span class="wt">Sketchbook → ${yr}/</span><div class="wbc"><div class="wb x" onclick="cW('sk-${yr}')">×</div></div></div><div class="wp"><span class="wbk" onclick="cW('sk-${yr}');oW('sk')">←</span> Sketchbook / ${yr}</div><div class="wb0"><div class="pc">${desc}</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px">${[1,2,3,4].map(i=>`<div><img class="pimg" src="https://picsum.photos/seed/sk${yr}${i}/250/180" style="height:90px;filter:grayscale(.5)" loading="lazy" onerror="this.style.display='none'"><div class="pm">spread_${String(i).padStart(2,'0')}.jpg</div></div>`).join('')}</div></div><div class="wrz"></div>`;
+    document.getElementById('desk').appendChild(w);
+    w.querySelector('.wtb').addEventListener('mousedown',e=>{let ox=w.offsetLeft,oy=w.offsetTop,sx=e.clientX,sy=e.clientY,d=true;const mm=e=>{if(d){w.style.left=(ox+e.clientX-sx)+'px';w.style.top=(oy+e.clientY-sy)+'px';}};const mu=()=>{d=false;document.removeEventListener('mousemove',mm);document.removeEventListener('mouseup',mu);};document.addEventListener('mousemove',mm);document.addEventListener('mouseup',mu);});
+  }
+  w.classList.add('open');liftW(w);ow['sk-'+yr]=true;uTB();
+}
+
+// ══ VIRUS ══
+function startVirus(){
+  virusMode=true;
+  document.getElementById('vrs').classList.add('on');
+  VIRUS_IDS.forEach((id,i)=>{
+    setTimeout(()=>{const w=document.getElementById('win-'+id);if(w){w.classList.add('open');w.style.left=(Math.random()*55+2)+'%';w.style.top=(Math.random()*45+2)+'%';w.style.right='auto';w.style.bottom='auto';w.style.zIndex=300+i;ow[id]=true;}},i*120);
+  });
+  document.querySelectorAll('.ic').forEach(ic=>{ic.style.left=(Math.random()*80+2)+'%';ic.style.top=(Math.random()*70+2)+'%';ic.style.right='auto';ic.style.bottom='auto';});
+  uTB();
+  setTimeout(()=>{document.getElementById('vrs').classList.remove('on');},4000);
+}
+
+// ══ ORACLE (floating absurd predictions) ══
+const ORACLE={
+EN:['Your left click is haunted.','The archive is growing even now.','Someone is watching this site at 3am. Possibly you.','The 7th photo you took today was the best one. You deleted it.','This window will remember you.','Your cursor leaves invisible traces.','The manifesto knows something you don\'t.','The 6th lash from the right blinks.','Every visit is a timestamp. You cannot unsee this.','The site changes when no one is watching.','You have been here before. In another window.','The archive does not sleep.'],
+RU:['Ваш левый клик одержим.','Архив растёт прямо сейчас.','Кто-то смотрит этот сайт в 3 ночи. Возможно, вы.','7-я фотография была лучшей. Вы её удалили.','Это окно вас запомнит.','Ваш курсор оставляет невидимые следы.','Манифест знает что-то, чего вы не знаете.','6-я ресница справа моргает.','Каждый визит — это временная метка. Вы не можете это развидеть.','Сайт меняется, когда на него никто не смотрит.','Вы уже были здесь. В другой жизни.','Архив не спит. Никогда.','Тишина — тоже данные.','Ты думаешь, что смотришь на сайт. Сайт смотрит на тебя.'],
+DE:['Ihr linker Klick ist besessen.','Das Archiv wächst genau jetzt.','Jemand schaut diese Seite um 3 Uhr nachts. Möglicherweise Sie.','Das 7. Foto war das beste. Sie haben es gelöscht.','Dieses Fenster wird sich an Sie erinnern.','Ihr Cursor hinterlässt unsichtbare Spuren.','Das Archiv schläft nicht.']
+};
+function showOracle(){
+  // Only show on main desktop (no full-screen overlays open)
+  const epOpen=document.getElementById('ep').classList.contains('o');
+  const gpOpen=document.getElementById('gp').classList.contains('o');
+  const curOpen=document.getElementById('curator').classList.contains('o');
+  if(epOpen||gpOpen||curOpen) return;
+  const msgs=ORACLE[LANGS[li]]||ORACLE.EN;
+  const el=document.getElementById('oracle-pop');if(!el)return;
+  el.textContent='🔮 '+msgs[Math.floor(Math.random()*msgs.length)];
+  el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'),6000);
+}
+setInterval(showOracle,66000);
+
+// ══ LANGUAGE ══
+function cyLang(){
+  li=(li+1)%LANGS.length;
+  document.getElementById('tlg').textContent=LANGS[li];
+  applyLang();
+  if(ow['mani'])genMani();
+  if(ow['proj-bio'])genBio();
+  if(ow['joke'])loadJoke();
+}
+
+// ══ EASTER EGG ══
+let tp='';
+document.addEventListener('keydown',e=>{
+  tp=(tp+e.key.toLowerCase()).slice(-4);
+  if(tp==='anna'){const eg=document.createElement('div');eg.style.cssText='position:fixed;bottom:50px;right:20px;font-family:var(--mn);font-size:15px;color:var(--pk2);z-index:6000;opacity:0;transition:opacity 1.5s;pointer-events:none;letter-spacing:.1em';eg.textContent='you found me ♡';document.body.appendChild(eg);requestAnimationFrame(()=>eg.style.opacity=1);setTimeout(()=>{eg.style.opacity=0;setTimeout(()=>eg.remove(),1600);},4000);}
+});
+
+
+// ══ CATCH ME ICON ══
+let catchMeChasing = false;
+function moveCatchMe(e) {
+  if(e) e.stopPropagation();
+  const ic = document.getElementById('ic-catchme');
+  if(!ic) return;
+  const desk = document.getElementById('desk');
+  const dw = desk.offsetWidth, dh = desk.offsetHeight;
+  const iw = ic.offsetWidth || 80, ih = ic.offsetHeight || 80;
+  // Move to random position far from current
+  const newX = Math.random() * (dw - iw - 20) + 10;
+  const newY = Math.random() * (dh - ih - 40) + 10;
+  ic.style.transition = 'left 0.15s, top 0.15s';
+  ic.style.left = newX + 'px';
+  ic.style.top = newY + 'px';
+  ic.style.right = 'auto';
+  ic.style.bottom = 'auto';
+  // Shake effect
+  ic.style.animation = 'catchMeShake 0.2s step-start';
+  setTimeout(() => { ic.style.animation = ''; ic.style.transition = ''; }, 300);
+}
+
+// Make it jiggle periodically
+setInterval(() => {
+  const ic = document.getElementById('ic-catchme');
+  if(ic) {
+    ic.style.animation = 'catchMeShake 0.3s step-start';
+    setTimeout(() => { ic.style.animation = ''; }, 350);
+  }
+}, 7777);
+
+// ══ SCROLL PAGE ══
+function openScrollPage(){
+  const sp=document.getElementById('scroll-page');
+  sp.style.opacity='0';sp.classList.add('active');
+  requestAnimationFrame(()=>{sp.style.transition='opacity .6s';sp.style.opacity='1';});
+  document.getElementById('scroll-arrow').classList.remove('show');
+  document.getElementById('scroll-close').classList.add('show');
+  checkScrollSections();
+  sp.addEventListener('scroll',checkScrollSections);
+}
+function closeScrollPage(){
+  const sp=document.getElementById('scroll-page');
+  sp.style.transition='opacity .5s';sp.style.opacity='0';
+  setTimeout(()=>{sp.classList.remove('active');sp.scrollTop=0;},500);
+  document.getElementById('scroll-close').classList.remove('show');
+  setTimeout(()=>document.getElementById('scroll-arrow').classList.add('show'),800);
+}
+function checkScrollSections(){
+  const sp=document.getElementById('scroll-page');
+  const st=sp.scrollTop,sh=sp.clientHeight;
+  document.querySelectorAll('.scroll-section').forEach(s=>{
+    const top=s.offsetTop;
+    if(st+sh>top+60)s.classList.add('visible');
+  });
+}
+// Show scroll arrow after 3s (1s on mobile)
+setTimeout(()=>document.getElementById('scroll-arrow').classList.add('show'),'ontouchstart' in window?1000:3000);
+
+// ══ SINGLE CLICK ON DESKTOP (web) ══
+(function setupSingleClick(){
+  if('ontouchstart' in window) return; // mobile handled separately
+  document.querySelectorAll('.ic').forEach(ic=>{
+    ic.addEventListener('click',e=>{
+      // only if not dragging
+      if(ic._wasDragged) return;
+      if(ic.ondblclick) ic.ondblclick();
+    });
+  });
+})();
+
+// ══ DRAG TO TRASH ══
+(function setupDragToTrash(){
+  const trashEl=document.getElementById('ic-trash');
+  function makeDraggable(ic){
+    if(ic.id==='ic-trash') return;
+    ic.setAttribute('draggable','true');
+    ic.addEventListener('dragstart',e=>{
+      e.dataTransfer.setData('text/plain',ic.id);
+      ic.classList.add('dragging');
+      if(trashEl) trashEl.classList.add('trash-ready');
+    });
+    ic.addEventListener('dragend',()=>{
+      ic.classList.remove('dragging');
+      if(trashEl) trashEl.classList.remove('trash-ready');
+    });
+  }
+  document.querySelectorAll('.ic').forEach(makeDraggable);
+  if(trashEl){
+    trashEl.addEventListener('dragover',e=>{e.preventDefault();trashEl.classList.add('trash-ready');});
+    trashEl.addEventListener('dragleave',()=>trashEl.classList.remove('trash-ready'));
+    trashEl.addEventListener('drop',e=>{
+      e.preventDefault();
+      const id=e.dataTransfer.getData('text/plain');
+      if(id&&id!=='ic-trash') trashIc(id);
+      trashEl.classList.remove('trash-ready');
+    });
+  }
+})();
+
+// ══ RESTORE ALL ICONS ══
+function restoreAllIcons(){
+  const desk=document.getElementById('desk');
+  const dw=desk.offsetWidth,dh=desk.offsetHeight;
+  trashed.forEach(id=>{
+    const ic=document.getElementById(id);
+    if(!ic) return;
+    ic.style.display='block';
+    // random position
+    const x=Math.random()*(dw-100)+10;
+    const y=Math.random()*(dh-120)+10;
+    ic.style.left=x+'px';ic.style.top=y+'px';
+    ic.style.right='auto';ic.style.bottom='auto';
+  });
+  trashed.clear();
+  document.getElementById('trc').textContent='0';
+  document.getElementById('trb').textContent=tr('trash-empty');
+}
+
+// ══ MOBILE DRAG ICONS ══
+(function setupMobileDrag(){
+  if(!('ontouchstart' in window)) return;
+  const desk=document.getElementById('desk');
+  let dragIc=null,ox=0,oy=0,sx=0,sy=0,moved=false;
+  document.querySelectorAll('.ic').forEach(ic=>{
+    if(ic.id==='ic-trash') return;
+    ic.addEventListener('touchstart',e=>{
+      if(e.touches.length!==1) return;
+      const t=e.touches[0];
+      sx=t.clientX;sy=t.clientY;
+      ox=ic.offsetLeft;oy=ic.offsetTop;
+      moved=false;
+      dragIc=ic;
+      ic._dragTimer=setTimeout(()=>{
+        ic._longpress=true;
+        ic.style.opacity='.6';
+        ic.style.transition='';
+      },350);
+    },{ passive:true });
+    ic.addEventListener('touchmove',e=>{
+      if(!dragIc||!ic._longpress) return;
+      e.preventDefault();
+      const t=e.touches[0];
+      const dx=t.clientX-sx,dy=t.clientY-sy;
+      moved=true;
+      const dw=desk.offsetWidth,dh=desk.offsetHeight;
+      const nw=ic.offsetWidth||64,nh=ic.offsetHeight||80;
+      let nx=Math.max(0,Math.min(dw-nw,ox+dx));
+      let ny=Math.max(0,Math.min(dh-nh,oy+dy));
+      ic.style.left=nx+'px';ic.style.top=ny+'px';
+      ic.style.right='auto';ic.style.bottom='auto';
+      // trash highlight
+      const tr2=document.getElementById('ic-trash');
+      if(tr2){const tr2r=tr2.getBoundingClientRect();const cx=t.clientX,cy=t.clientY;if(cx>tr2r.left&&cx<tr2r.right&&cy>tr2r.top&&cy<tr2r.bottom)tr2.classList.add('trash-ready');else tr2.classList.remove('trash-ready');}
+    },{ passive:false });
+    ic.addEventListener('touchend',e=>{
+      clearTimeout(ic._dragTimer);
+      if(ic._longpress){
+        ic.style.opacity='1';
+        ic._longpress=false;
+        // check if dropped on trash
+        if(e.changedTouches.length){
+          const t=e.changedTouches[0];
+          const tr2=document.getElementById('ic-trash');
+          if(tr2){const tr2r=tr2.getBoundingClientRect();if(t.clientX>tr2r.left&&t.clientX<tr2r.right&&t.clientY>tr2r.top&&t.clientY<tr2r.bottom){trashIc(ic.id);}}
+          const tr3=document.getElementById('ic-trash');if(tr3)tr3.classList.remove('trash-ready');
+        }
+        return;
+      }
+      // single tap = open
+      const n=Date.now(),id=ic.id;
+      if(!moved){if(ic.ondblclick)ic.ondblclick();}
+      dragIc=null;
+    });
+  });
+})();
+
+// ══ MOBILE ICON GRID ARRANGE ══
+(function arrangeMobileIcons(){
+  if(!('ontouchstart' in window)) return;
+  const icons=[...document.querySelectorAll('.ic')].filter(i=>i.id!=='ic-catchme'&&i.id!=='ic-trash');
+  const cols=4, iconW=72, iconH=90, padX=6, padY=6;
+  icons.forEach((ic,idx)=>{
+    const col=idx%cols;
+    const row=Math.floor(idx/cols);
+    ic.style.left=(padX+col*(iconW+padX))+'px';
+    ic.style.top=(padY+row*(iconH+padY))+'px';
+    ic.style.right='auto';
+    ic.style.bottom='auto';
+    ic.style.position='absolute';
+  });
+  const rows=Math.ceil(icons.length/cols);
+  document.getElementById('desk').style.minHeight=(padY+rows*(iconH+padY)+80)+'px';
+  // Pin trash at fixed bottom-right so it's always visible while scrolling
+  const trash=document.getElementById('ic-trash');
+  if(trash){
+    trash.style.position='fixed';
+    trash.style.right='8px';
+    trash.style.bottom='44px';
+    trash.style.left='auto';
+    trash.style.top='auto';
+    trash.style.zIndex='500';
+    trash.style.background='rgba(10,10,10,.92)';
+    trash.style.border='1px solid #333';
+  }
+})();
+
+// ══ MOBILE SWIPE DOWN TO SCROLL PAGE ══
+(function setupMobileSwipeScroll(){
+  if(!('ontouchstart' in window)) return;
+  let tsy=0;
+  const desk=document.getElementById('desk');
+  desk.addEventListener('touchstart',e=>{tsy=e.touches[0].clientY;},{passive:true});
+  desk.addEventListener('touchend',e=>{
+    const dy=e.changedTouches[0].clientY-tsy;
+    // Quick upward flick from bottom half of screen = open scroll page
+    if(dy<-60&&e.changedTouches[0].clientY>window.innerHeight*0.6){
+      const sp=document.getElementById('scroll-page');
+      if(!sp.classList.contains('active')) openScrollPage();
+    }
+  },{passive:true});
+})();
+
+// ══ INIT ══
+// Load click count
+const d=document.getElementById('cnt-display');if(d)d.textContent=totalClicks;
+// Init oracle
+setTimeout(()=>{const msgs=T[LANGS[li]]||T.EN;const oracle=document.getElementById('oracle-pop');if(oracle){const keys=['das-text','about-quote','not-afraid'];const m=T[LANGS[li]][keys[Math.floor(Math.random()*keys.length)]];oracle.textContent=m;oracle.classList.add('show');setTimeout(()=>oracle.classList.remove('show'),5000);}},8000);
+// Apply language
+applyLang();
+</script>
+</body>
+</html>
