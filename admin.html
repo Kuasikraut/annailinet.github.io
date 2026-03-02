@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ADMIN — annaili.net</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+:root{
+  --k:#0d0d0d;--r:#cc3333;--r2:#881111;--pk:#f5c8d8;--pk2:#fde8ef;
+  --g:#4a4a5a;--g2:#8888a0;--cr:#f5f0ee;
+  --mn:'VT323',monospace;
+  --brd:#222;
+  --inp-bg:#0f0f0f;
+  --tab-h:36px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--k);color:var(--cr);font-family:var(--mn);min-height:100vh;}
+
+/* ── LOGIN SCREEN ── */
+#login{position:fixed;inset:0;background:var(–k);display:flex;align-items:center;justify-content:center;z-index:9999;}
+#login.h{display:none;}
+.login-box{border:1px solid var(–r2);padding:40px 32px;min-width:300px;text-align:center;background:#0a0a0a;box-shadow:4px 4px 0 rgba(0,0,0,.9);}
+.login-box h1{font-size:28px;color:var(–r);margin-bottom:6px;letter-spacing:.1em;}
+.login-box p{font-size:13px;color:var(–g2);margin-bottom:24px;}
+.fi{width:100%;background:var(–inp-bg);border:1px solid var(–brd);color:var(–cr);font-family:var(–mn);font-size:16px;padding:8px 10px;margin-bottom:10px;outline:none;}
+.fi:focus{border-color:var(–r);}
+.btn{background:var(–r2);border:1px solid var(–r);color:var(–cr);font-family:var(–mn);font-size:16px;padding:8px 24px;cursor:pointer;width:100%;letter-spacing:.05em;}
+.btn:hover{background:var(–r);}
+.btn-sm{font-size:13px;padding:4px 12px;width:auto;}
+.btn-red{background:var(–r2);border-color:var(–r);}
+.btn-gray{background:#1a1a1a;border:1px solid #333;color:var(–g2);}
+.btn-gray:hover{background:#333;color:var(–cr);}
+.err{color:var(–r);font-size:13px;margin-top:8px;}
+
+/* ── LAYOUT ── */
+#app{display:none;flex-direction:column;min-height:100vh;}
+#app.show{display:flex;}
+header{background:#0a0a0a;border-bottom:1px solid var(–r2);padding:10px 20px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+header h1{font-size:22px;color:var(–r);letter-spacing:.1em;}
+.h-links{display:flex;gap:12px;align-items:center;}
+.h-link{color:var(–g2);font-size:13px;text-decoration:none;}
+.h-link:hover{color:var(–pk);}
+.h-link.btn-sm{text-decoration:none;display:inline-block;}
+
+/* ── TABS ── */
+#tabs{display:flex;border-bottom:1px solid var(–brd);background:#0a0a0a;flex-shrink:0;}
+.tab{padding:0 20px;height:var(–tab-h);display:flex;align-items:center;font-size:15px;cursor:pointer;color:var(–g2);border-right:1px solid var(–brd);border-bottom:2px solid transparent;letter-spacing:.04em;}
+.tab:hover{color:var(–cr);background:#111;}
+.tab.active{color:var(–pk);border-bottom-color:var(–pk);background:#111;}
+
+/* ── PANELS ── */
+#panels{flex:1;overflow:auto;}
+.panel{display:none;padding:20px;}
+.panel.active{display:block;}
+
+/* ── FORM ELEMENTS ── */
+.row{margin-bottom:14px;}
+label{display:block;font-size:12px;color:var(–g2);margin-bottom:4px;letter-spacing:.06em;}
+input[type=text],input[type=url],input[type=password],textarea,select{
+width:100%;background:var(–inp-bg);border:1px solid var(–brd);color:var(–cr);
+font-family:var(–mn);font-size:15px;padding:7px 10px;outline:none;resize:vertical;
+}
+input:focus,textarea:focus,select:focus{border-color:var(–pk);}
+select option{background:#111;}
+textarea{min-height:80px;}
+.hint{font-size:11px;color:var(–g2);margin-top:3px;}
+.inline{display:flex;gap:10px;align-items:flex-end;}
+.inline .row{flex:1;margin-bottom:0;}
+.check-row{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+input[type=checkbox]{accent-color:var(–pk);width:15px;height:15px;cursor:pointer;}
+input[type=file]{color:var(–g2);font-size:13px;}
+
+/* ── CARD / LIST ── */
+.card{background:#0f0f0f;border:1px solid var(–brd);padding:12px;margin-bottom:8px;}
+.card-title{font-size:15px;color:var(–cr);margin-bottom:4px;}
+.card-meta{font-size:11px;color:var(–g2);}
+.card-actions{display:flex;gap:6px;margin-top:8px;}
+.list-empty{color:var(–g2);font-size:13px;padding:20px 0;text-align:center;}
+
+/* ── SECTION HEADER ── */
+.sec-hd{font-size:18px;color:var(–pk);border-bottom:1px solid var(–brd);padding-bottom:8px;margin-bottom:16px;letter-spacing:.06em;}
+.sec-sub{font-size:13px;color:var(–g2);margin-bottom:16px;}
+.divider{border:none;border-top:1px solid var(–brd);margin:20px 0;}
+
+/* ── TWO COLUMN ── */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+@media(max-width:700px){.two-col{grid-template-columns:1fr;}}
+
+/* ── STATUS BAR ── */
+#status{position:fixed;bottom:0;left:0;right:0;background:#0a0a0a;border-top:1px solid var(–brd);padding:6px 16px;font-size:12px;color:var(–g2);display:flex;align-items:center;justify-content:space-between;}
+#status-msg{color:var(–pk);}
+#status-msg.err{color:var(–r);}
+
+/* ── MEME GRID ── */
+.meme-grid{columns:3;gap:6px;margin-top:10px;}
+.meme-item{break-inside:avoid;margin-bottom:6px;position:relative;background:#0f0f0f;border:1px solid var(–brd);}
+.meme-item img{width:100%;display:block;}
+.meme-cap{font-size:10px;color:var(–g2);padding:3px 5px;background:#0a0a0a;}
+.meme-del{position:absolute;top:3px;right:3px;background:rgba(136,17,17,.9);border:none;color:var(–cr);font-family:var(–mn);font-size:12px;padding:1px 6px;cursor:pointer;}
+.meme-del:hover{background:var(–r);}
+
+/* ── DB CATEGORIES ── */
+.cat-tag{display:inline-block;background:#1a0808;border:1px solid var(–r2);color:var(–cr);font-size:12px;padding:2px 8px;margin:2px;cursor:pointer;}
+.cat-tag:hover{background:var(–r2);}
+.cat-tag .rm{color:var(–r);margin-left:6px;}
+
+/* ── ICON GRID ── */
+.icon-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;}
+.icon-card{background:#0f0f0f;border:1px solid var(–brd);padding:10px;}
+.icon-id{font-size:11px;color:var(–r);margin-bottom:6px;letter-spacing:.04em;}
+.icon-coords{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+.icon-coords label{font-size:10px;}
+.icon-coords input{font-size:12px;padding:4px 6px;}
+
+/* ── COLOR SWATCHES ── */
+.color-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-top:10px;}
+.color-row{display:flex;align-items:center;gap:10px;}
+.color-row label{flex:1;font-size:13px;color:var(–g2);}
+input[type=color]{width:40px;height:30px;padding:0;border:1px solid var(–brd);background:none;cursor:pointer;}
+.color-preview{width:24px;height:24px;border:1px solid var(–brd);display:inline-block;vertical-align:middle;}
+
+/* ── POST TYPE TABS ── */
+.type-tabs{display:flex;gap:0;margin-bottom:14px;}
+.tt{padding:5px 14px;font-size:14px;cursor:pointer;color:var(–g2);border:1px solid var(–brd);border-right:none;background:#0a0a0a;}
+.tt:last-child{border-right:1px solid var(–brd);}
+.tt.active{color:var(–pk);background:#111;border-bottom-color:#111;}
+.tt:hover{color:var(–cr);}
+.type-panel{display:none;}
+.type-panel.active{display:block;}
+
+/* ── GB ── */
+.gb-entry{background:#0f0f0f;border:1px solid var(–brd);padding:10px;margin-bottom:6px;}
+.gb-name{font-size:15px;color:var(–pk);}
+.gb-msg{font-size:13px;color:var(–cr);margin:4px 0;}
+.gb-meta{font-size:10px;color:var(–g2);}
+
+/* ── PREVIEW ── */
+.preview-frame{background:#111;border:1px solid var(–brd);padding:10px;margin-top:10px;min-height:60px;}
+.preview-frame iframe{width:100%;aspect-ratio:16/9;border:none;}
+.embed-link{color:var(–pk);font-size:13px;}
+</style>
+
+</head>
+<body>
+
+<!-- ══════════════ LOGIN ══════════════ -->
+
+<div id="login">
+  <div class="login-box">
+    <h1>ADMIN</h1>
+    <p>annaili.net — panel</p>
+    <input class="fi" id="lu" type="text" placeholder="user" autocomplete="off">
+    <input class="fi" id="lp" type="password" placeholder="password" autocomplete="off" onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="btn" onclick="doLogin()">ENTER</button>
+    <div class="err" id="lerr"></div>
+  </div>
+</div>
+
+<!-- ══════════════ APP ══════════════ -->
+
+<div id="app">
+  <header>
+    <h1>⬛ ANNAILI ADMIN</h1>
+    <div class="h-links">
+      <a href="index.html" class="h-link">← site</a>
+      <button class="btn btn-sm btn-gray" onclick="doLogout()">logout</button>
+    </div>
+  </header>
+
+  <div id="tabs">
+    <div class="tab active" data-tab="posts" onclick="switchTab('posts')">POSTS</div>
+    <div class="tab" data-tab="memes" onclick="switchTab('memes')">MEMES</div>
+    <div class="tab" data-tab="db" onclick="switchTab('db')">DATABASE</div>
+    <div class="tab" data-tab="icons" onclick="switchTab('icons')">ICONS</div>
+    <div class="tab" data-tab="appearance" onclick="switchTab('appearance')">APPEARANCE</div>
+    <div class="tab" data-tab="guestbook" onclick="switchTab('guestbook')">GUESTBOOK</div>
+    <div class="tab" data-tab="settings" onclick="switchTab('settings')">SETTINGS</div>
+  </div>
+
+  <div id="panels">
+
+```
+<!-- ══ POSTS ══ -->
+<div class="panel active" id="panel-posts">
+  <div class="two-col">
+    <div>
+      <div class="sec-hd">NEW POST</div>
+      <div class="type-tabs">
+        <div class="tt active" onclick="setPostType('text')">TEXT</div>
+        <div class="tt" onclick="setPostType('image')">IMAGE</div>
+        <div class="tt" onclick="setPostType('video')">VIDEO</div>
+      </div>
+
+      <!-- TEXT -->
+      <div class="type-panel active" id="tp-text">
+        <div class="row"><label>TEXT</label><textarea id="pt-text" rows="5" placeholder="write something."></textarea></div>
+        <div class="inline">
+          <div class="row"><label>TAG</label>
+            <select id="pt-tag">
+              <option>daily</option><option>work</option><option>ph</option>
+              <option>vid</option><option>thoughts</option><option>art</option><option>other</option>
+            </select>
+          </div>
+          <div class="row"><label>YEAR</label>
+            <select id="pt-cat">
+              <option>2026</option><option>2025</option><option>2024</option>
+              <option>2023</option><option>2022</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- IMAGE -->
+      <div class="type-panel" id="tp-image">
+        <div class="row"><label>IMAGE URL</label><input type="url" id="pi-url" placeholder="https://..." oninput="previewMedia('img')"></div>
+        <div class="row"><label>OR UPLOAD</label><input type="file" id="pi-file" accept="image/*" onchange="handleImgUpload()"></div>
+        <div class="row"><label>CAPTION</label><textarea id="pi-cap" rows="3" placeholder="optional caption"></textarea></div>
+        <div class="inline">
+          <div class="row"><label>TAG</label>
+            <select id="pi-tag"><option>ph</option><option>work</option><option>art</option><option>daily</option></select>
+          </div>
+          <div class="row"><label>YEAR</label>
+            <select id="pi-cat"><option>2026</option><option>2025</option><option>2024</option></select>
+          </div>
+        </div>
+        <div class="preview-frame" id="prev-img" style="display:none;"></div>
+      </div>
+
+      <!-- VIDEO -->
+      <div class="type-panel" id="tp-video">
+        <div class="row"><label>VIDEO URL (YouTube / Vimeo / Instagram)</label><input type="url" id="pv-url" placeholder="https://..." oninput="previewMedia('vid')"></div>
+        <div class="row"><label>DESCRIPTION</label><textarea id="pv-desc" rows="3" placeholder="optional description"></textarea></div>
+        <div class="inline">
+          <div class="row"><label>TAG</label>
+            <select id="pv-tag"><option>vid</option><option>work</option><option>art</option></select>
+          </div>
+          <div class="row"><label>YEAR</label>
+            <select id="pv-cat"><option>2026</option><option>2025</option><option>2024</option></select>
+          </div>
+        </div>
+        <div class="preview-frame" id="prev-vid" style="display:none;"></div>
+      </div>
+
+      <button class="btn" style="margin-top:14px;" onclick="submitPost()">PUBLISH POST</button>
+    </div>
+
+    <div>
+      <div class="sec-hd">ALL POSTS</div>
+      <div style="margin-bottom:10px;display:flex;gap:8px;align-items:center;">
+        <input type="text" id="post-search" placeholder="search..." style="flex:1;" oninput="renderPosts()">
+        <button class="btn btn-sm btn-gray" onclick="if(confirm('Delete ALL posts?'))clearAllPosts()">clear all</button>
+      </div>
+      <div id="post-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MEMES ══ -->
+<div class="panel" id="panel-memes">
+  <div class="two-col">
+    <div>
+      <div class="sec-hd">ADD MEME</div>
+      <div class="row"><label>IMAGE URL</label><input type="url" id="mm-url" placeholder="https://..." oninput="prevMeme()"></div>
+      <div class="row"><label>OR UPLOAD</label><input type="file" id="mm-file" accept="image/*" onchange="handleMemeUpload()"></div>
+      <div class="row"><label>CAPTION (optional)</label><input type="text" id="mm-cap" placeholder="caption..."></div>
+      <div class="preview-frame" id="prev-meme" style="display:none;"></div>
+      <button class="btn" style="margin-top:14px;" onclick="addMeme()">ADD MEME</button>
+    </div>
+    <div>
+      <div class="sec-hd">MEMES (<span id="meme-count">0</span>)</div>
+      <button class="btn btn-sm btn-gray" style="margin-bottom:10px;" onclick="if(confirm('Delete all memes?')){localStorage.removeItem('ann_memes');renderMemeAdmin();}">clear all</button>
+      <div class="meme-grid" id="meme-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ DATABASE ══ -->
+<div class="panel" id="panel-db">
+  <div class="two-col">
+    <div>
+      <div class="sec-hd">ADD CATEGORY</div>
+      <div class="inline">
+        <div class="row"><label>CATEGORY NAME</label><input type="text" id="db-cat-name" placeholder="e.g. References"></div>
+        <button class="btn btn-sm" style="margin-bottom:0;" onclick="addDBCat()">ADD</button>
+      </div>
+      <div id="db-cat-list" style="margin-top:10px;"></div>
+
+      <hr class="divider">
+
+      <div class="sec-hd">ADD LINK</div>
+      <div class="row"><label>CATEGORY</label><select id="db-link-cat"></select></div>
+      <div class="row"><label>TITLE</label><input type="text" id="db-link-title" placeholder="Tool / Link name"></div>
+      <div class="row"><label>URL</label><input type="url" id="db-link-url" placeholder="https://..." oninput="prevDBEmbed()"></div>
+      <div class="row"><label>DESCRIPTION</label><textarea id="db-link-desc" rows="3" placeholder="What is this?"></textarea></div>
+      <div class="check-row">
+        <input type="checkbox" id="db-link-embed" onchange="prevDBEmbed()">
+        <label for="db-link-embed" style="margin:0;color:var(--cr);">Show embed (YouTube/Vimeo)</label>
+      </div>
+      <div class="preview-frame" id="prev-db-embed" style="display:none;"></div>
+      <button class="btn" style="margin-top:10px;" onclick="addDBLink()">ADD LINK</button>
+    </div>
+
+    <div>
+      <div class="sec-hd">DATABASE CONTENTS</div>
+      <div id="db-contents"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ ICONS ══ -->
+<div class="panel" id="panel-icons">
+  <div class="sec-hd">ICON POSITIONS</div>
+  <div class="sec-sub">Edit left/top/right/bottom values (CSS). Empty = not set. Changes saved to localStorage and picked up by index.html.</div>
+  <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;">
+    <button class="btn btn-sm" onclick="loadIconPositions()">LOAD FROM SITE</button>
+    <button class="btn btn-sm" onclick="saveIconPositions()">SAVE ALL</button>
+    <button class="btn btn-sm btn-gray" onclick="resetIconPositions()">RESET TO DEFAULT</button>
+    <button class="btn btn-sm btn-gray" onclick="exportIconPos()">EXPORT JSON</button>
+  </div>
+  <div class="icon-grid" id="icon-grid"></div>
+</div>
+
+<!-- ══ APPEARANCE ══ -->
+<div class="panel" id="panel-appearance">
+  <div class="sec-hd">THEME COLORS</div>
+  <div class="sec-sub">Changes saved to localStorage and applied on index.html load via CSS custom properties.</div>
+  <div class="color-grid" id="color-grid"></div>
+  <div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;">
+    <button class="btn btn-sm" onclick="saveColors()">SAVE COLORS</button>
+    <button class="btn btn-sm btn-gray" onclick="resetColors()">RESET DEFAULT</button>
+    <button class="btn btn-sm btn-gray" onclick="previewColors()">PREVIEW</button>
+  </div>
+  <hr class="divider">
+  <div class="sec-hd">BG VIDEO</div>
+  <div class="row"><label>YouTube URL or VIDEO ID (background ambient)</label><input type="text" id="bg-video" placeholder="https://www.youtube.com/watch?v=..."></div>
+  <div class="row"><label>OPACITY (0.0 – 0.3, default 0.12)</label><input type="text" id="bg-opacity" placeholder="0.12"></div>
+  <button class="btn btn-sm" onclick="saveBGVideo()">SAVE BG VIDEO</button>
+  <hr class="divider">
+  <div class="sec-hd">SITE TEXT</div>
+  <div class="row"><label>TASKBAR TITLE (left side)</label><input type="text" id="tb-title" placeholder="annaili.net — ИЗБАВЛЕНИЕ"></div>
+  <div class="row"><label>MANIFESTO — CUSTOM OVERRIDE (leave empty for auto-generate)</label><textarea id="mani-override" rows="6" placeholder="I. ..."></textarea></div>
+  <button class="btn btn-sm" onclick="saveSiteText()">SAVE TEXT</button>
+</div>
+
+<!-- ══ GUESTBOOK ══ -->
+<div class="panel" id="panel-guestbook">
+  <div class="sec-hd">GUESTBOOK ENTRIES</div>
+  <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;">
+    <input type="text" id="gb-search" placeholder="search..." style="flex:1;max-width:300px;" oninput="renderGB()">
+    <button class="btn btn-sm btn-gray" onclick="if(confirm('Delete ALL guestbook entries?')){localStorage.removeItem('ann_gb');renderGB();}">clear all</button>
+  </div>
+  <div id="gb-list"></div>
+</div>
+
+<!-- ══ SETTINGS ══ -->
+<div class="panel" id="panel-settings">
+  <div class="sec-hd">CREDENTIALS</div>
+  <div class="sec-sub">Changes apply immediately (stored in your browser). You'll need to update index.html JS constants to match for permanent changes.</div>
+  <div class="two-col">
+    <div>
+      <div class="row"><label>ADMIN USERNAME</label><input type="text" id="set-user" value="zhopa"></div>
+      <div class="row"><label>ADMIN PASSWORD</label><input type="text" id="set-pw" value="gnida"></div>
+      <div class="row"><label>DATABASE PASSWORD</label><input type="text" id="set-dbpw" value="data2026"></div>
+      <button class="btn btn-sm" onclick="saveCreds()">SAVE CREDENTIALS</button>
+      <div class="hint">⚠️ These are stored in localStorage. For production, hardcode in index.html.</div>
+    </div>
+    <div>
+      <div class="sec-hd">EXPORT / IMPORT</div>
+      <div class="row"><label>EXPORT ALL DATA</label><button class="btn btn-sm" onclick="exportAll()">DOWNLOAD JSON</button></div>
+      <div class="row"><label>IMPORT DATA</label><input type="file" id="import-file" accept=".json" onchange="importAll()"></div>
+      <hr class="divider">
+      <div class="sec-hd">DANGER ZONE</div>
+      <button class="btn btn-sm btn-red" onclick="if(confirm('NUKE ALL DATA? This cannot be undone.'))nukeAll()">NUKE ALL DATA</button>
+    </div>
+  </div>
+
+  <hr class="divider">
+  <div class="sec-hd">TELEGRAM → SITE SYNC</div>
+  <div class="sec-sub" style="line-height:1.8;">
+    Static HTML can't connect to Telegram directly. To sync a Telegram channel to the site:
+    <br><br>
+    <b style="color:var(--pk);">Option A — Vercel/Netlify Function</b><br>
+    1. Create a Telegram bot via @BotFather, get the API token.<br>
+    2. Create a serverless function (Node.js) that calls <code style="color:var(--r);">https://api.telegram.org/bot&lt;TOKEN&gt;/getUpdates</code> or sets a webhook.<br>
+    3. Function parses posts (text, photo, caption) → transforms to <code style="color:var(--r);">{id, date, text, img, tag}</code>.<br>
+    4. Writes to a public <code style="color:var(--r);">posts.json</code> file or KV store.<br>
+    5. In index.html, add <code style="color:var(--r);">fetch('/api/posts.json')</code> on load and merge with local posts.<br>
+    <br>
+    <b style="color:var(--pk);">Option B — Notion API</b><br>
+    1. Create Notion integration at notion.so/my-integrations.<br>
+    2. Share your database with the integration.<br>
+    3. Serverless function calls <code style="color:var(--r);">https://api.notion.com/v1/databases/&lt;DB_ID&gt;/query</code>.<br>
+    4. Transforms blocks to post format → generates JSON feed.<br>
+    5. Frontend fetches the feed periodically.<br>
+    <br>
+    <b style="color:var(--pk);">Recommended stack:</b> Vercel (free tier) + Node.js + cron trigger (GitHub Actions) every 30 min.
+  </div>
+</div>
+```
+
+  </div><!-- /panels -->
+</div><!-- /app -->
+
+<div id="status">
+  <span>ANNAILI ADMIN v2.0</span>
+  <span id="status-msg">ready.</span>
+</div>
+
+<script>
+// ══════════════════════════════════════════
+// CONSTANTS
+// ══════════════════════════════════════════
+const C={USER:'zhopa',PW:'gnida',DB_PW:'data2026'};
+
+// Override creds from localStorage if set
+function getCreds(){
+  try{
+    const c=JSON.parse(localStorage.getItem('ann_adm_creds')||'null');
+    return c||C;
+  }catch(e){return C;}
+}
+
+// ══════════════════════════════════════════
+// AUTH
+// ══════════════════════════════════════════
+function doLogin(){
+  const u=document.getElementById('lu').value.trim();
+  const p=document.getElementById('lp').value;
+  const c=getCreds();
+  if(u===c.USER&&p===c.PW){
+    try{sessionStorage.setItem('ann_adm','1');}catch(e){}
+    document.getElementById('login').classList.add('h');
+    document.getElementById('app').classList.add('show');
+    initAll();
+  } else {
+    document.getElementById('lerr').textContent='wrong credentials.';
+  }
+}
+
+function doLogout(){
+  try{sessionStorage.removeItem('ann_adm');}catch(e){}
+  location.reload();
+}
+
+function isAdm(){try{return sessionStorage.getItem('ann_adm')==='1';}catch(e){return false;}}
+
+// Auto-login if session active
+window.addEventListener('DOMContentLoaded',()=>{
+  if(isAdm()){
+    document.getElementById('login').classList.add('h');
+    document.getElementById('app').classList.add('show');
+    initAll();
+  }
+  document.getElementById('lu').focus();
+  document.getElementById('lp').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+  document.getElementById('lu').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('lp').focus();});
+});
+
+// ══════════════════════════════════════════
+// TABS
+// ══════════════════════════════════════════
+function switchTab(id){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===id));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id==='panel-'+id));
+  if(id==='posts') renderPosts();
+  if(id==='memes') renderMemeAdmin();
+  if(id==='db') renderDBAdmin();
+  if(id==='icons') renderIconGrid();
+  if(id==='appearance') renderAppearance();
+  if(id==='guestbook') renderGB();
+  if(id==='settings') loadSettings();
+}
+
+function initAll(){
+  renderPosts();
+  renderAppearance();
+  loadSettings();
+  renderIconGrid();
+}
+
+// ══════════════════════════════════════════
+// STATUS
+// ══════════════════════════════════════════
+let stTimer;
+function setStatus(msg,isErr=false){
+  const el=document.getElementById('status-msg');
+  el.textContent=msg;
+  el.className=isErr?'err':'';
+  clearTimeout(stTimer);
+  stTimer=setTimeout(()=>{el.textContent='ready.';el.className='';},3000);
+}
+
+// ══════════════════════════════════════════
+// POSTS
+// ══════════════════════════════════════════
+let postType='text';
+let tempImgData=''; // base64 from file upload
+
+function setPostType(t){
+  postType=t;
+  document.querySelectorAll('.tt').forEach((el,i)=>{
+    el.classList.toggle('active',['text','image','video'][i]===t);
+  });
+  document.querySelectorAll('.type-panel').forEach(p=>p.classList.toggle('active',p.id==='tp-'+t));
+}
+
+function gPosts(){try{return JSON.parse(localStorage.getItem('ap5')||'null')||[];}catch(e){return[];}}
+function sPosts(p){try{localStorage.setItem('ap5',JSON.stringify(p));}catch(e){}}
+
+function handleImgUpload(){
+  const f=document.getElementById('pi-file').files[0];
+  if(!f)return;
+  const r=new FileReader();
+  r.onload=e=>{
+    tempImgData=e.target.result;
+    const prev=document.getElementById('prev-img');
+    prev.style.display='block';
+    prev.innerHTML=`<img src="${tempImgData}" style="max-width:100%;max-height:200px;">`;
+  };
+  r.readAsDataURL(f);
+}
+
+function previewMedia(type){
+  if(type==='img'){
+    const url=document.getElementById('pi-url').value.trim();
+    const prev=document.getElementById('prev-img');
+    if(url){prev.style.display='block';prev.innerHTML=`<img src="${url}" style="max-width:100%;max-height:200px;">`;}
+    else{prev.style.display='none';}
+  } else {
+    const url=document.getElementById('pv-url').value.trim();
+    const prev=document.getElementById('prev-vid');
+    if(url){prev.style.display='block';prev.innerHTML=renderEmbed(url);}
+    else{prev.style.display='none';}
+  }
+}
+
+function renderEmbed(url){
+  if(!url) return '';
+  if(url.includes('youtube.com')||url.includes('youtu.be')){
+    const id=url.match(/(?:v=|youtu\.be\/)([^&\?]+)/)?.[1];
+    if(id) return `<iframe src="https://www.youtube.com/embed/${id}" allowfullscreen style="width:100%;aspect-ratio:16/9;border:none;"></iframe>`;
+  }
+  if(url.includes('vimeo.com')){
+    const id=url.match(/vimeo\.com\/(\d+)/)?.[1];
+    if(id) return `<iframe src="https://player.vimeo.com/video/${id}" allowfullscreen style="width:100%;aspect-ratio:16/9;border:none;"></iframe>`;
+  }
+  if(url.includes('instagram.com')) return `<a class="embed-link" href="${url}" target="_blank">Instagram → ${url}</a>`;
+  return `<a class="embed-link" href="${url}" target="_blank">${url} →</a>`;
+}
+
+function submitPost(){
+  const posts=gPosts();
+  const newId=Date.now();
+  let post={id:newId,date:new Date().toISOString()};
+
+  if(postType==='text'){
+    const txt=document.getElementById('pt-text').value.trim();
+    if(!txt){setStatus('text cannot be empty.',true);return;}
+    post.text=txt;
+    post.tag=document.getElementById('pt-tag').value;
+    post.cat=document.getElementById('pt-cat').value;
+    post.img='';
+
+  } else if(postType==='image'){
+    const url=document.getElementById('pi-url').value.trim();
+    const imgSrc=tempImgData||url;
+    if(!imgSrc){setStatus('image url or upload required.',true);return;}
+    post.text=document.getElementById('pi-cap').value.trim();
+    post.tag=document.getElementById('pi-tag').value;
+    post.cat=document.getElementById('pi-cat').value;
+    post.img=imgSrc;
+    tempImgData='';
+
+  } else {
+    const url=document.getElementById('pv-url').value.trim();
+    if(!url){setStatus('video url required.',true);return;}
+    post.text=document.getElementById('pv-desc').value.trim();
+    post.tag=document.getElementById('pv-tag').value;
+    post.cat=document.getElementById('pv-cat').value;
+    post.img='';
+    post.video=url;
+  }
+
+  posts.unshift(post);
+  sPosts(posts);
+  setStatus('post published.');
+  // clear form
+  document.getElementById('pt-text').value='';
+  document.getElementById('pi-url').value='';
+  document.getElementById('pi-cap').value='';
+  document.getElementById('pv-url').value='';
+  document.getElementById('pv-desc').value='';
+  document.getElementById('prev-img').style.display='none';
+  document.getElementById('prev-vid').style.display='none';
+  renderPosts();
+}
+
+function renderPosts(){
+  const posts=gPosts();
+  const q=(document.getElementById('post-search')?.value||'').toLowerCase();
+  const list=document.getElementById('post-list');
+  const filtered=q?posts.filter(p=>(p.text||'').toLowerCase().includes(q)||(p.tag||'').includes(q)):posts;
+  if(!filtered.length){list.innerHTML='<div class="list-empty">no posts yet.</div>';return;}
+  list.innerHTML=filtered.map(p=>{
+    const date=new Date(p.date).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'2-digit'});
+    const preview=(p.text||'').slice(0,80)+(p.text?.length>80?'…':'');
+    const hasImg=p.img?`<span style="color:var(--pk)">[img]</span> `:'';
+    const hasVid=p.video?`<span style="color:var(--r)">[vid]</span> `:'';
+    return `<div class="card">
+      <div class="card-title">${hasImg}${hasVid}${preview||'—'}</div>
+      <div class="card-meta">${date} · ${p.tag||'?'} · ${p.cat||'?'}</div>
+      <div class="card-actions">
+        <button class="btn btn-sm btn-gray" onclick="editPost(${p.id})">edit</button>
+        <button class="btn btn-sm btn-red" onclick="deletePost(${p.id})">delete</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function deletePost(id){
+  if(!confirm('Delete this post?'))return;
+  sPosts(gPosts().filter(p=>p.id!==id));
+  renderPosts();
+  setStatus('post deleted.');
+}
+
+function editPost(id){
+  const posts=gPosts();
+  const p=posts.find(x=>x.id===id);
+  if(!p)return;
+  const txt=prompt('Edit text:',p.text||'');
+  if(txt===null)return;
+  p.text=txt;
+  sPosts(posts);
+  renderPosts();
+  setStatus('post updated.');
+}
+
+function clearAllPosts(){
+  localStorage.removeItem('ap5');
+  renderPosts();
+  setStatus('all posts cleared.');
+}
+
+// ══════════════════════════════════════════
+// MEMES
+// ══════════════════════════════════════════
+let tempMemeData='';
+
+function getMemes(){try{return JSON.parse(localStorage.getItem('ann_memes')||'[]');}catch(e){return[];}}
+function setMemes(m){try{localStorage.setItem('ann_memes',JSON.stringify(m));}catch(e){}}
+
+function handleMemeUpload(){
+  const f=document.getElementById('mm-file').files[0];
+  if(!f)return;
+  const r=new FileReader();
+  r.onload=e=>{
+    tempMemeData=e.target.result;
+    const prev=document.getElementById('prev-meme');
+    prev.style.display='block';
+    prev.innerHTML=`<img src="${tempMemeData}" style="max-width:100%;max-height:200px;">`;
+  };
+  r.readAsDataURL(f);
+}
+
+function prevMeme(){
+  const url=document.getElementById('mm-url').value.trim();
+  const prev=document.getElementById('prev-meme');
+  if(url){prev.style.display='block';prev.innerHTML=`<img src="${url}" style="max-width:100%;max-height:200px;">`;}
+  else{prev.style.display='none';}
+}
+
+function addMeme(){
+  const url=document.getElementById('mm-url').value.trim();
+  const img=tempMemeData||url;
+  if(!img){setStatus('image required.',true);return;}
+  const cap=document.getElementById('mm-cap').value.trim();
+  const memes=getMemes();
+  memes.unshift({img,cap});
+  setMemes(memes);
+  document.getElementById('mm-url').value='';
+  document.getElementById('mm-cap').value='';
+  document.getElementById('prev-meme').style.display='none';
+  tempMemeData='';
+  renderMemeAdmin();
+  setStatus('meme added.');
+}
+
+function renderMemeAdmin(){
+  const memes=getMemes();
+  document.getElementById('meme-count').textContent=memes.length;
+  const list=document.getElementById('meme-list');
+  if(!memes.length){list.innerHTML='<div class="list-empty">no memes yet.</div>';return;}
+  list.innerHTML=memes.map((m,i)=>`
+    <div class="meme-item">
+      <img src="${m.img}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2260%22 height=%2260%22><rect fill=%22%23333%22 width=%2260%22 height=%2260%22/></svg>'">
+      ${m.cap?`<div class="meme-cap">${m.cap}</div>`:''}
+      <button class="meme-del" onclick="deleteMeme(${i})">✕</button>
+    </div>
+  `).join('');
+}
+
+function deleteMeme(i){
+  const m=getMemes();m.splice(i,1);setMemes(m);renderMemeAdmin();setStatus('meme deleted.');
+}
+
+// ══════════════════════════════════════════
+// DATABASE
+// ══════════════════════════════════════════
+function getDBCats(){try{return JSON.parse(localStorage.getItem('ann_db_cats')||'null')||[{id:'cat1',name:'Ссылки'},{id:'cat2',name:'Видео'},{id:'cat3',name:'Инструменты'}];}catch(e){return[];}}
+function setDBCats(c){try{localStorage.setItem('ann_db_cats',JSON.stringify(c));}catch(e){}}
+function getDBPosts(){try{return JSON.parse(localStorage.getItem('ann_db_posts')||'[]');}catch(e){return[];}}
+function setDBPosts(p){try{localStorage.setItem('ann_db_posts',JSON.stringify(p));}catch(e){}}
+
+function addDBCat(){
+  const name=document.getElementById('db-cat-name').value.trim();
+  if(!name){setStatus('category name required.',true);return;}
+  const cats=getDBCats();
+  cats.push({id:'cat'+Date.now(),name});
+  setDBCats(cats);
+  document.getElementById('db-cat-name').value='';
+  renderDBAdmin();
+  setStatus('category added.');
+}
+
+function deleteDBCat(id){
+  if(!confirm('Delete category and all its links?'))return;
+  setDBCats(getDBCats().filter(c=>c.id!==id));
+  setDBPosts(getDBPosts().filter(p=>p.cat!==id));
+  renderDBAdmin();
+  setStatus('category deleted.');
+}
+
+function prevDBEmbed(){
+  const url=document.getElementById('db-link-url').value.trim();
+  const embed=document.getElementById('db-link-embed').checked;
+  const prev=document.getElementById('prev-db-embed');
+  if(url&&embed){prev.style.display='block';prev.innerHTML=renderEmbed(url);}
+  else{prev.style.display='none';}
+}
+
+function addDBLink(){
+  const cat=document.getElementById('db-link-cat').value;
+  const title=document.getElementById('db-link-title').value.trim();
+  const url=document.getElementById('db-link-url').value.trim();
+  const desc=document.getElementById('db-link-desc').value.trim();
+  const embed=document.getElementById('db-link-embed').checked;
+  if(!title){setStatus('title required.',true);return;}
+  const posts=getDBPosts();
+  posts.unshift({id:Date.now(),cat,title,url,desc,embed});
+  setDBPosts(posts);
+  document.getElementById('db-link-title').value='';
+  document.getElementById('db-link-url').value='';
+  document.getElementById('db-link-desc').value='';
+  document.getElementById('db-link-embed').checked=false;
+  document.getElementById('prev-db-embed').style.display='none';
+  renderDBAdmin();
+  setStatus('link added.');
+}
+
+function deleteDBLink(id){
+  setDBPosts(getDBPosts().filter(p=>p.id!==id));
+  renderDBAdmin();
+  setStatus('link deleted.');
+}
+
+function renderDBAdmin(){
+  const cats=getDBCats();
+  const posts=getDBPosts();
+
+  // Category tags
+  document.getElementById('db-cat-list').innerHTML=cats.length
+    ?cats.map(c=>`<span class="cat-tag">${c.name}<span class="rm" onclick="deleteDBCat('${c.id}')"> ✕</span></span>`).join('')
+    :'<span style="color:var(--g2);font-size:12px;">no categories</span>';
+
+  // Category select
+  const sel=document.getElementById('db-link-cat');
+  sel.innerHTML=cats.map(c=>`<option value="${c.id}">${c.name}</option>`).join('');
+
+  // Contents by category
+  const cont=document.getElementById('db-contents');
+  if(!cats.length){cont.innerHTML='<div class="list-empty">no categories.</div>';return;}
+  cont.innerHTML=cats.map(cat=>{
+    const catPosts=posts.filter(p=>p.cat===cat.id);
+    return `<div style="margin-bottom:16px;">
+      <div style="font-size:14px;color:var(--pk);margin-bottom:6px;border-bottom:1px solid var(--brd);padding-bottom:4px;">${cat.name} (${catPosts.length})</div>
+      ${catPosts.length?catPosts.map(p=>`
+        <div class="card" style="padding:8px 10px;">
+          <div class="card-title">${p.url?`<a href="${p.url}" target="_blank" style="color:var(--cr);">${p.title}</a>`:p.title}</div>
+          ${p.desc?`<div class="card-meta">${p.desc}</div>`:''}
+          <div class="card-actions"><button class="btn btn-sm btn-red" onclick="deleteDBLink(${p.id})">delete</button></div>
+        </div>
+      `).join(''):'<div class="list-empty" style="padding:8px 0;">empty.</div>'}
+    </div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════
+// ICONS
+// ══════════════════════════════════════════
+const ICON_IDS=['ic-ph','ic-vid','ic-sk','ic-arch','ic-blog','ic-das','ic-guest','ic-show','ic-art','ic-mani','ic-about','ic-collab','ic-proj','ic-skull','ic-memes','ic-db','ic-catch','ic-contact','ic-joke'];
+const ICON_LABELS={'ic-ph':'Ph','ic-vid':'Vid','ic-sk':'Sketchbook','ic-arch':'Archive','ic-blog':'Blog','ic-das':'das Dasein','ic-guest':'Guestbook','ic-show':'Showreel','ic-art':'Art','ic-mani':'Manifesto','ic-about':'About','ic-collab':'Collab','ic-proj':'Proj','ic-skull':'☠','ic-memes':'Memes','ic-db':'Database','ic-catch':'Catch Me','ic-contact':'Contact','ic-joke':'Random'};
+
+let iconData={};
+
+function loadIconPositions(){
+  try{iconData=JSON.parse(localStorage.getItem('ann_icon_pos')||'{}');}catch(e){iconData={};}
+  renderIconGrid();
+  setStatus('icon positions loaded.');
+}
+
+function renderIconGrid(){
+  const grid=document.getElementById('icon-grid');
+  grid.innerHTML=ICON_IDS.map(id=>{
+    const pos=iconData[id]||{};
+    return `<div class="icon-card">
+      <div class="icon-id">${id} — ${ICON_LABELS[id]||id}</div>
+      <div class="icon-coords">
+        <div><label>left</label><input type="text" placeholder="auto" value="${pos.left||''}" oninput="iconData['${id}']={...iconData['${id}']||{},left:this.value}"></div>
+        <div><label>top</label><input type="text" placeholder="auto" value="${pos.top||''}" oninput="iconData['${id}']={...iconData['${id}']||{},top:this.value}"></div>
+        <div><label>right</label><input type="text" placeholder="auto" value="${pos.right||''}" oninput="iconData['${id}']={...iconData['${id}']||{},right:this.value}"></div>
+        <div><label>bottom</label><input type="text" placeholder="auto" value="${pos.bottom||''}" oninput="iconData['${id}']={...iconData['${id}']||{},bottom:this.value}"></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function saveIconPositions(){
+  try{localStorage.setItem('ann_icon_pos',JSON.stringify(iconData));}catch(e){}
+  setStatus('icon positions saved.');
+}
+
+function resetIconPositions(){
+  if(!confirm('Reset all icon positions?'))return;
+  localStorage.removeItem('ann_icon_pos');
+  iconData={};
+  renderIconGrid();
+  setStatus('positions reset.');
+}
+
+function exportIconPos(){
+  const blob=new Blob([JSON.stringify(iconData,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='ann_icon_pos.json';a.click();
+}
+
+// ══════════════════════════════════════════
+// APPEARANCE
+// ══════════════════════════════════════════
+const COLOR_DEFS=[
+  {key:'--k',label:'Background',default:'#0d0d0d'},
+  {key:'--r',label:'Red accent',default:'#cc3333'},
+  {key:'--r2',label:'Dark red',default:'#881111'},
+  {key:'--pk',label:'Pink highlight',default:'#f5c8d8'},
+  {key:'--pk2',label:'Pink light',default:'#fde8ef'},
+  {key:'--pk3',label:'Pink mid',default:'#c06878'},
+  {key:'--g',label:'Gray',default:'#4a4a5a'},
+  {key:'--g2',label:'Gray light',default:'#8888a0'},
+  {key:'--cr',label:'Cream text',default:'#f5f0ee'},
+];
+
+function getSavedColors(){try{return JSON.parse(localStorage.getItem('ann_colors')||'{}');}catch(e){return{};}}
+
+function renderAppearance(){
+  const saved=getSavedColors();
+  const grid=document.getElementById('color-grid');
+  grid.innerHTML=COLOR_DEFS.map(c=>`
+    <div class="card">
+      <div class="color-row">
+        <label>${c.label}<br><span style="font-size:10px;color:#666;">${c.key}</span></label>
+        <input type="color" id="col_${c.key.replace('--','')}" value="${saved[c.key]||c.default}" oninput="updateColorPreview('${c.key}')">
+        <div class="color-preview" id="prev_${c.key.replace('--','')}" style="background:${saved[c.key]||c.default};"></div>
+      </div>
+    </div>
+  `).join('');
+
+  // Load BG video / text settings
+  const cfg=JSON.parse(localStorage.getItem('ann_site_cfg')||'{}');
+  if(cfg.bgVideo) document.getElementById('bg-video').value=cfg.bgVideo;
+  if(cfg.bgOpacity) document.getElementById('bg-opacity').value=cfg.bgOpacity;
+  if(cfg.tbTitle) document.getElementById('tb-title').value=cfg.tbTitle;
+  if(cfg.maniOverride) document.getElementById('mani-override').value=cfg.maniOverride;
+}
+
+function updateColorPreview(key){
+  const id=key.replace('--','');
+  const val=document.getElementById('col_'+id).value;
+  document.getElementById('prev_'+id).style.background=val;
+}
+
+function saveColors(){
+  const colors={};
+  COLOR_DEFS.forEach(c=>{
+    const id=c.key.replace('--','');
+    const el=document.getElementById('col_'+id);
+    if(el) colors[c.key]=el.value;
+  });
+  localStorage.setItem('ann_colors',JSON.stringify(colors));
+  setStatus('colors saved. refresh index.html to see changes.');
+}
+
+function resetColors(){
+  localStorage.removeItem('ann_colors');
+  renderAppearance();
+  setStatus('colors reset to default.');
+}
+
+function previewColors(){
+  COLOR_DEFS.forEach(c=>{
+    const id=c.key.replace('--','');
+    const el=document.getElementById('col_'+id);
+    if(el) document.documentElement.style.setProperty(c.key,el.value);
+  });
+  setStatus('colors previewed on this page.');
+}
+
+function saveBGVideo(){
+  const url=document.getElementById('bg-video').value.trim();
+  const opacity=document.getElementById('bg-opacity').value.trim();
+  const cfg=JSON.parse(localStorage.getItem('ann_site_cfg')||'{}');
+  if(url) cfg.bgVideo=url;
+  if(opacity) cfg.bgOpacity=opacity;
+  localStorage.setItem('ann_site_cfg',JSON.stringify(cfg));
+  setStatus('bg video saved.');
+}
+
+function saveSiteText(){
+  const tbTitle=document.getElementById('tb-title').value.trim();
+  const maniOverride=document.getElementById('mani-override').value.trim();
+  const cfg=JSON.parse(localStorage.getItem('ann_site_cfg')||'{}');
+  if(tbTitle) cfg.tbTitle=tbTitle;
+  cfg.maniOverride=maniOverride;
+  localStorage.setItem('ann_site_cfg',JSON.stringify(cfg));
+  setStatus('site text saved.');
+}
+
+// ══════════════════════════════════════════
+// GUESTBOOK
+// ══════════════════════════════════════════
+function getGB(){try{return JSON.parse(localStorage.getItem('ann_gb')||'[]');}catch(e){return[];}}
+
+function renderGB(){
+  const entries=getGB();
+  const q=(document.getElementById('gb-search')?.value||'').toLowerCase();
+  const list=document.getElementById('gb-list');
+  const filtered=q?entries.filter(e=>(e.name||'').toLowerCase().includes(q)||(e.msg||'').toLowerCase().includes(q)):entries;
+  if(!filtered.length){list.innerHTML='<div class="list-empty">no entries.</div>';return;}
+  list.innerHTML=filtered.map((e,i)=>{
+    const date=e.date?new Date(e.date).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'2-digit',hour:'2-digit',minute:'2-digit'}):'?';
+    return `<div class="gb-entry">
+      <div class="gb-name">${e.name||'anonymous'}</div>
+      <div class="gb-msg">${e.msg||''}</div>
+      <div class="gb-meta">${date}</div>
+      <div class="card-actions" style="margin-top:6px;">
+        <button class="btn btn-sm btn-red" onclick="deleteGB(${i})">delete</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function deleteGB(i){
+  const entries=getGB();entries.splice(i,1);
+  try{localStorage.setItem('ann_gb',JSON.stringify(entries));}catch(e){}
+  renderGB();setStatus('entry deleted.');
+}
+
+// ══════════════════════════════════════════
+// SETTINGS
+// ══════════════════════════════════════════
+function loadSettings(){
+  const c=getCreds();
+  document.getElementById('set-user').value=c.USER;
+  document.getElementById('set-pw').value=c.PW;
+  document.getElementById('set-dbpw').value=c.DB_PW||'data2026';
+}
+
+function saveCreds(){
+  const creds={
+    USER:document.getElementById('set-user').value.trim(),
+    PW:document.getElementById('set-pw').value,
+    DB_PW:document.getElementById('set-dbpw').value
+  };
+  try{localStorage.setItem('ann_adm_creds',JSON.stringify(creds));}catch(e){}
+  setStatus('credentials saved. apply to index.html constants too!');
+}
+
+function exportAll(){
+  const data={
+    posts:localStorage.getItem('ap5'),
+    memes:localStorage.getItem('ann_memes'),
+    db_cats:localStorage.getItem('ann_db_cats'),
+    db_posts:localStorage.getItem('ann_db_posts'),
+    icon_pos:localStorage.getItem('ann_icon_pos'),
+    colors:localStorage.getItem('ann_colors'),
+    cfg:localStorage.getItem('ann_site_cfg'),
+    gb:localStorage.getItem('ann_gb'),
+    exported:new Date().toISOString()
+  };
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download=`annaili_backup_${new Date().toISOString().slice(0,10)}.json`;a.click();
+  setStatus('data exported.');
+}
+
+function importAll(){
+  const f=document.getElementById('import-file').files[0];
+  if(!f)return;
+  const r=new FileReader();
+  r.onload=e=>{
+    try{
+      const data=JSON.parse(e.target.result);
+      if(!confirm('Import will overwrite current data. Continue?'))return;
+      if(data.posts) localStorage.setItem('ap5',data.posts);
+      if(data.memes) localStorage.setItem('ann_memes',data.memes);
+      if(data.db_cats) localStorage.setItem('ann_db_cats',data.db_cats);
+      if(data.db_posts) localStorage.setItem('ann_db_posts',data.db_posts);
+      if(data.icon_pos) localStorage.setItem('ann_icon_pos',data.icon_pos);
+      if(data.colors) localStorage.setItem('ann_colors',data.colors);
+      if(data.cfg) localStorage.setItem('ann_site_cfg',data.cfg);
+      if(data.gb) localStorage.setItem('ann_gb',data.gb);
+      setStatus('import complete. refresh to see changes.');
+    }catch(err){setStatus('import failed: invalid json.',true);}
+  };
+  r.readAsText(f);
+}
+
+function nukeAll(){
+  const keys=['ap5','ann_memes','ann_db_cats','ann_db_posts','ann_icon_pos','ann_colors','ann_site_cfg','ann_gb','ann_adm_creds','ann_eph','ann_vis','ann_clicks','ac4'];
+  keys.forEach(k=>localStorage.removeItem(k));
+  setStatus('all data nuked. refreshing...');
+  setTimeout(()=>location.reload(),1500);
+}
+</script>
+
+</body>
+</html>
